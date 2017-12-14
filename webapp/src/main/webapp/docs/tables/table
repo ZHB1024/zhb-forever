@@ -1,0 +1,92 @@
+CREATE TABLE T_USER
+(
+      ID            VARCHAR2(16)       CONSTRAINT PK_T_STUDENT_ID PRIMARY KEY,
+      userName          VARCHAR2(50)      ,
+      AGE           NUMBER(3)      ,
+      deleteFlag          int(1)    
+);
+
+CREATE TABLE T_STUDENT
+(
+      ID            VARCHAR2(16)       CONSTRAINT PK_T_STUDENT_ID PRIMARY KEY,
+      NAME          VARCHAR2(50)       NOT NULL,
+      AGE           NUMBER(3)       NOT NULL,
+      RXRQ          DATETIME       NOT NULL
+);
+
+#功能信息
+CREATE TABLE FUNCTION_INFO
+( 
+      ID            varchar(16)       NOT NULL PRIMARY KEY,
+      NAME          varchar(50)       NOT NULL,
+      DESCRIPTION   varchar(100)       NOT NULL,
+      CREATE_TIME   DATETIME       NOT NULL,
+      UPDATE_TIME   DATETIME,
+      DELETE_FLAG   int(1) NOT NULL  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#角色信息
+CREATE TABLE ROLE_INFO
+(
+      ID            varchar(16)       NOT NULL PRIMARY KEY,
+      NAME          varchar(50)       NOT NULL,
+      DESCRIPTION   varchar(100)       NOT NULL,
+      FUNCTION_ID   varchar(16) NOT NULL,
+      CREATE_TIME   DATETIME       NOT NULL,
+      UPDATE_TIME   DATETIME,
+      DELETE_FLAG   int(1) NOT NULL,
+      foreign key(FUNCTION_ID) references FUNCTION_INFO(ID)  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#用户信息
+CREATE TABLE USER_INFO
+(
+      ID            varchar(16)       NOT NULL PRIMARY KEY,
+      NAME          varchar(50)       NOT NULL,
+      ROLE_ID       varchar(16) NOT NULL,
+      REAL_NAME     varchar(20) ,
+      SEX           varchar(2)  ,
+      PHONE         varchar(11) ,
+      EMAIL         varchar(50) ,
+      CREATE_TIME   DATETIME       NOT NULL,
+      UPDATE_TIME   DATETIME,
+      DELETE_FLAG   int(1) NOT NULL,
+      foreign key(ROLE_ID) references ROLE_INFO(ID)  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#账号信息
+CREATE TABLE LOGIN_INFO
+(
+      ID            varchar(16)       NOT NULL PRIMARY KEY,
+      USER_ID       varchar(16)       NOT NULL,
+      PASSWORD      varchar(100) NOT NULL,
+      CREATE_TIME   DATETIME       NOT NULL,
+      UPDATE_TIME   DATETIME,
+      DELETE_FLAG   int(1) NOT NULL,
+      foreign key(USER_ID) references USER_INFO(ID)  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#文件信息
+CREATE TABLE FILE_INFO
+(
+      ID            varchar(16)       NOT NULL PRIMARY KEY,
+      FILE_TYPE      varchar(200) NOT NULL,
+      FILE_SIZE      int(5) NOT NULL,
+      FILE_NAME     varchar(50)  NOT NULL,
+      FILE_PATH      varchar(200) NOT NULL,
+      TYPE      int(1) NOT NULL,
+      CREATE_TIME   DATETIME       NOT NULL,
+      UPDATE_TIME   DATETIME,
+      DELETE_FLAG   int(1) NOT NULL
+      
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#新闻信息
+CREATE TABLE NEWS_INFO
+(
+      ID            varchar(16)       NOT NULL PRIMARY KEY,
+      TITLE      varchar(1000) NOT NULL,
+      CONTENT      varchar(1000) NOT NULL,
+      CREATE_TIME   DATETIME       NOT NULL
+      
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
