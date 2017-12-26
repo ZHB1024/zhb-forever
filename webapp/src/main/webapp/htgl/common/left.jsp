@@ -31,8 +31,8 @@
                 
       <li <c:if test="${active4}">class="active"</c:if> >
            <form id="theform4" action="<%=ctxPath%>/htgl/mongodb?action=findAllMongoDB" method="post">
-              <a href="javascript:tileBut(4);" class="ico4"><span>spider</span><em></em></a>
-              <span class="tooltip"><span>spider</span></span>
+              <a href="javascript:tileBut(4);" class="ico4"><span>mongodb</span><em></em></a>
+              <span class="tooltip"><span>mongodb</span></span>
            </form>
        </li>
                 

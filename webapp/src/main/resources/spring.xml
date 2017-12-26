@@ -13,7 +13,10 @@
 	
 	<import resource="classpath*:spring-cfg-hibernate.xml"/>
 	<import resource="classpath*:spirng-mongodb.xml"/>
+	
+	<import resource="classpath*:activemq.xml"/>
 	<!-- <import resource="classpath*:spring-redis.xml"/> -->
+	
 	
 	<!-- 配置文件 + 注解 方式 -->
 	<import resource="classpath*:spring-cfg-springmvc.xml"/>

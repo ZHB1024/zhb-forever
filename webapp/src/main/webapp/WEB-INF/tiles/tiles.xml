@@ -107,4 +107,15 @@
         <put-attribute name="main" value="/htgl/xss/index.jsp"/>
     </definition>
     
+    <!-- jms-activeMQ -->
+    <definition name="htgl.jms.activemq.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/index.jsp"/>
+    </definition>
+    <definition name="htgl.jms.activemq.producer" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/producer.jsp"/>
+    </definition>
+    <definition name="htgl.jms.activemq.receiver" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/receiver.jsp"/>
+    </definition>
+    
 </tiles-definitions>
