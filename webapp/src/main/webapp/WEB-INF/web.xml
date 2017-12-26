@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>zhb_forever</display-name>
+  
+  <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:spring.xml</param-value>
+  </context-param>
+  
+  <!-- 定时任务多少分钟运行一次 -->
+    <context-param>
+        <param-name>runTimeInterval</param-name>
+        <param-value>10</param-value>
+    </context-param>
+    
+  <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- 定时任务 -->
+  <listener>
+      <listener-class>com.forever.zhb.timer.listener.TimerTestThreadListener</listener-class>
+  </listener>
+  
+  <filter>
+          <filter-name>openSession</filter-name>
+          <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+  </filter>
+  
+  <!-- 消除脚本 -->
+  <filter>
+       <filter-name>xssFilter</filter-name>
+       <filter-class>com.forever.zhb.filter.XSSAntisamyFilter</filter-class>
+       <init-param>
+        <param-name>excludedPages</param-name>    
+        <param-value>  
+            /pages/noticeRule!editNotice.action,  
+            /pages/noticeRule!addNotices.action,  
+            /pages/noticeRule!templatePreview.action,  
+            /pages/filter!update.action,  
+            /pages/filter!save.action
+        </param-value>  
+     </init-param>
+  </filter>
+  
+  <!-- 将特殊字符转换，不消除 -->
+  <!-- <filter>
+       <filter-name>xssFilter</filter-name>
+       <filter-class>com.forever.zhb.filter.XSSUtilsFilter</filter-class>
+       <init-param>
+        <param-name>excludedPages</param-name>    
+        <param-value>  
+            /pages/noticeRule!editNotice.action,  
+            /pages/noticeRule!addNotices.action,  
+            /pages/noticeRule!templatePreview.action,  
+            /pages/filter!update.action,  
+            /pages/filter!save.action
+        </param-value>  
+     </init-param>
+  </filter> -->
+  
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+     <init-param>
+       <param-name>encoding</param-name>
+       <param-value>UTF-8</param-value>
+     </init-param>
+     <init-param>
+       <param-name>forceEncoding</param-name>
+       <param-value>true</param-value>
+     </init-param>
+  </filter>
+  
+  <filter>
+          <filter-name>ipFilter</filter-name>
+          <filter-class>com.forever.zhb.filter.SquidIpFilter</filter-class>
+  </filter>
+  
+  <filter>
+          <filter-name>environmentsFilter</filter-name>
+          <filter-class>com.forever.zhb.filter.EnvironmentsFilter</filter-class>
+  </filter>
+  
+  <filter>
+          <filter-name>loginFilter</filter-name>
+          <filter-class>com.forever.zhb.filter.LoginFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+      <filter-name>openSession</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+      <filter-name>loginFilter</filter-name>
+      <url-pattern>/htgl/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>ipFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>environmentsFilter</filter-name>
+    <url-pattern>/htgl/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>xssFilter</filter-name>
+    <url-pattern>/htgl/xssController/testXSS</url-pattern>
+  </filter-mapping>
+  
+  <servlet>
+       <servlet-name>springMVC</servlet-name>
+       <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+          <init-param>
+              <param-name>contextConfigLocation</param-name>
+              <param-value>classpath*:spring.xml</param-value>
+          </init-param> 
+       <load-on-startup>1</load-on-startup> 
+  </servlet>
+ 
+ <servlet-mapping>
+      <servlet-name>springMVC</servlet-name>
+      <url-pattern>/</url-pattern>
+  </servlet-mapping>   
+    
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <jsp-config>
+     <taglib>
+        <taglib-uri>zhb-forever</taglib-uri>
+        <taglib-location>/WEB-INF/tld/zhb-forever.tld</taglib-location>
+    </taglib>
+   </jsp-config>
+  
+  
+</web-app>

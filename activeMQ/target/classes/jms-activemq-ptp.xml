@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"    
+    xmlns:context="http://www.springframework.org/schema/context"    
+    xmlns:aop="http://www.springframework.org/schema/aop"    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans     
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd     
+    http://www.springframework.org/schema/context     
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+    http://activemq.apache.org/schema/core 
+    http://activemq.apache.org/schema/core/activemq-core.xsd"    
+    default-autowire="byName">    
+    
+    <!-- 读取计算机系统环境变量中server.properties文件 -->
+    <bean class="com.forever.zhb.config.ConfigurablePropertyPlaceholder">
+        <property name="propertyLocationSystemProperty" value="propertyPath" />
+        <property name="defaultPropertyFileName" value="server.properties" />
+        <property name="ignoreResourceNotFound" value="false" />
+    </bean>
+        
+    <!-- JMS PTP MODEL -->    
+    <!-- PTP链接工厂 -->    
+    <bean id="queueConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">    
+        <property name="brokerURL" value="tcp://127.0.0.1:61616" />    
+        <!-- <property name="brokerURL" value="vm://normandy.notify" /> -->    
+        <property name="useAsyncSend" value="true" />    
+    </bean>    
+    <!-- 定义消息队列 -->    
+    <bean id="dest" class="org.apache.activemq.command.ActiveMQQueue">    
+        <constructor-arg value="queueDest" />    
+    </bean>    
+    <!-- PTP jms模板 -->    
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">    
+        <property name="connectionFactory" ref="queueConnectionFactory"></property>    
+        <property name="defaultDestination" ref="dest" />    
+        <property name="messageConverter" ref="messageConvertForSys" />    
+        <property name="pubSubDomain" value="false" />   
+        <!-- deliveryMode, priority, timeToLive 的开关，要生效，必须配置为true，默认false-->    
+        <!-- <property name="explicitQosEnabled" value="true" /> --> 
+         <!-- 发送模式  DeliveryMode.NON_PERSISTENT=1:非持久 ; DeliveryMode.PERSISTENT=2:持久-->  
+         <!-- <property name="deliveryMode" value="2" /> -->   
+    </bean>    
+        
+    <!-- 消息转换器 -->    
+    <bean id="messageConvertForSys" class="com.normandy.tech.test.MessageConvertForSys"></bean>    
+        
+    <!-- 消息发送方 -->    
+    <bean id="messageSender" class="com.normandy.tech.test.MessageSender">
+     <property name="jmsTemplate" ref="jmsTemplate"></property>
+    </bean>    
+    <!-- 消息接收方 -->    
+    <bean id="messageReceiver" class="com.normandy.tech.test.MessageReceiver"></bean>    
+        
+    <!-- 消息监听容器 -->    
+    <bean id="listenerContainer"      
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">      
+        <property name="connectionFactory" ref="queueConnectionFactory" />      
+        <property name="destination" ref="dest" />      
+        <property name="messageListener" ref="messageReceiver" />      
+    </bean>
+    
+    <!-- <bean id="derby-ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+    	<property name="driverClassName" value="${sys.jdbc.datasourse.forever.driverClassName}"/>  
+		<property name="url" value="${sys.jdbc.datasourse.forever.url}"/>  
+		<property name="username" value="${sys.jdbc.datasourse.forever.username}"/>  
+		<property name="password" value="${sys.jdbc.datasourse.forever.password}"/>  
+		<property name="maxActive" value="200"/>  
+		<property name="poolPreparedStatements" value="true"/>  
+	</bean>   -->
+	
+	<!-- <bean id="derby-ds" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close" parent="parentDataSource">
+        <property name="driverClassName" value="${sys.jdbc.datasourse.forever.driverClassName}"/>  
+		<property name="url" value="${sys.jdbc.datasourse.forever.url}"/>  
+		<property name="username" value="${sys.jdbc.datasourse.forever.username}"/>  
+		<property name="password" value="${sys.jdbc.datasourse.forever.password}"/>  
+		<property name="maxActive" value="200"/>  
+		<property name="poolPreparedStatements" value="true"/>  
+    </bean>
+
+	<persistenceAdapter>  
+        <jdbcPersistenceAdapter dataDirectory="${activemq.base}/data" dataSource="#derby-ds"/>  
+    </persistenceAdapter>     -->  
+</beans>  

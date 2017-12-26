@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.forever.zhb.pojo.User"/>
+        <mapping class="com.forever.zhb.pojo.StudentData"/>
+        <mapping class="com.forever.zhb.pojo.FunctionInfoData"/>
+        <mapping class="com.forever.zhb.pojo.RoleInfoData"/>
+        <mapping class="com.forever.zhb.pojo.UserInfoData"/>
+        <mapping class="com.forever.zhb.pojo.LoginInfoData"/>
+        <mapping class="com.forever.zhb.pojo.FileInfoData"/>
+        <mapping class="com.forever.zhb.pojo.NewsInfoData"/>
+    </session-factory>
+</hibernate-configuration>
