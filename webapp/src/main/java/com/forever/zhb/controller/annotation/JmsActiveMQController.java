@@ -15,6 +15,7 @@ import javax.management.remote.JMXServiceURL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.activemq.command.ActiveMQQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,15 +33,6 @@ public class JmsActiveMQController {
 	
 	private Logger log = LoggerFactory.getLogger(JmsActiveMQController.class);
 	
-	/*MessageSender messageSender = MessageSendClientFactory.getSearchServiceClientBean();
-	
-	@RequestMapping("/jMSTest")
-	public void JMSTest(HttpServletRequest request,HttpServletResponse response){
-		if (null != messageSender) {
-			messageSender.sendMessage();    
-		}
-	}*/
-	
 	// 队列名zhb.demo
 		@Resource(name = "demoQueueDestination")
 		private Destination demoQueueDestination;
@@ -56,7 +48,7 @@ public class JmsActiveMQController {
 	    }
 
 		@RequestMapping(value = "/producer", method = RequestMethod.GET)
-		public String producer(HttpServletRequest request,HttpServletResponse response) {
+		public String toProducer(HttpServletRequest request,HttpServletResponse response) {
 			log.info("------------go producer");
 			
 			Date now = new Date();
@@ -72,14 +64,20 @@ public class JmsActiveMQController {
 		public String producer(@RequestParam("message") String message,HttpServletRequest request,HttpServletResponse response) {
 			log.info("------------send to jms");
 			producer.sendMessage(demoQueueDestination, message);
+			Destination des = new ActiveMQQueue("gzframe.demo");
+			producer.sendMessage(des, message);
 			return "htgl.jms.activemq.index";
 		}
 
 		@RequestMapping(value = "/receive", method = RequestMethod.GET)
 		public String queue_receive(HttpServletRequest request,HttpServletResponse response) throws JMSException {
 			log.info("------------receive message");
+			String textMessage = "";
 			TextMessage tm = producer.receive(demoQueueDestination);
-			request.setAttribute("textMessage", tm.getText());
+			if (null != tm) {
+				textMessage = tm.getText();
+			}
+			request.setAttribute("textMessage", textMessage);
 			return "htgl.jms.activemq.receiver";
 		}
 

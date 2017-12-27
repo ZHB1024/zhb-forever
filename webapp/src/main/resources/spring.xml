@@ -11,15 +11,42 @@
       http://www.springframework.org/schema/mvc  
       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	
-	<import resource="classpath*:spring-cfg-hibernate.xml"/>
-	<import resource="classpath*:spirng-mongodb.xml"/>
+	<!-- <import resource="classpath*:spring-cfg-hibernate.xml"/> -->
+	<!-- <import resource="classpath*:spirng-mongodb.xml"/> -->
 	
-	<import resource="classpath*:activemq.xml"/>
+	<!-- <import resource="classpath*:activemq.xml"/> -->
 	<!-- <import resource="classpath*:spring-redis.xml"/> -->
 	
 	
 	<!-- 配置文件 + 注解 方式 -->
-	<import resource="classpath*:spring-cfg-springmvc.xml"/>
+	<!-- <import resource="classpath*:spring-cfg-springmvc.xml"/> -->
+	
+	<!-- 注解扫描包 -->
+	<context:component-scan base-package="com.forever.zhb.controller.annotation" />
+	<!-- 开启注解 -->
+	<mvc:annotation-driven/> 
+
+    <!-- xml配置方式 -->
+    <bean name="/htgl/user" class="com.forever.zhb.controller.UserController">
+	   <property name="methodNameResolver">
+			<ref bean="paramMethodResolver"/>
+       </property>
+       <property name="foreverManager" ref="foreverManager"></property>
+	</bean>
+	
+    <bean name="/htgl/mongodb" class="com.forever.zhb.controller.MongoDBController">
+	   <property name="methodNameResolver">
+			<ref bean="paramMethodResolver"/>
+       </property>
+       <property name="mongoDBManager" ref="mongoDBManager"></property>
+	</bean>
+	
+    <!-- <bean name="/htgl/redis" class="com.forever.zhb.controller.RedisController">
+	   <property name="methodNameResolver">
+			<ref bean="paramMethodResolver"/>
+       </property>
+       <property name="redisManager" ref="redisManager"></property>
+	</bean> -->
 	
 	
 	<!-- 静态资源访问 -->

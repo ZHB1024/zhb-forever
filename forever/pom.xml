@@ -425,6 +425,16 @@
 			<artifactId>activemq-pool</artifactId>
 			<version>5.12.1</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
+<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+<dependency>
+    <groupId>commons-dbcp</groupId>
+    <artifactId>commons-dbcp</artifactId>
+    <version>1.4</version>
+</dependency>
+
+		
 
 
 	</dependencies>

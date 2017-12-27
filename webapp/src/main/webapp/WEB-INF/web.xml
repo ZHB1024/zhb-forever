@@ -4,7 +4,13 @@
   
   <context-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath*:spring.xml</param-value>
+      <param-value>
+      	<!-- classpath*:spring.xml; -->
+      	classpath*:spring-cfg-hibernate.xml;
+      	classpath*:spirng-mongodb.xml;
+      	classpath*:activemq.xml
+      	<!-- classpath*:spring-cfg-springmvc.xml -->
+      </param-value>
   </context-param>
   
   <!-- 定时任务多少分钟运行一次 -->

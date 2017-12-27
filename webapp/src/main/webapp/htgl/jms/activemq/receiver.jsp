@@ -11,6 +11,6 @@
 </head>
 <body>
     <h1>${textMessage }</h1>
-    <h2><a href="<%=ctxPath%>/htgl/jms/activeMQ/index.jsp">返回主页</a></h2>
+    <h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/index">返回主页</a></h2>
 </body>
 </html>
