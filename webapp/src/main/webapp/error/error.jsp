@@ -12,7 +12,7 @@ String ctxPath = request.getContextPath();
 <body>
 <table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
-        <td style="background-image:url(<%=ctxPath%>/error/error.jpg); background-position:center; background-repeat:no-repeat; color:#FF0000;font-weight:600;font-size:20px; letter-spacing:2px; font-family:'楷体_utf-8'" height="400" align="center" valign="middle">
+        <td style="background-image:url(/images/error/error.jpg); background-position:center; background-repeat:no-repeat; color:#FF0000;font-weight:600;font-size:20px; letter-spacing:2px; font-family:'楷体_utf-8'" height="400" align="center" valign="middle">
 	        <%
 	        String message = (String)request.getAttribute(Constants.REQUEST_ERROR);
 	        if(null != message){

@@ -38,6 +38,12 @@
 		</plugins>
 	</build>
 	<dependencies>
+	
+	<dependency>
+      <groupId>com.zhb.forever</groupId>
+      <artifactId>zhb-forever-proto</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
 		<!-- test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -406,14 +412,14 @@
 			<version>0.10</version>
 		</dependency>
 
+<!-- activemq -->
 		<!-- xbean 如<amq:connectionFactory /> -->
 		<dependency>
 			<groupId>org.apache.xbean</groupId>
 			<artifactId>xbean-spring</artifactId>
 			<version>3.16</version>
 		</dependency>
-
-		<!-- activemq -->
+		
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>

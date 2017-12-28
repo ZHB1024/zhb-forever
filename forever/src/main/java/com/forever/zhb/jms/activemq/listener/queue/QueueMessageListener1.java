@@ -1,4 +1,4 @@
-package com.forever.zhb.jms.activemq.listener;
+package com.forever.zhb.jms.activemq.listener.queue;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -8,15 +8,15 @@ import javax.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QueueMessageListener implements MessageListener {
+public class QueueMessageListener1 implements MessageListener {
 	
-	private Logger logger = LoggerFactory.getLogger(QueueMessageListener.class);
+	private Logger logger = LoggerFactory.getLogger(QueueMessageListener1.class);
 
 	@Override
 	public void onMessage(Message message) {
 		TextMessage tm = (TextMessage) message;
         try {
-        	System.out.println("QueueMessageListener监听到了文本消息：\t" + tm.getText());
+        	logger.info("QueueMessageListener1监听到了文本消息：\t" + tm.getText());
         } catch (JMSException e) {
             e.printStackTrace();
         }

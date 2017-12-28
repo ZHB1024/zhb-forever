@@ -3,15 +3,16 @@
 <%
   String ctxPath = request.getContextPath();
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Welcome</title>
-</head>
-<body>
-    <h1>Welcome!!!</h1>
-    <h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/producer">去发消息</a></h2>
-    <h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/receive">从队列中取一个消息</a></h2>
-</body>
-</html>
+
+<div class="text-section">
+    <h1>index</h1>
+</div>
+  <ul class="states">
+     <li class="succes">
+    	<h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/toQueueProducer">去发Queue消息</a></h2>
+    	<h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/receiveQueueMes">从Queue中取一个消息</a></h2>
+    	<br>
+    	<h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/toTopicProducer">去发Topic消息</a></h2>
+    	<h2><a href="<%=ctxPath%>/htgl/jmsActiveMQController/receiveTopicMes">从Topic中取一个消息</a></h2>
+    </li>
+  </ul>

@@ -1,8 +1,7 @@
 package com.forever.zhb.controller.annotation;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.annotation.Resource;
 import javax.jms.Destination;
@@ -15,16 +14,18 @@ import javax.management.remote.JMXServiceURL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.activemq.command.ActiveMQQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.forever.zhb.jms.activemq.IJmsActiveMQManager;
+import com.forever.zhb.Constants;
+import com.forever.zhb.jms.activemq.ActiveMQConstants;
+import com.forever.zhb.jms.activemq.JmsActiveMQManager;
+import com.forever.zhb.proto.NewsProto;
+import com.forever.zhb.proto.NewsProto.News;
 
 @Controller
 @RequestMapping("/htgl/jmsActiveMQController")
@@ -32,54 +33,85 @@ public class JmsActiveMQController {
 
 	private Logger log = LoggerFactory.getLogger(JmsActiveMQController.class);
 
-	// 队列名zhb.demo
-	@Resource(name = "demoQueueDestination")
-	private Destination demoQueueDestination;
+	//默认队列名zhb.demo 在activemq.xml配置
+	@Resource(name = "zhbQueueDestination")
+	private Destination zhbQueueDestination;
 
 	// 队列消息生产者
 	@Resource(name = "jmsActiveMQManagerImpl")
-	private IJmsActiveMQManager producer;
+	private JmsActiveMQManager jmsActiveMQManager;
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(HttpServletRequest request, HttpServletResponse response) {
-		log.info("------------welcome");
 		return "htgl.jms.activemq.index";
 	}
-
-	@RequestMapping(value = "/producer", method = RequestMethod.GET)
-	public String toProducer(HttpServletRequest request, HttpServletResponse response) {
-		log.info("------------go producer");
-
-		Date now = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String time = dateFormat.format(now);
-		log.info(time);
-
-		request.setAttribute("time", time);
-		return "htgl.jms.activemq.producer";
+	
+/*queue*/
+	@RequestMapping(value = "/toQueueProducer", method = RequestMethod.GET)
+	public String toQueueProducer(HttpServletRequest request, HttpServletResponse response) {
+		return "htgl.jms.activemq.queue.producer";
 	}
 
-	@RequestMapping(value = "/onsend", method = RequestMethod.POST)
-	public String producer(@RequestParam("message") String message, HttpServletRequest request,
+	@RequestMapping(value = "/sendQueueMes", method = RequestMethod.POST)
+	public String sendQueueMes(@RequestParam("message") String message, HttpServletRequest request,
 			HttpServletResponse response) {
-		log.info("------------send to jms");
-		producer.sendMessage(demoQueueDestination, message);
-		Destination des = new ActiveMQQueue("gzframe.demo");
-		producer.sendMessage(des, message);
+		//jmsActiveMQManager.sendQueueDestinationNameMsg(ActiveMQConstants.ZHB_QUEUE_DESTINATION, message);
+		NewsProto.News.Builder newsBuilder = NewsProto.News.newBuilder(); 
+		newsBuilder.setId("123");
+		newsBuilder.setTitle("测试");
+		newsBuilder.setContent("测试一下不行呀");
+		newsBuilder.setCreateTime(Calendar.getInstance().getTimeInMillis());
+		News news = newsBuilder.build();
+		byte[] newsByte = news.toByteArray();
+		jmsActiveMQManager.sendQueueRemoteMsg(ActiveMQConstants.ZHB_QUEUE_DESTINATION, newsByte);
 		return "htgl.jms.activemq.index";
 	}
 
-	@RequestMapping(value = "/receive", method = RequestMethod.GET)
-	public String queue_receive(HttpServletRequest request, HttpServletResponse response) throws JMSException {
-		log.info("------------receive message");
+	@RequestMapping(value = "/receiveQueueMes", method = RequestMethod.GET)
+	public String receiveQueueMes(HttpServletRequest request, HttpServletResponse response) throws JMSException {
 		String textMessage = "";
-		TextMessage tm = producer.receive(demoQueueDestination);
-		if (null != tm) {
-			textMessage = tm.getText();
+		try {
+			com.google.protobuf.Message mes = jmsActiveMQManager.receiveQueueRemoteMsgByDesNamePath(ActiveMQConstants.ZHB_QUEUE_DESTINATION, Constants.NEWSPROTO_PATH);
+			if (null != mes) {
+				NewsProto.News news2 = (NewsProto.News)mes;
+				log.info(news2.getContent());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		TextMessage queneMessage = jmsActiveMQManager.receiveQueueMessage(ActiveMQConstants.ZHB_QUEUE_DESTINATION);
+		if (null != queneMessage) {
+			textMessage = queneMessage.getText();
 		}
 		request.setAttribute("textMessage", textMessage);
-		return "htgl.jms.activemq.receiver";
+		return "htgl.jms.activemq.queue.receiver";
 	}
+	
+/*topic*/	
+	@RequestMapping(value = "/toTopicProducer", method = RequestMethod.GET)
+	public String toTopicProducer(HttpServletRequest request, HttpServletResponse response) {
+		return "htgl.jms.activemq.topic.producer";
+	}
+
+	@RequestMapping(value = "/sendTopicMes", method = RequestMethod.POST)
+	public String sendTopicMes(@RequestParam("message") String message, HttpServletRequest request,
+			HttpServletResponse response) {
+		jmsActiveMQManager.sendTopicMessage(ActiveMQConstants.ZHB_TOPIC_DESTINATION, message);
+		return "htgl.jms.activemq.index";
+	}
+
+	@RequestMapping(value = "/receiveTopicMes", method = RequestMethod.GET)
+	public String receiveTopicMes(HttpServletRequest request, HttpServletResponse response) throws JMSException {
+		String textMessage = "";
+		TextMessage topicMessage = jmsActiveMQManager.receiveTopicMessage(ActiveMQConstants.ZHB_TOPIC_DESTINATION);
+		if (null != topicMessage) {
+			textMessage = topicMessage.getText();
+		}
+		request.setAttribute("textMessage", textMessage);
+		return "htgl.jms.activemq.topic.receiver";
+	}
+	
+	
 
 	/*
 	 * ActiveMQ Manager Test

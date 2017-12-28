@@ -111,11 +111,19 @@
     <definition name="htgl.jms.activemq.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/jms/activemq/index.jsp"/>
     </definition>
-    <definition name="htgl.jms.activemq.producer" extends="htgl.main.layout">
-        <put-attribute name="main" value="/htgl/jms/activemq/producer.jsp"/>
+    <!-- queue -->
+    <definition name="htgl.jms.activemq.queue.producer" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/queue/producer.jsp"/>
     </definition>
-    <definition name="htgl.jms.activemq.receiver" extends="htgl.main.layout">
-        <put-attribute name="main" value="/htgl/jms/activemq/receiver.jsp"/>
+    <definition name="htgl.jms.activemq.queue.receiver" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/queue/receiver.jsp"/>
+    </definition>
+    <!-- topic -->
+    <definition name="htgl.jms.activemq.topic.producer" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/topic/producer.jsp"/>
+    </definition>
+    <definition name="htgl.jms.activemq.topic.receiver" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jms/activemq/topic/receiver.jsp"/>
     </definition>
     
 </tiles-definitions>

@@ -21,5 +21,5 @@ public class ProtoConverter {
 		}
 		return (Message)method.invoke(c, rs.getProtoBytes());
 	}
-
+	
 }
