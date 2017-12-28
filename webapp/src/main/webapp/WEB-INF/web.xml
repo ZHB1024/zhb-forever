@@ -5,11 +5,9 @@
   <context-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>
-      	<!-- classpath*:spring.xml; -->
       	classpath*:spring-cfg-hibernate.xml;
       	classpath*:spirng-mongodb.xml;
       	classpath*:activemq.xml
-      	<!-- classpath*:spring-cfg-springmvc.xml -->
       </param-value>
   </context-param>
   
@@ -124,17 +122,18 @@
   </filter-mapping>
   
   <servlet>
-       <servlet-name>springMVC</servlet-name>
+       <servlet-name>springMVC servlet</servlet-name>
        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
           <init-param>
+          	  <description>spring mvc 配置文件</description>
               <param-name>contextConfigLocation</param-name>
-              <param-value>classpath*:spring.xml</param-value>
+              <param-value>classpath*:spring-mvc.xml</param-value>
           </init-param> 
        <load-on-startup>1</load-on-startup> 
   </servlet>
  
  <servlet-mapping>
-      <servlet-name>springMVC</servlet-name>
+      <servlet-name>springMVC servlet</servlet-name>
       <url-pattern>/</url-pattern>
   </servlet-mapping>   
     

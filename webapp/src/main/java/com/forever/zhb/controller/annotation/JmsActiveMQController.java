@@ -26,72 +26,72 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.forever.zhb.jms.activemq.IJmsActiveMQManager;
 
-
 @Controller
 @RequestMapping("/htgl/jmsActiveMQController")
 public class JmsActiveMQController {
-	
+
 	private Logger log = LoggerFactory.getLogger(JmsActiveMQController.class);
-	
+
 	// 队列名zhb.demo
-		@Resource(name = "demoQueueDestination")
-		private Destination demoQueueDestination;
+	@Resource(name = "demoQueueDestination")
+	private Destination demoQueueDestination;
 
-		// 队列消息生产者
-		@Resource(name = "jmsActiveMQManagerImpl")
-		private IJmsActiveMQManager producer;
-		
-		@RequestMapping(value="/index",method=RequestMethod.GET)
-	    public String index(HttpServletRequest request,HttpServletResponse response){
-	        log.info("------------welcome");        
-	        return "htgl.jms.activemq.index";
-	    }
+	// 队列消息生产者
+	@Resource(name = "jmsActiveMQManagerImpl")
+	private IJmsActiveMQManager producer;
 
-		@RequestMapping(value = "/producer", method = RequestMethod.GET)
-		public String toProducer(HttpServletRequest request,HttpServletResponse response) {
-			log.info("------------go producer");
-			
-			Date now = new Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String time = dateFormat.format(now);
-			log.info(time);
-			
-			request.setAttribute("time", time);
-			return "htgl.jms.activemq.producer";
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(HttpServletRequest request, HttpServletResponse response) {
+		log.info("------------welcome");
+		return "htgl.jms.activemq.index";
+	}
+
+	@RequestMapping(value = "/producer", method = RequestMethod.GET)
+	public String toProducer(HttpServletRequest request, HttpServletResponse response) {
+		log.info("------------go producer");
+
+		Date now = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = dateFormat.format(now);
+		log.info(time);
+
+		request.setAttribute("time", time);
+		return "htgl.jms.activemq.producer";
+	}
+
+	@RequestMapping(value = "/onsend", method = RequestMethod.POST)
+	public String producer(@RequestParam("message") String message, HttpServletRequest request,
+			HttpServletResponse response) {
+		log.info("------------send to jms");
+		producer.sendMessage(demoQueueDestination, message);
+		Destination des = new ActiveMQQueue("gzframe.demo");
+		producer.sendMessage(des, message);
+		return "htgl.jms.activemq.index";
+	}
+
+	@RequestMapping(value = "/receive", method = RequestMethod.GET)
+	public String queue_receive(HttpServletRequest request, HttpServletResponse response) throws JMSException {
+		log.info("------------receive message");
+		String textMessage = "";
+		TextMessage tm = producer.receive(demoQueueDestination);
+		if (null != tm) {
+			textMessage = tm.getText();
 		}
+		request.setAttribute("textMessage", textMessage);
+		return "htgl.jms.activemq.receiver";
+	}
 
-		@RequestMapping(value = "/onsend", method = RequestMethod.POST)
-		public String producer(@RequestParam("message") String message,HttpServletRequest request,HttpServletResponse response) {
-			log.info("------------send to jms");
-			producer.sendMessage(demoQueueDestination, message);
-			Destination des = new ActiveMQQueue("gzframe.demo");
-			producer.sendMessage(des, message);
-			return "htgl.jms.activemq.index";
-		}
-
-		@RequestMapping(value = "/receive", method = RequestMethod.GET)
-		public String queue_receive(HttpServletRequest request,HttpServletResponse response) throws JMSException {
-			log.info("------------receive message");
-			String textMessage = "";
-			TextMessage tm = producer.receive(demoQueueDestination);
-			if (null != tm) {
-				textMessage = tm.getText();
-			}
-			request.setAttribute("textMessage", textMessage);
-			return "htgl.jms.activemq.receiver";
-		}
-
-		/*
-		 * ActiveMQ Manager Test
-		 */
-		@RequestMapping(value = "/jms", method = RequestMethod.GET)
-		public String jmsManager(HttpServletRequest request,HttpServletResponse response) throws IOException {
-			log.info("------------jms manager");
-			JMXServiceURL url = new JMXServiceURL("");
-			JMXConnector connector = JMXConnectorFactory.connect(url);
-			connector.connect();
-			MBeanServerConnection connection = connector.getMBeanServerConnection();
-			return "htgl.jms.activeMQ.index";
-		}
+	/*
+	 * ActiveMQ Manager Test
+	 */
+	@RequestMapping(value = "/jms", method = RequestMethod.GET)
+	public String jmsManager(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.info("------------jms manager");
+		JMXServiceURL url = new JMXServiceURL("");
+		JMXConnector connector = JMXConnectorFactory.connect(url);
+		connector.connect();
+		MBeanServerConnection connection = connector.getMBeanServerConnection();
+		return "htgl.jms.activeMQ.index";
+	}
 
 }
