@@ -1,91 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"  
- xmlns:context="http://www.springframework.org/schema/context"  
- xmlns:p="http://www.springframework.org/schema/p"  
- xmlns:mvc="http://www.springframework.org/schema/mvc"  
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
- xsi:schemaLocation="http://www.springframework.org/schema/beans  
-      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+      http://www.springframework.org/schema/beans/spring-beans.xsd  
       http://www.springframework.org/schema/context  
       http://www.springframework.org/schema/context/spring-context.xsd  
       http://www.springframework.org/schema/mvc  
-      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
-	
+      http://www.springframework.org/schema/mvc/spring-mvc.xsd
+      http://www.springframework.org/schema/aop  
+  	  http://www.springframework.org/schema/aop/spring-aop.xsd">
+
 	<!-- <import resource="classpath*:spring-cfg-hibernate.xml"/> -->
 	<!-- <import resource="classpath*:spirng-mongodb.xml"/> -->
 	<!-- <import resource="classpath*:activemq.xml"/> -->
 	<!-- <import resource="classpath*:spring-redis.xml"/> -->
-	
-	
+
+
 	<!-- 配置文件 + 注解 方式 -->
 	<!-- <import resource="classpath*:spring-cfg-springmvc.xml"/> -->
-	
+
+	<!-- AOP -->
+	<aop:aspectj-autoproxy />
+	<bean class="com.forever.zhb.controller.aspect.HttpAspect" />
+
 	<!-- 注解扫描包 -->
 	<context:component-scan base-package="com.forever.zhb.controller.annotation" />
-	<!-- 开启注解 -->
-	<mvc:annotation-driven/> 
 
-    <!-- xml配置方式 -->
-    <bean name="/htgl/user" class="com.forever.zhb.controller.UserController">
-	   <property name="methodNameResolver">
-			<ref bean="paramMethodResolver"/>
-       </property>
-       <property name="foreverManager" ref="foreverManager"></property>
+	<!-- 开启注解 -->
+	<mvc:annotation-driven />
+
+	<!-- xml配置方式 -->
+	<bean name="/htgl/user" class="com.forever.zhb.controller.UserController">
+		<property name="methodNameResolver">
+			<ref bean="paramMethodResolver" />
+		</property>
+		<property name="foreverManager" ref="foreverManager"></property>
 	</bean>
-	
-    <bean name="/htgl/mongodb" class="com.forever.zhb.controller.MongoDBController">
-	   <property name="methodNameResolver">
-			<ref bean="paramMethodResolver"/>
-       </property>
-       <property name="mongoDBManager" ref="mongoDBManager"></property>
+
+	<bean name="/htgl/mongodb" class="com.forever.zhb.controller.MongoDBController">
+		<property name="methodNameResolver">
+			<ref bean="paramMethodResolver" />
+		</property>
+		<property name="mongoDBManager" ref="mongoDBManager"></property>
 	</bean>
-	
-    <!-- <bean name="/htgl/redis" class="com.forever.zhb.controller.RedisController">
-	   <property name="methodNameResolver">
-			<ref bean="paramMethodResolver"/>
-       </property>
-       <property name="redisManager" ref="redisManager"></property>
-	</bean> -->
-	
-	
+
+	<!-- <bean name="/htgl/redis" class="com.forever.zhb.controller.RedisController"> 
+		<property name="methodNameResolver"> <ref bean="paramMethodResolver"/> </property> 
+		<property name="redisManager" ref="redisManager"></property> </bean> -->
+
+
 	<!-- 静态资源访问 -->
-	 <mvc:resources location="/js/" mapping="/js/**"/>   
-	 <mvc:resources location="/images/" mapping="/images/**"/>   
-	 <mvc:resources location="/css/" mapping="/css/**"/>   
-	
-    <!-- tiles整合里有,这里就注掉了 -->
-	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean> -->
-	
-	<bean id="paramMethodResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-		<property name="paramName" value="action"></property>	
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+
+	<bean id="paramMethodResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName" value="action"></property>
 	</bean>
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		  <property name="defaultEncoding" value="utf-8" />
-	      <property name="maxUploadSize" value="10485760000" />
-	      <property name="maxInMemorySize" value="40960" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="10485760000" />
+		<property name="maxInMemorySize" value="40960" />
 	</bean>
-	
-	<!-- tiles整合  start-->
-    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-     <property name="definitions">
-        <list>
-            <value>/WEB-INF/tiles/tiles.xml</value>
-        </list>
-     </property>
-    </bean>
-    <!-- 这里配置了两个视图解析bean，当Tiles配置中没有匹配的规则时，使用SpringMVC默认的匹配规则。 -->
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-     <property name="order" value="1" />
-     <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
-    </bean>
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-     <property name="prefix" value="/" />
-     <property name="suffix" value=".jsp" />
-     <property name="order" value="2" />
-    </bean>
-    <!-- tiles整合  end-->
- </beans>  
+
+	<!-- tiles整合 start -->
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 这里配置了两个视图解析bean，当Tiles配置中没有匹配的规则时，使用SpringMVC默认的匹配规则。 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="order" value="1" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="2" />
+	</bean>
+	<!-- tiles整合 end -->
+</beans>  

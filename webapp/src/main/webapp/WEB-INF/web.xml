@@ -5,9 +5,10 @@
   <context-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>
-      	classpath*:spring-cfg-hibernate.xml;
+      	classpath*:spring-hibernate.xml;
       	classpath*:spirng-mongodb.xml;
       	classpath*:activemq.xml
+      	classpath*:spring-mybatis.xml
       </param-value>
   </context-param>
   

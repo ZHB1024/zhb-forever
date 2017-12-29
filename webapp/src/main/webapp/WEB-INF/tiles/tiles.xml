@@ -126,4 +126,10 @@
         <put-attribute name="main" value="/htgl/jms/activemq/topic/receiver.jsp"/>
     </definition>
     
+    
+    <!-- mybatic -->
+    <definition name="htgl.mybatis.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/mybatis/index.jsp"/>
+    </definition>
+    
 </tiles-definitions>

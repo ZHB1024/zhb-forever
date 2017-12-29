@@ -81,7 +81,7 @@
         <property name="configLocations">
             <list>
                 <value>
-                    classpath*:hibernate-cfg-entity.xml
+                    classpath*:hibernate-entity.xml
                 </value>
             </list>
         </property>

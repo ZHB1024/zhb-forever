@@ -74,7 +74,7 @@ public class JmsActiveMQController {
 			com.google.protobuf.Message mes = jmsActiveMQManager.receiveQueueRemoteMsgByDesNamePath(ActiveMQConstants.ZHB_QUEUE_DESTINATION, Constants.NEWSPROTO_PATH);
 			if (null != mes) {
 				NewsProto.News news2 = (NewsProto.News)mes;
-				log.info(news2.getContent());
+				log.info("从队列" + ActiveMQConstants.ZHB_QUEUE_DESTINATION + "收到了消息：\t" + news2.getContent());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
