@@ -9,6 +9,7 @@
         <module>webapp</module>
 		<module>search</module>
 		<module>proto</module>
+		<module>kafka</module>
 		<!-- <module>activeMQ</module> -->
     </modules>
     <version>0.0.1-SNAPSHOT</version>
@@ -95,6 +96,7 @@
     <jboss-logging.version>3.1.0.GA</jboss-logging.version>
     <jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
     <commons-logging.version>1.1.1</commons-logging.version>
+    <commons-lang3.version>3.1</commons-lang3.version>
     <commons-io.version>1.4</commons-io.version>
     <commons-fileupload.version>1.2</commons-fileupload.version>
     <antlr.version>2.7.7</antlr.version>

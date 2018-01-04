@@ -71,17 +71,16 @@
     </jms:listener-container> -->
      
      
-     <!-- 配置消息队列监听者（Topic） -->
-     <bean id="topicMessageListener1" class="com.forever.zhb.jms.activemq.listener.topic.TopicMessageListener1" />
+     <!-- 配置消息队列监听者（Topic） -->  <!-- 定义Topic监听器 -->
+     <!-- <bean id="topicMessageListener1" class="com.forever.zhb.jms.activemq.listener.topic.TopicMessageListener1" />
      <bean id="topicMessageListener2" class="com.forever.zhb.jms.activemq.listener.topic.TopicMessageListener2" />
      <bean id="topicMessageListener3" class="com.forever.zhb.jms.activemq.listener.topic.TopicMessageListener3" />
      
-    <!-- 定义Topic监听器 -->
     <jms:listener-container destination-type="topic" container-type="default" connection-factory="connectionFactory" acknowledge="auto">
         <jms:listener destination="zhb_topic_destination" ref="topicMessageListener1"/>
         <jms:listener destination="zhb_topic_destination" ref="topicMessageListener2"/>
         <jms:listener destination="hel_topic_destination" ref="topicMessageListener3"/>
-    </jms:listener-container>
+    </jms:listener-container> -->
 
 
 </beans>

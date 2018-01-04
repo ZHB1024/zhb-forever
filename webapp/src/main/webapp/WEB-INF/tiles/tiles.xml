@@ -127,9 +127,19 @@
     </definition>
     
     
-    <!-- mybatic -->
+    <!-- mybatis -->
     <definition name="htgl.mybatis.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/mybatis/index.jsp"/>
+    </definition>
+    
+    <!-- lambda -->
+    <definition name="htgl.lambda.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/lambda/index.jsp"/>
+    </definition>
+    
+    <!-- kafka -->
+    <definition name="htgl.kafka.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/kafka/index.jsp"/>
     </definition>
     
 </tiles-definitions>
