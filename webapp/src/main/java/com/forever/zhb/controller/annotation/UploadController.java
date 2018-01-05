@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.forever.zhb.Constants;
-import com.forever.zhb.criteria.ForeverCriteria;
 import com.forever.zhb.dic.DeleteFlagEnum;
 import com.forever.zhb.dic.FileTypeEnum;
 import com.forever.zhb.pojo.FileInfoData;
@@ -60,7 +60,11 @@ public class UploadController {
         String fileType = license.getContentType();
         String fileName = "";
         if(license.getSize()>1024*1024*5){
-            /*response.sendRedirect(ctxPath + "/busCertUnlockRequestController.do?toUploadError");
+            /*try {
+				request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
+			} catch (ServletException | IOException e2) {
+				e2.printStackTrace();
+			}
             return;*/
         }
         try{
@@ -97,9 +101,9 @@ public class UploadController {
             e.printStackTrace();
             request.setAttribute(Constants.REQUEST_ERROR, "上传出错");
             try {
-				response.sendRedirect(ctxPath + "/htgl/errorController/toError");
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
+			} catch (ServletException | IOException e2) {
+				e2.printStackTrace();
 			}
             return ;
         }finally{

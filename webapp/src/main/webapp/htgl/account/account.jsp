@@ -17,7 +17,7 @@
            <c:if test="${errorMsg != null}">
        		 <tr>
        		  <td colspan="2">
-         		 <span style="color:red;"><c:out value="${errorMsg}"/></span>
+         		 <span style="color:red;"><c:out value="${errorMsg}" escapeXml="false" /></span>
          	  </td>
              </tr>
            </c:if>

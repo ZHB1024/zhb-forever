@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -15,11 +17,16 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.forever.zhb.vo.WatermarkVO;
 
 public class ImageUtils {
+	
+	protected static final Logger logger = LoggerFactory.getLogger(ImageUtils.class);
     
     private static final Color FONT_COLOR = Color.GRAY;
 
@@ -125,5 +132,12 @@ public class ImageUtils {
             return preFont;
         }
         return font;
+    }
+    
+    public static byte[] getImageBytes(InputStream image,File imageDirAndName) throws IOException{
+    	FileUtils.copyInputStreamToFile(image, imageDirAndName);
+    	logger.info(imageDirAndName.getAbsolutePath());
+    	return FileUtils.readFileToByteArray(imageDirAndName);
+    	
     }
 }

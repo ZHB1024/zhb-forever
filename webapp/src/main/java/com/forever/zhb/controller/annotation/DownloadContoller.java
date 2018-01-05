@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,11 +60,11 @@ public class DownloadContoller {
     public void download(HttpServletRequest request,HttpServletResponse response,String id){
     	String ctxPath = request.getContextPath();
         if (StringUtils.isBlank(id)) {
-            try {
-            	String msg = URLEncoder.encode("id不能为空！", "UTF-8");
-				response.sendRedirect(ctxPath + "/htgl/errorController/toError?errorMsg="+msg);
-			} catch (IOException e1) {
-				e1.printStackTrace();
+        	try {
+        		request.setAttribute(Constants.REQUEST_ERROR, "id 不能为空");
+				request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
+			} catch (ServletException | IOException e) {
+				e.printStackTrace();
 			}
             return;
         }

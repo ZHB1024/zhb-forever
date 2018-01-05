@@ -32,8 +32,12 @@ public class LoginFilter implements Filter {
         UserInfoData userInfo = WebAppUtil.getUserInfoData(request);
         if (null == userInfo || StringUtils.isBlank(userInfo.getName())) {
             String ctxPath = request.getContextPath();
-            request.setAttribute(Constants.REQUEST_ERROR, "登陆后才能访问系统");
-            response.sendRedirect(ctxPath + "/error/error.jsp");
+            try {
+            	request.setAttribute(Constants.REQUEST_ERROR, "登陆后才能访问系统");
+				request.getRequestDispatcher(ctxPath + "/login/login.jsp").forward(request, response);
+			} catch (ServletException | IOException e) {
+				e.printStackTrace();
+			}
             return;
         }
         chain.doFilter(request, arg1);

@@ -468,9 +468,47 @@
 
 		<!-- <dependency> <groupId>io.fabric8.insight</groupId> <artifactId>insight-log4j</artifactId> 
 			<version>1.1.0.Beta1</version> </dependency> -->
+<!-- antisamy -->
+        <dependency>
+            <groupId>org.apache.batik</groupId>
+            <artifactId>batik-osgi</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.w3c.css</groupId>
+            <artifactId>org.w3c.css.sac</artifactId>
+            <version>1.3.1.v200903091627</version>
+        </dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.sanselan/sanselan -->
+<dependency>
+    <groupId>org.apache.sanselan</groupId>
+    <artifactId>sanselan</artifactId>
+    <version>0.97-incubator</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
+<dependency>
+    <groupId>net.sf.json-lib</groupId>
+    <artifactId>json-lib</artifactId>
+    <version>2.4</version>
+</dependency>
 
 
-
+<!-- https://mvnrepository.com/artifact/opencv/opencv -->
+<!-- <dependency>
+    <groupId>opencv</groupId>
+    <artifactId>opencv</artifactId>
+    <version>1.1.0</version>
+</dependency> -->
+<dependency>
+        <groupId>org.opencv</groupId>
+        <artifactId>opencv</artifactId>
+        <version>3.2.0</version>
+        <systemPath>C:/workFile/soft/openCV/install/opencv/build/java/opencv-320.jar</systemPath>
+        <!-- <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/opencv-320.jar</systemPath> -->
+        <scope>system</scope>
+    </dependency>
 
 
 

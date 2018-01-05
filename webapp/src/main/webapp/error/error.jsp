@@ -25,6 +25,11 @@ String ctxPath = request.getContextPath();
 			%>
         	<br /><br />
 	        <span style="font-size:15;padding-right:14px;">
+	         <a href="javascript:history.go(-1)">返回</a>
+	        </span>
+	        
+        	<br /><br />
+	        <span style="font-size:15;padding-right:14px;">
 	        <%
 	        String currentTime = TimeUtil.getTime("yyyy-MM-dd HH:mm:ss");
 	        out.println(currentTime);

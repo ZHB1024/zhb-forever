@@ -33,17 +33,17 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<String, String[]> getParameterMap() {
 		Map<String, String[]> request_map = super.getParameterMap();
-		Iterator iterator = request_map.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Map.Entry me = (Map.Entry) iterator.next();
-			// System.out.println(me.getKey()+":");
-			String[] values = (String[]) me.getValue();
-			for (int i = 0; i < values.length; i++) {
-				logger.info("parameterValue: {}", values[i]);
-				values[i] = xssClean(values[i]);
-			}
-		}
-		return request_map;
+        if (null != request_map) {
+            request_map.forEach((key,vals)->{
+                if (null != vals) {
+                    for (int i = 0; i < vals.length; i++) {
+                        vals[i] = xssClean(vals[i]);
+                    }
+                }
+            });
+        }
+        
+        return request_map;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
