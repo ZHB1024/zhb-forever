@@ -11,6 +11,7 @@
   </div>
   <ul class="states">
      <li class="succes">
+     <div align="center">
        <table>
         <tr>
           <td>姓名</td>
@@ -23,5 +24,6 @@
            </tr>
           </c:forEach>
          </table>
+      </div>
      </li>
   </ul>

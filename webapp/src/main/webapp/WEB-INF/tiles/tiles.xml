@@ -142,4 +142,11 @@
         <put-attribute name="main" value="/htgl/kafka/index.jsp"/>
     </definition>
     
+    <!-- spider -->
+    <definition name="htgl.spider.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/spider/index.jsp"/>
+    </definition>
+    
+    
+    
 </tiles-definitions>

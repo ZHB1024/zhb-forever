@@ -57,8 +57,10 @@
        </li>
                 
        <li <c:if test="${active7}">class="active"</c:if> >
-           <a href="#tab-7" class="ico7"><span>Plug-in</span><em></em></a>
-           <span class="tooltip"><span>Plug-in</span></span>
+           <form id="theform7" action="<%=ctxPath%>/htgl/spiderController/toSpider" method="post">
+              <a href="javascript:tileBut(7);" class="ico7"><span>httpClient</span><em></em></a>
+              <span class="tooltip"><span>httpClient</span></span>
+           </form>
        </li>
                 
        <li <c:if test="${active8}">class="active"</c:if> >
