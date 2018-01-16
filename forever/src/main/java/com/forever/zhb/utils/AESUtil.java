@@ -16,8 +16,8 @@ public class AESUtil {
 	/**
 	 * AES encryption and decryption tool.
 	 * 
-	 * @author ben
-	 * @creation 2014年3月20日
+	 * @author zhanghuibin
+     * @creation 2018-01-16
 	 */
 	protected static final Logger log = LoggerFactory.getLogger(AESUtil.class);
 
@@ -141,7 +141,7 @@ public class AESUtil {
 		AESUtil aesTool = new AESUtil();
 		String appid = "canairport001";
 		String key = aesTool.findKeyById(appid);
-		String xml = "<root><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name><name>test</name></root>";
+		String xml = "hello world!";
 		String encrypted = aesTool.encrypt(xml, key);
 		System.out.println("encrypted: \n" + encrypted);
 		System.out.println("encrypted length: \n" + encrypted.length());

@@ -137,7 +137,7 @@ public class SpiderController {
     }  
   
     /** 
-     * 发送 post请求
+     * 发送 post请求,AES加密，json
      * @throws Exception 
      */  
 	@RequestMapping("/spider2")
@@ -175,6 +175,17 @@ public class SpiderController {
                     Object o = jsonObject.get("students");
                     JSONObject js = (JSONObject)jsonObject.get("students");
                     System.out.println(js.get("12345"));*/
+                    String encryResult = AESUtil.decrypt(content, AESUtil.findKeyById(""));
+                    JSONObject jsonRes = JSONObject.fromObject(encryResult);
+                    if (null != jsonRes) {
+                    	Object object = jsonRes.get("students");
+                        if (null != object) {
+                        	for (String name : (List<String>)object) {
+    							System.out.println(name);
+    						}
+    					}
+					}
+                    
                     System.out.println(content);
                     logger.info("--------------------------------------");  
                 }  

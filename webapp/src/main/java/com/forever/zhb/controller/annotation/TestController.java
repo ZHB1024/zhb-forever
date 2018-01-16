@@ -2,6 +2,8 @@ package com.forever.zhb.controller.annotation;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,11 +28,14 @@ public class TestController {
 		String groupId = request.getParameter("groupId");
 		String decGroupId = AESUtil.decrypt(groupId, AESUtil.findKeyById(""));
 		JSONObject jo = new JSONObject();
-		JSONObject students = new JSONObject();
-		students.put("12345", "zhanghb");
-		students.put("67890", "zhanghuibin");
-		students.put("groupId", decGroupId);
+		
+		List<String> students = new ArrayList<String>();
+		students.add("张会彬");
+		students.add(decGroupId);
 		jo.put("students", students);
+		
+		String encryRes = AESUtil.encrypt(jo.toString(), AESUtil.findKeyById(""));
+		
         response.setHeader("Content-Type", "application/json; charset=utf-8");// 中文显示
         PrintWriter pw = null;
         try {
@@ -38,7 +43,7 @@ public class TestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        pw.append(jo.toString());
+        pw.append(encryRes);
         pw.close();
     }
 
