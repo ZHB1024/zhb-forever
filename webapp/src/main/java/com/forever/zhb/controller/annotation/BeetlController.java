@@ -25,6 +25,7 @@ public class BeetlController {
 	
 	@RequestMapping("/beetl")
     public String beetl(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		request.setAttribute("active3", true);
         String template = Constants.TEMPLATE;
         StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
         Configuration cfg = Configuration.defaultConfiguration();

@@ -14,21 +14,25 @@
   <ul class="states">
    <li class="succes">
    <div align="center">
-    <table border="1" width="400">
-      <tr>
-        <td>角色名称</td>
-        <td>描述</td>
-        <td>创建时间</td>
-        <td>修改时间</td>
-      </tr>
-      <c:forEach var="role" items="${roles}">
+    <table class="table table-hover table-bordered">
+      <thead>
        <tr>
+        <th>角色名称</th>
+        <th>描述</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+       </tr>
+      </thead>
+      <tbody>
+       <c:forEach var="role" items="${roles}">
+        <tr>
          <td><c:out value="${role.name}"/></td>
          <td><c:out value="${role.description}"/></td>
          <td><fmt:formatDate value="${role.createTime.time}" pattern="yy-MM-dd HH:mm:ss"/></td>
          <td><fmt:formatDate value="${role.updateTime.time}" pattern="yy-MM-dd HH:mm:ss"/></td>
-       </tr>
-      </c:forEach>
+        </tr>
+       </c:forEach>
+      </tbody>
     </table>
   </div>
   </li>

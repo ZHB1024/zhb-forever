@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.crypto.SealedObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,25 +50,6 @@ public class SpiderController {
 	
 	@Resource(name="foreverManager")
     private IForeverManager foreverManager;
-	
-	@RequestMapping("/contentTest")
-	public void contentTest(HttpServletRequest request,HttpServletResponse response){
-		String groupId = request.getParameter("groupId");
-		JSONObject jo = new JSONObject();
-		JSONObject students = new JSONObject();
-		students.put("12345", "zhanghb");
-		students.put("67890", "zhanghuibin");
-		jo.put("students", students);
-        response.setHeader("Content-Type", "application/json; charset=utf-8");// 中文显示
-        PrintWriter pw = null;
-        try {
-            pw = response.getWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        pw.append(jo.toString());
-        pw.close();
-    }
 	
 	@RequestMapping("/toSpider")
     public String toSpider(HttpServletRequest request,HttpServletResponse response){
@@ -212,81 +194,6 @@ public class SpiderController {
 		return "htgl.spider.index";
     }  
   
-    /** 
-     * 发送 get请求 
-     */  
-    public void get() {  
-        CloseableHttpClient httpclient = HttpClients.createDefault();  
-        try {  
-            // 创建httpget.    
-            HttpGet httpget = new HttpGet("http://www.baidu.com/");  
-            logger.info("executing request " + httpget.getURI());  
-            // 执行get请求.    
-            CloseableHttpResponse response = httpclient.execute(httpget);  
-            try {  
-                // 获取响应实体    
-                HttpEntity entity = response.getEntity();  
-                logger.info("--------------------------------------");  
-                // 打印响应状态    
-                System.out.println(response.getStatusLine());  
-                if (entity != null) {  
-                    // 打印响应内容长度    
-                    logger.info("Response content length: " + entity.getContentLength());  
-                    // 打印响应内容    
-                    logger.info("Response content: " + EntityUtils.toString(entity));  
-                }  
-                logger.info("------------------------------------");  
-            } finally {  
-                response.close();  
-            }  
-        } catch (ClientProtocolException e) {  
-            e.printStackTrace();  
-        } catch (ParseException e) {  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        } finally {  
-            // 关闭连接,释放资源    
-            try {  
-                httpclient.close();  
-            } catch (IOException e) {  
-                e.printStackTrace();  
-            }  
-        }  
-    }  
-    
-    
-  //@RequestMapping("/spider")
-  	public String spider(HttpServletRequest request,HttpServletResponse response){
-  		request.setAttribute("active7", true);
-  		String url = request.getParameter("url");
-  		if (StringUtils.isBlank(url)) {
-  			request.setAttribute("errorMsg", "请输入地址");
-  			return "htgl.spider.index";
-  		}
-  		String content = "";
-  		HttpClient client = new HttpClient();
-  		GetMethod getMethod = new GetMethod(url);
-  		getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
-  		try {
-  			int statusCode = client.executeMethod(getMethod);
-  			if (statusCode == HttpStatus.SC_OK) {
-  				byte[] responseBody = getMethod.getResponseBody();
-  				content = new String(responseBody);
-  				logger.info("content:{}",content);
-  			}else{
-  				content = "获取失败！" + getMethod.getStatusLine();
-  			}
-  		} catch (Exception e) {
-  			e.printStackTrace();
-  		} finally{
-  			getMethod.releaseConnection();
-  		}
-  		
-  		request.setAttribute("content", content);
-  		return "htgl.spider.index";
-  	}
-  	
   	private String readResponse(InputStream in) {  
   	    BufferedReader reader = new BufferedReader(new InputStreamReader(in));  
   	    String line = "";  

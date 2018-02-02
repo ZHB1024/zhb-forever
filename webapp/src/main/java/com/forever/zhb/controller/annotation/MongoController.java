@@ -21,6 +21,7 @@ public class MongoController {
 	
 	@RequestMapping("/findAllMongoDB")
 	public String findAllMongoDB(HttpServletRequest request,HttpServletResponse response){
+		request.setAttribute("active4", true);
         List<UserModel> users = mongoDBManager.findAll();
         request.setAttribute("users", users);
         return "htgl.mongodb.query";

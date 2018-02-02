@@ -19,6 +19,7 @@ public class MongoDBController extends MultiActionController {
      private IMongoDBManager mongoDBManager;
      
      public String findAllMongoDB(HttpServletRequest request,HttpServletResponse response){
+    	 request.setAttribute("active4", true);
          List<UserModel> users = mongoDBManager.findAll();
          request.setAttribute("users", users);
          return "htgl.mongodb.query";

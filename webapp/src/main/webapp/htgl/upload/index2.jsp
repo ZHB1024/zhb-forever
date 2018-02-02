@@ -93,27 +93,6 @@ function batchUploadNoPage(){
                                             $(this).dialog("close"); 
                                         }, 
                                         "更换": function() { 
-                                            
-                                            <%if(needVerify){ %>
-                                            //$(this).dialog("close"); 
-                                            //$('#changeImgBtn_<c:out value='${ xlmodifyStatus.count }' />').attr("disabled",true);
-                                            $("#checktip").hide();
-                                            var thecaptcha = $("#thecaptcha").val();
-                                            var url="/htgl/captcha.check";
-                                            var data={captcha:thecaptcha};
-                                            $.post(url, data, function(result){
-                                                if(result.flag) {
-                                                    $("#form_"+count).find("input[name='captcha']").val(thecaptcha);
-                                                    $("#form_"+count).submit();
-                                                } else {
-                                                    $("#checktip").text("验证码不正确，请重新输入");
-                                                    $("#checktip").show();
-                                                    getVerify('stu_reg_vcode');
-                                                }
-                                            }, 'json');
-                                            <%}else{%>
-                                            $("#form_"+count).submit();
-                                            <%}%>
                                         }
                                     }
                                 });
@@ -149,6 +128,53 @@ function batchUploadNoPage(){
             $("#search_result_box").show();
         }
     }); --%>
+    
+    <%-- function batchUploadNoPage(){
+        var _orgTypesArr = [];
+        $("input[name='comOrgTypes']:checked").each(
+            function (i) {
+                _orgTypesArr.push($(this).val());
+            });
+        
+        var uploadFile = $("#uploadExcel").val();
+        if(uploadFile == ""){
+            alert("请上传格式为 xls 或  xlsx 的excel文件");
+            return false;
+        }
+        var files = new Array();
+        files = uploadFile.split(".");
+        var fileType = files[files.length - 1];
+        if (fileType != 'xls' && fileType != 'xlsx') {
+            alert(" 文件格式不正确，请上传格式为 xls 或  xlsx 的文件！");
+            return false;
+        }
+        
+        $("#tip_notice").hide();
+        $("#search_result_box").hide();
+        $("#loading_div").show();
+        
+        $("#fileName").val(uploadFile);
+        
+        var options1 = {
+                url: "<%=ctxPath%>/htgl/group/batchUploadNoPage.action",                 
+                type: "post",               //默认是form的method（get or post），如果申明，则会覆盖
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",   //设置编码集
+                ///timeout: 10000,               //限制请求的时间，当请求大于3秒后，跳出请求
+                success: function(data){   
+                   $("#search_result_box").find("ul.address_ul").empty().append(data);
+                     $("#loading_div").hide();
+                      $("#select-all").removeAttr("checked");
+                     var _result_total = $("#search_result_box").find("ul.address_ul li label").length;
+                     $("#search_result_box").find("span.res-total-number").text(_result_total);
+                     $("#search_result_box").show();
+                },
+                error: function(data1){    
+                    console.log(data1);
+                }
+       };
+       $("#uploadform").ajaxSubmit(options1);        
+     } --%>
+    
  }
  
 </script>

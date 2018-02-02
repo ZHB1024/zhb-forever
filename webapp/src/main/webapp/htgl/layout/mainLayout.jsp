@@ -7,8 +7,9 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/all.css" />
-<script type="text/javascript" src="<%=ctxPath%>/js/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="<%=ctxPath%>/js/jquery.main.js"></script>
+<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="<%=ctxPath%>/js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="<%=ctxPath%>/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div id="header">
@@ -18,8 +19,8 @@
     <div id="wrapper">
         <div id="content">
             <div class="c1">
-                <t:insertAttribute name="title"/>
-                <div class="tabs">
+                <div id="title"><t:insertAttribute name="title"/></div>
+                <div class="tabs" id="tabs">
                       <div class="tab">
                         <article>
                             <t:insertAttribute name="main"/>
@@ -35,5 +36,10 @@
     <div id="footer">
         <t:insertAttribute name="footer"/>
     </div>
+
+<script type="text/javascript" >
+    $("#wrapper").css('minHeight',$(window).height()-$("#header").height()-$("#footer").height());
+    $("#tabs").css('minHeight',$("#wrapper").height()-$("#title").height());
+</script>
 </body>
 </html>

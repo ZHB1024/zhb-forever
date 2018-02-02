@@ -26,6 +26,7 @@ public class InitController {
     
     @RequestMapping("/initFunctionInfo")
     public String initFunctionInfo(HttpServletRequest request,HttpServletResponse response){
+    	request.setAttribute("active1", true);
         for (FunctionTypeEnum f : FunctionTypeEnum.values()) {
             FunctionInfoData fun = foreverManager.getFunctionInfoByName(f.getName());
             if (null == fun) {
@@ -44,6 +45,7 @@ public class InitController {
     
     @RequestMapping("/initRoleInfo")
     public String initRoleInfo(HttpServletRequest request,HttpServletResponse response){
+    	request.setAttribute("active2", true);
         for (RoleTypeEnum r : RoleTypeEnum.values()) {
             RoleInfoData role = foreverManager.getRoleInfoByName(r.getName());
             if (null == role) {

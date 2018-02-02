@@ -8,16 +8,16 @@
 <aside id="sidebar">
  <strong class="logo"><a href="javascript:history.go(-1);">返回</a></strong>
    <ul class="tabset buttons">
-     <li <c:if test="${active1}">class="active"</c:if> >
+      <li <c:if test="${active1}">class="active"</c:if> >
         <form id="theform1" action="<%=ctxPath%>/htgl/initController/initFunctionInfo" method="post">
-           <a href="javascript:tileBut(1);" class="ico1"><span>功能管理</span><em></em></a>
+           <a href="javascript:tileBut(1);" class="ico1" title=""><span>功能管理</span><em></em></a>
             <span class="tooltip"><span>功能管理</span></span>
         </form>
       </li>
                 
       <li <c:if test="${active2}">class="active"</c:if>>
           <form id="theform2" action="<%=ctxPath%>/htgl/initController/initRoleInfo" method="post">
-             <a href="javascript:tileBut(2);" class="ico2"><span>角色管理</span><em></em></a>
+             <a href="javascript:tileBut(2);" class="ico2" title="角色管理"><span>角色管理</span><em></em></a>
              <span class="tooltip"><span>角色管理</span></span>
           </form>
       </li>

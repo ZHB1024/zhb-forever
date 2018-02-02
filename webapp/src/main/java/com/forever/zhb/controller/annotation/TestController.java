@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.chainsaw.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -46,5 +47,21 @@ public class TestController {
         pw.append(encryRes);
         pw.close();
     }
+	
+	public static void main(String[] args){
+		int number = 100;
+		for(int i = 2;i < number;i++){
+			boolean flag = true;
+			for (int j = 2; j < i; j++) {
+				if (i % j == 0) {
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				System.out.println(i + " 是素数");
+			}
+		}
+	}
 
 }
