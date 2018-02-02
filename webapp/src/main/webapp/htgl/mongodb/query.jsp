@@ -9,21 +9,23 @@
     <h1>mongodb</h1>
     <!-- <p>query result</p> -->
   </div>
-  <ul class="states">
-     <li class="succes">
-     <div align="center">
-       <table>
+  <div class="states" id="states">
+     <div class="succes">
+      <table class="table table-hover table-bordered">
+       <thead>
         <tr>
-          <td>姓名</td>
-          <td>性别</td>
+          <th>姓名</th>
+          <th>性别</th>
          </tr>
+         </thead>
+         <tbody>
          <c:forEach var="user" items="${users}">
           <tr>
            <td><c:out value="${user.name}"/></td>
            <td><c:out value="${user.sex}"/></td>
            </tr>
           </c:forEach>
+          </tbody>
          </table>
-      </div>
-     </li>
-  </ul>
+     </div>
+  </div>

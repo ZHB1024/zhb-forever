@@ -5,7 +5,5 @@
   String ctxPath = request.getContextPath();
 %>
 
-  <div class="head">
       <!-- <h1>小彬彬 LOVE 旭宝宝</h1> -->
       <h1>hello world</h1>
-  </div>

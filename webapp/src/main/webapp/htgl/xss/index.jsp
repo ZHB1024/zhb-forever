@@ -9,8 +9,8 @@
     <h1>account</h1>
     <!-- <p>个人信息</p> -->
   </div>
-  <ul class="states">
-     <li class="succes">
+  <div class="states" id="states">
+     <div class="succes">
        <form id="theform" action="" method="POST" >  
 		 First Name: <input type="text" name="first_name">  
 		 <br />  
@@ -20,8 +20,8 @@
 		  存草稿
          </a>
 	   </form>  
-     </li>
-  </ul>
+     </div>
+  </div>
  
  <script type="text/javascript">
  

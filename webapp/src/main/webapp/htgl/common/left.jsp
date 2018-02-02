@@ -6,8 +6,8 @@
 %>
 
 <aside id="sidebar">
- <strong class="logo"><a href="javascript:history.go(-1);">返回</a></strong>
-   <ul class="tabset buttons">
+ <strong class="logo" id="logo"><a href="javascript:history.go(-1);">返回</a></strong>
+   <ul class="tabset buttons" id="tabsetButtons">
       <li <c:if test="${active1}">class="active"</c:if> >
         <form id="theform1" action="<%=ctxPath%>/htgl/initController/initFunctionInfo" method="post">
            <a href="javascript:tileBut(1);" class="ico1" title=""><span>功能管理</span><em></em></a>
@@ -69,7 +69,7 @@
        </li>
                 
    </ul>
-   <span class="shadow"></span>
+   <span class="shadow" id="shadow"></span>
 </aside>
 <script type="text/javascript">
 function tileBut(num){

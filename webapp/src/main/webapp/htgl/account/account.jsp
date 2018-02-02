@@ -9,8 +9,8 @@
     <h1>account</h1>
     <!-- <p>个人信息</p> -->
   </div>
-  <ul class="states">
-     <li class="succes">
+  <div class="states" id="states">
+     <div class="succes">
        <form id="theform" action="" method="post">
         <input type="hidden" name="id" value="${user.id}"/>
          <table >
@@ -65,8 +65,8 @@
       
        </table>
       </form> 
-     </li>
-  </ul>
+     </div>
+  </div>
 
  
  <script type="text/javascript">

@@ -8,9 +8,8 @@
   <div class="text-section">
     <h1>所有照片</h1>
   </div>
-  <ul class="states">
-     <li class="succes">
-       <!-- <div class="puimg"> -->
+  <div class="states" id="states">
+     <div class="succes">
        <form id="theform" action="">
         <input type="hidden" name="start" value="${start}">
         <c:forEach var="vo" items="${page.list}" varStatus="idx">
@@ -23,6 +22,5 @@
         共：${ page.totalCount } &nbsp; 条  &nbsp;&nbsp;
      <jsp:include page="/page/pageNavigator.jsp" />
         </form>
-      <!-- </div> -->
-    </li>
-  </ul>
+    </div>
+  </div>

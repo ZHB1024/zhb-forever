@@ -9,8 +9,8 @@
     <h1>修改密码</h1>
    <!--  <p>This is a quick overview of some features</p> -->
   </div>
-  <ul class="states">
-     <li class="succes">
+  <div class="states" id="states">
+     <div class="succes">
        <form id="theform" action="" method="post">
         <input type="hidden" name="id" value="${user.id}"/>
         <table >
@@ -44,8 +44,8 @@
       
     </table>
     </form> 
-     </li>
-  </ul>
+   </div>
+  </div>
 <script type="text/javascript">
  $("input[name='save']").click(function(){
      var url ='<%=ctxPath %>/htgl/account/modifyPassword';

@@ -9,7 +9,7 @@
     <h1>query users</h1>
   </div>
   
-  <div align="center">
+  <div align="center" >
     <table border="1" width="400">
       <tr>
         <td>id</td>

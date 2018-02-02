@@ -9,9 +9,8 @@
   <div class="text-section">
     <h1>lucene search</h1>
   </div>
-  <ul class="states">
-    <li class="succes">
-     <div align="center">
+  <div class="states" id="states">
+    <div class="succes">
      <form id="theform" action="<%=ctxPath %>/searchController/luceneSearch">
       <input type="hidden" name="start" value="${start}">
       <input type="text" name="keyword" placeholder="请输入关键字" value="${keyword}"/>
@@ -43,9 +42,8 @@
      <jsp:include page="/page/pageNavigator.jsp" />
     </c:if>
    </form>
-   </div>
-  </li>
-  </ul>
+  </div>
+  </div>
  
 <script type="text/javascript">
 $("input[name='del']").click(function(){

@@ -11,9 +11,8 @@
     <!-- <p>This is a quick overview of some features</p> -->
   </div>
   
-  <ul class="states">
-   <li class="succes">
-   <div align="center">
+  <div class="states" id="states">
+   <div class="succes">
     <table class="table table-hover table-bordered">
       <thead>
        <tr>
@@ -35,7 +34,6 @@
       </tbody>
     </table>
   </div>
-  </li>
-  </ul>
+  </div>
  
  

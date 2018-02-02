@@ -9,7 +9,9 @@
     <h1>beetl</h1>
     <!-- <p>This is a quick overview of some features</p> -->
   </div>
-  <ul class="states">
-     <li class="succes"><c:out value="${content}"/></li>
-  </ul> 
+  <div class="states" id="states">
+     <div class="succes">
+       <c:out value="${content}"/>
+     </div>
+  </div> 
 

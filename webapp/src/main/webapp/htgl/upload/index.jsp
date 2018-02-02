@@ -8,7 +8,7 @@
   <div class="text-section">
     <h1>upload</h1>
   </div>
-  <div class="states">
+  <div class="states" id="states">
      <div class="succes">
        <form name="upform" id="theform"  method="post" action="<%=ctxPath%>/htgl/uploadController/upload" enctype="multipart/form-data">
         <div>
