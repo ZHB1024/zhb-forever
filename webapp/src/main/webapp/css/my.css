@@ -174,13 +174,19 @@ html {height:100%;}
     margin:0 0 1px;
     padding:10px 50px 10px 50px;
     width:100%;
-    font-size:5px;
+    font-size:20px;
 }
 
 #states .succes {
     color:#3f5a04;
     text-align:center;
     overflow:auto;
+    background:#dfedc0;
+}
+
+#states .page {
+    color:#3f5a04;
+    text-align:center;
     background:#dfedc0;
 }
 

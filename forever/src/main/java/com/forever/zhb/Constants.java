@@ -20,7 +20,7 @@ public class Constants {
     //image
     public static String IMAGE_PATH = "image";
     
-    public static int PAGE_SIZE = 20;
+    public static int PAGE_SIZE = 12;
     
     public static String SESSION_LOGINFODATA = "session_UserInfoData";
     

@@ -17,7 +17,6 @@
   Page pageRs = (Page)request.getAttribute("page");
 %>
 
-<script src="<%=ctxPath%>/js/jquery-1.8.0.js"></script>
 <font>
 <c:if test="${page.curPage == 1}">
 首页&nbsp;&nbsp;上页

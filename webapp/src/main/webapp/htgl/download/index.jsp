@@ -19,8 +19,10 @@
                </a>
            </div>
         </c:forEach>
-        共：${ page.totalCount } &nbsp; 条  &nbsp;&nbsp;
-     <jsp:include page="/page/pageNavigator.jsp" />
         </form>
+    </div>
+    <div class="page">
+     共：${ page.totalCount } &nbsp; 条  &nbsp;&nbsp;
+     <jsp:include page="/page/pageNavigator.jsp" />
     </div>
   </div>
