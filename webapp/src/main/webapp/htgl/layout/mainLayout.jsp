@@ -6,8 +6,8 @@
 %>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/benfen.css" />
-<%-- <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/all.css" /> --%>
+<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/my.css" />
+<%-- <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/bf.css" /> --%>
 <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="<%=ctxPath%>/js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="<%=ctxPath%>/js/bootstrap.min.js"></script>

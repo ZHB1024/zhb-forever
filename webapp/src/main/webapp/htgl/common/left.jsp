@@ -64,8 +64,10 @@
        </li>
                 
        <li <c:if test="${active8}">class="active"</c:if> >
-           <a href="#tab-8" class="ico8"><span>Settings</span><em></em></a>
-           <span class="tooltip"><span>Settings</span></span>
+           <form id="theform8" action="<%=ctxPath%>/htgl/aiController/toUpload" method="post">
+              <a href="javascript:tileBut(8);" class="ico8"><span>faceAI</span><em></em></a>
+              <span class="tooltip"><span>faceAI</span></span>
+           </form>
        </li>
                 
    </ul>

@@ -147,6 +147,11 @@
         <put-attribute name="main" value="/htgl/spider/index.jsp"/>
     </definition>
     
+    <!-- ai -->
+    <definition name="htgl.ai.face.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/ai/face/index.jsp"/>
+    </definition>
+    
     
     
 </tiles-definitions>
