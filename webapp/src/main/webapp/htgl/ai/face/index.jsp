@@ -6,7 +6,7 @@
 %> 
 
   <div class="text-section">
-    <h1>upload</h1>
+    <h1>faceAI</h1>
   </div>
   <div class="states" id="states">
      <div class="succes">

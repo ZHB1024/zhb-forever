@@ -57,7 +57,7 @@
        </li>
                 
        <li <c:if test="${active7}">class="active"</c:if> >
-           <form id="theform7" action="<%=ctxPath%>/htgl/spiderController/toSpider" method="post">
+           <form id="theform7" action="<%=ctxPath%>/httpClientController/toHttpClient" method="post">
               <a href="javascript:tileBut(7);" class="ico7"><span>httpClient</span><em></em></a>
               <span class="tooltip"><span>httpClient</span></span>
            </form>

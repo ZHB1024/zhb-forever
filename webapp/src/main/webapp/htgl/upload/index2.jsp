@@ -103,7 +103,8 @@ function batchUploadNoPage(){
                        }
    };
    $("#uploadform").ajaxSubmit(options1);        
-    
+ 
+   /* 传统ajax提交 */   
     <%-- var url="<%=ctxPath%>/htgl/group/batchUploadNoPage.action";
     var formData = new FormData();
     formData.append("file",$("#uploadExcel")[0].files[0]);
@@ -129,6 +130,8 @@ function batchUploadNoPage(){
         }
     }); --%>
     
+    
+ /* 模拟ajax提交 */   
     <%-- function batchUploadNoPage(){
         var _orgTypesArr = [];
         $("input[name='comOrgTypes']:checked").each(

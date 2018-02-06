@@ -70,6 +70,14 @@
         <put-attribute name="main" value="/htgl/mongodb/query.jsp" />
     </definition>
     
+    <!-- redis -->
+    <definition name="htgl.redis.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/redis/index.jsp"/>
+    </definition>
+    <definition name="htgl.redis.result" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/redis/result.jsp"/>
+    </definition>
+    
     <!-- user -->
     <definition name="htgl.user.addUser" extends="htgl.mainLayout">
         <put-attribute name="main" value="/htgl/user/addUser.jsp"/>
@@ -142,9 +150,9 @@
         <put-attribute name="main" value="/htgl/kafka/index.jsp"/>
     </definition>
     
-    <!-- spider -->
-    <definition name="htgl.spider.index" extends="htgl.main.layout">
-        <put-attribute name="main" value="/htgl/spider/index.jsp"/>
+    <!-- httpClient -->
+    <definition name="htgl.httpClient.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/httpClient/index.jsp"/>
     </definition>
     
     <!-- ai -->
@@ -152,6 +160,10 @@
         <put-attribute name="main" value="/htgl/ai/face/index.jsp"/>
     </definition>
     
+    <!-- log -->
+    <definition name="htgl.log.login.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/log/login/index.jsp"/>
+    </definition>
     
     
 </tiles-definitions>

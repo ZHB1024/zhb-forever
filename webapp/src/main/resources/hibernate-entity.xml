@@ -12,5 +12,6 @@
         <mapping class="com.forever.zhb.pojo.LoginInfoData"/>
         <mapping class="com.forever.zhb.pojo.FileInfoData"/>
         <mapping class="com.forever.zhb.pojo.NewsInfoData"/>
+        <mapping class="com.forever.zhb.pojo.LoginLogInfoData"/>
     </session-factory>
 </hibernate-configuration>

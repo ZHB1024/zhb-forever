@@ -2,8 +2,6 @@ package com.forever.zhb.controller.aspect;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -20,8 +18,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class HttpAspect {
 	
-	private Log log = LogFactory.getLog(HttpAspect.class);
-	
 	private Logger loger = LoggerFactory.getLogger(HttpAspect.class);
 	
 	@Pointcut("execution(public * com.forever.zhb.controller.annotation.LoginController.*(..))")
@@ -30,20 +26,31 @@ public class HttpAspect {
 	
 	@Before("log()")
 	public void doBefore(JoinPoint joinPoint){
-		log.info("before------------");
+		loger.info("before------------");
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 		loger.info("url={}",request.getRequestURI());
 		loger.info("method={}",request.getMethod());
 		loger.info("ip={}",request.getRemoteAddr());
 		loger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName()+ "." + joinPoint.getSignature().getName());
+		/*Object[] objects = joinPoint.getArgs();
+		if (null != objects) {
+			HttpServletRequest request2 = (HttpServletRequest)objects[0];
+			String userName1 = request.getParameter("name");
+			String userName = request2.getParameter("name");
+			loger.info(userName1);
+			loger.info(userName);
+		}
+		for (Object object : objects) {
+			loger.info(object.toString());
+		}*/
 		loger.info("args={}",joinPoint.getArgs());
 		
 	}
 	
 	@After("log()")
 	public void doAfter(){
-		log.info("after------------");
+		loger.info("after------------");
 	}
 	
 	@AfterReturning(returning="object",pointcut="log()")

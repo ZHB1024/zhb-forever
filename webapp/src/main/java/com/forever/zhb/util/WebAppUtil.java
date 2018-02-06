@@ -1,15 +1,15 @@
-package com.forever.zhb.utils;
+package com.forever.zhb.util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.forever.zhb.Constants;
+import com.forever.zhb.filter.SquidEnabledRequest;
 import com.forever.zhb.pojo.UserInfoData;
 
 public class WebAppUtil {
-    
-    
-    /**
+	
+	/**
      * 获取 UserInfoData 对象
      */
     public static UserInfoData getUserInfoData(HttpServletRequest request) {
@@ -48,5 +48,21 @@ public class WebAppUtil {
     public static void exit(HttpServletRequest request){
         request.getSession().removeAttribute(Constants.SESSION_LOGINFODATA);
     }
-   
+    
+    /**
+     * 获取 ip
+     */
+    public static void setIP(HttpServletRequest request) {
+    	SquidEnabledRequest squidRequest = new SquidEnabledRequest(request);
+    	request.getSession().setAttribute(Constants.IP, squidRequest.getRemoteAddr());
+    }
+    
+    /**
+     * 获取 ip
+     */
+    public static String getIP(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return (String) session.getAttribute(Constants.IP);
+    }
+
 }

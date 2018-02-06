@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.forever.zhb.Constants;
 import com.forever.zhb.dic.DeleteFlagEnum;
@@ -20,7 +21,7 @@ import com.forever.zhb.pojo.RoleInfoData;
 import com.forever.zhb.pojo.UserInfoData;
 import com.forever.zhb.service.IForeverManager;
 import com.forever.zhb.utils.PasswordUtil;
-import com.forever.zhb.utils.WebAppUtil;
+import com.forever.zhb.util.WebAppUtil;
 
 @Controller
 @RequestMapping("/loginController")
@@ -38,7 +39,7 @@ public class LoginController {
     }
     
     /*登录*/
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(HttpServletRequest request,HttpServletResponse response){
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -51,7 +52,11 @@ public class LoginController {
             request.setAttribute(Constants.REQUEST_ERROR, "用户名或密码错误");
             return "login.home";
         }
+        
+        /*初始化session*/
+        WebAppUtil.setIP(request);
         WebAppUtil.setUserInfoData(request, userInfo);
+        
         return "htgl.main.index";
     }
     
@@ -62,7 +67,7 @@ public class LoginController {
     }
     
     /*注册*/
-    @RequestMapping("/register")
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     public String register(HttpServletRequest request,HttpServletResponse response, UserInfoData userInfoData, LoginInfoData loginInfoData){
         String confirmPassword = request.getParameter("confirmPass");
         if (null == loginInfoData || null == userInfoData || StringUtils.isBlank(confirmPassword)) {

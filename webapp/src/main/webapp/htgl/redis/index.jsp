@@ -3,11 +3,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
   String conPath = request.getContextPath();
-System.out.println(conPath);
 %>
 <html>
 <head>
-<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<%@page import="com.forever.zhb.utils.WebAppUtil"%>
+<%@page import="com.forever.zhb.util.WebAppUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="com.forever.zhb.pojo.UserInfoData"%>

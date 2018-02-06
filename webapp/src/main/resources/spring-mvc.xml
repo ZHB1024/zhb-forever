@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans  
       http://www.springframework.org/schema/beans/spring-beans.xsd  
@@ -26,6 +24,7 @@
 	<!-- AOP -->
 	<aop:aspectj-autoproxy />
 	<bean class="com.forever.zhb.controller.aspect.HttpAspect" />
+	<bean class="com.forever.zhb.controller.aspect.LoginLogAspect" />
 
 	<!-- 注解扫描包 -->
 	<context:component-scan base-package="com.forever.zhb.controller.annotation" />
@@ -48,9 +47,12 @@
 		<property name="mongoDBManager" ref="mongoDBManager"></property>
 	</bean>
 
-	<!-- <bean name="/htgl/redis" class="com.forever.zhb.controller.RedisController"> 
-		<property name="methodNameResolver"> <ref bean="paramMethodResolver"/> </property> 
-		<property name="redisManager" ref="redisManager"></property> </bean> -->
+	<bean name="/htgl/redis" class="com.forever.zhb.controller.RedisController">
+		<property name="methodNameResolver">
+			<ref bean="paramMethodResolver" />
+		</property>
+		<property name="redisManager" ref="redisManager"></property>
+	</bean>
 
 
 	<!-- 静态资源访问 -->

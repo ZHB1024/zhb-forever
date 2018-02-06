@@ -15,7 +15,7 @@ import com.forever.zhb.pojo.LoginInfoData;
 import com.forever.zhb.pojo.UserInfoData;
 import com.forever.zhb.service.IForeverManager;
 import com.forever.zhb.utils.PasswordUtil;
-import com.forever.zhb.utils.WebAppUtil;
+import com.forever.zhb.util.WebAppUtil;
 
 @Controller
 @RequestMapping("/htgl/account")

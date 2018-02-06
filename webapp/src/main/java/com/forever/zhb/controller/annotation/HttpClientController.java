@@ -10,23 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.crypto.SealedObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -43,33 +35,57 @@ import com.forever.zhb.utils.AESUtil;
 import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping("/htgl/spiderController")
-public class SpiderController {
+@RequestMapping("/httpClientController")
+public class HttpClientController {
 	
-	private Logger logger = LoggerFactory.getLogger(SpiderController.class);
+	private Logger logger = LoggerFactory.getLogger(HttpClientController.class);
 	
 	@Resource(name="foreverManager")
     private IForeverManager foreverManager;
 	
-	@RequestMapping("/toSpider")
-    public String toSpider(HttpServletRequest request,HttpServletResponse response){
+	@RequestMapping("/toHttpClient")
+    public String toHttpClient(HttpServletRequest request,HttpServletResponse response){
 		request.setAttribute("active7", true);
-		request.setAttribute("url", "http://localhost:8080/testController/contentTest");
+		request.setAttribute("url", "http://localhost:8080/httpClientController/contentTest");
         request.setAttribute("keys", "name=zhanghuibin;userid=123456");
-        return "htgl.spider.index";
+        return "htgl.httpClient.index";
+    }
+	
+	@RequestMapping("/contentTest")
+	public void contentTest(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String groupId = request.getParameter("groupId");
+		String decGroupId = AESUtil.decrypt(groupId, AESUtil.findKeyById(""));
+		JSONObject jo = new JSONObject();
+		
+		List<String> students = new ArrayList<String>();
+		students.add("张会彬");
+		students.add(decGroupId);
+		jo.put("students", students);
+		
+		String encryRes = AESUtil.encrypt(jo.toString(), AESUtil.findKeyById(""));
+		
+        response.setHeader("Content-Type", "application/json; charset=utf-8");// 中文显示
+        PrintWriter pw = null;
+        try {
+            pw = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        pw.append(encryRes);
+        pw.close();
     }
 	
 	/** 
      * post方式提交表单
      */  
-	@RequestMapping("/spider1")
-    public String postForm(HttpServletRequest request,HttpServletResponse response) {  
+	@RequestMapping("/httpClient1")
+    public String httpClient1(HttpServletRequest request,HttpServletResponse response) {  
 		request.setAttribute("active7", true);
 		String url = request.getParameter("url");
 		String keys = request.getParameter("keys");
 		if (StringUtils.isBlank(url)) {
 			request.setAttribute("errorMsg", "请输入地址");
-			return "htgl.spider.index";
+			return "htgl.httpClient.index";
 		}
 		String content = "";
         // 创建默认的httpClient实例.    
@@ -115,21 +131,21 @@ public class SpiderController {
         request.setAttribute("content", content);
         request.setAttribute("url", url);
         request.setAttribute("keys", keys);
-		return "htgl.spider.index";
+		return "htgl.httpClient.index";
     }  
   
     /** 
      * 发送 post请求,AES加密，json
      * @throws Exception 
      */  
-	@RequestMapping("/spider2")
-    public String post(HttpServletRequest request,HttpServletResponse response) throws Exception {  
+	@RequestMapping("/httpClient2")
+    public String httpClient2(HttpServletRequest request,HttpServletResponse response) throws Exception {  
 		request.setAttribute("active7", true);
 		String url = request.getParameter("url");
 		String keys = request.getParameter("keys");
 		if (StringUtils.isBlank(url)) {
 			request.setAttribute("errorMsg", "请输入地址");
-			return "htgl.spider.index";
+			return "htgl.httpClient.index";
 		}
 		String content = "";
         // 创建默认的httpClient实例.    
@@ -191,7 +207,7 @@ public class SpiderController {
         request.setAttribute("content", content);
         request.setAttribute("url", url);
         request.setAttribute("keys", keys);
-		return "htgl.spider.index";
+		return "htgl.httpClient.index";
     }  
   
   	private String readResponse(InputStream in) {  

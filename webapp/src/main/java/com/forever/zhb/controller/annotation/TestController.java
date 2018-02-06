@@ -8,7 +8,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.chainsaw.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,7 @@ public class TestController {
 	
 	private Logger logger = LoggerFactory.getLogger(TestController.class);
 	
-	@RequestMapping("/contentTest")
+	/*@RequestMapping("/contentTest")
 	public void contentTest(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String groupId = request.getParameter("groupId");
 		String decGroupId = AESUtil.decrypt(groupId, AESUtil.findKeyById(""));
@@ -46,7 +45,7 @@ public class TestController {
         }
         pw.append(encryRes);
         pw.close();
-    }
+    }*/
 	
 	public static void main(String[] args){
 		int number = 100;

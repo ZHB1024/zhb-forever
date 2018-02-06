@@ -104,6 +104,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
                 <prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
                 <prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
                 <prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>
@@ -113,7 +114,11 @@
         </property>
     </bean>
     
-	 <bean id="foreverDao" class="com.forever.zhb.dao.impl.ForeverDAOImpl">
+	<bean id="foreverDao" class="com.forever.zhb.dao.impl.ForeverDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="loginLogDao" class="com.forever.zhb.dao.impl.LoginLogDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
@@ -121,8 +126,16 @@
 		<property name="foreverDao" ref="foreverDao"></property>
 	</bean>
 	
+	<bean id="loginLogManagerBase" class="com.forever.zhb.service.impl.LoginLogManagerImpl">
+		<property name="loginLogDao" ref="loginLogDao"></property>
+	</bean>
+	
 	<bean id="foreverManager" parent="transactionBase">
 		<property name="target" ref="foreverManagerBase"></property>
+	</bean>
+	
+	<bean id="loginLogManager" parent="transactionBase">
+		<property name="target" ref="loginLogManagerBase"></property>
 	</bean>
     
 </beans>

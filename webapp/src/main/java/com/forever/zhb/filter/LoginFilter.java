@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.forever.zhb.Constants;
 import com.forever.zhb.pojo.UserInfoData;
-import com.forever.zhb.utils.WebAppUtil;
+import com.forever.zhb.util.WebAppUtil;
 
 public class LoginFilter implements Filter {
     protected final Log log = LogFactory.getLog(getClass());

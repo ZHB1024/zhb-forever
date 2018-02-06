@@ -3,7 +3,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
   String conPath = request.getContextPath();
-System.out.println(conPath);
 %>
 <div align="center">
     <h1>success</h1>

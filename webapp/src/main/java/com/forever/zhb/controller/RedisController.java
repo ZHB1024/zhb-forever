@@ -20,7 +20,7 @@ public class RedisController extends MultiActionController {
 	private IRedisManager redisManager;
 	
 	public String toRedis(HttpServletRequest request,HttpServletResponse response){
-        return "/htgl/redis/toRedis";
+        return "htgl.redis.index";
     }
 	
 	public String addRedis(HttpServletRequest request,HttpServletResponse response){
@@ -47,7 +47,7 @@ public class RedisController extends MultiActionController {
 		vo.setKey("countries");
 		vo.setValues(result);
 		request.setAttribute("redis", vo);
-        return "/htgl/redis/result";
+        return "htgl.redis.result";
     }
 	
 	
