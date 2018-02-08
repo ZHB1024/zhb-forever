@@ -47,6 +47,11 @@ public class TestController {
         pw.close();
     }*/
 	
+	@RequestMapping("/contentTest")
+	public String contentTest(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		return "test.body.index";
+    }
+	
 	public static void main(String[] args){
 		int number = 100;
 		for(int i = 2;i < number;i++){

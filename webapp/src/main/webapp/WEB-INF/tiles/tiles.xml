@@ -24,6 +24,14 @@
         <put-attribute name="main" value="CHANGE-ME"/>
         <put-attribute name="footer" value="/htgl/common/footer.jsp" />
     </definition>
+    
+    <definition name="test.main.layout" template="/test/layout/mainLayout.jsp">
+        <put-attribute name="header" value="/test/common/header.jsp" />
+        <put-attribute name="title" value="/test/common/title.jsp" />
+        <put-attribute name="left" value="/test/common/left.jsp" />
+        <put-attribute name="main" value="CHANGE-ME"/>
+        <put-attribute name="footer" value="/test/common/footer.jsp" />
+    </definition>
     <!-- layout end-->
     
     <!-- error -->
@@ -163,6 +171,11 @@
     <!-- log -->
     <definition name="htgl.log.login.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/log/login/index.jsp"/>
+    </definition>
+    
+    <!-- test -->
+    <definition name="test.body.index" extends="test.main.layout">
+        <put-attribute name="main" value="/test/index.jsp"/>
     </definition>
     
     

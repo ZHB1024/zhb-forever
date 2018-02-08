@@ -1,14 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
+    pageEncoding="UTF-8"%>
+ <%@taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%
   String ctxPath = request.getContextPath();
 %>
-<link
-	href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css"
-	rel="stylesheet">
-<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <div class="navbar navbar-duomi navbar-static-top" role="navigation">
 	<div class="container-fluid">

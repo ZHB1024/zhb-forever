@@ -1,0 +1,39 @@
+/* ------------------------È«¾Ö --------------------------*/
+html {height:100%;}
+
+/* ------------------------header -----------------------*/
+#header {
+    height:75px;
+    width: 100%;
+    overflow:hidden;
+    background:url(/images/logobg.jpg) repeat-x;
+}
+#header h1{  
+	top:15px; 
+	padding: 25px 0 25px 0;
+	text-align: center;
+}
+
+/* ------------------------body -------------------------- */
+#body {
+    position:relative;
+    width: 100%;
+    overflow:hidden;
+    background:url(/images/bg-wrapper.png) repeat-y;
+}
+
+
+
+
+/* ------------------------footer-------------------------- */
+#footer {
+    position:relative;
+    height:60px;
+    width: 100%;
+    overflow:hidden;
+    padding: 25px 0 25px 0;   
+    background: #666;  
+    color: #fff; 
+    text-align: center;
+}
+#footer a {color: #fff;}
