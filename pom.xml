@@ -10,6 +10,7 @@
 		<module>search</module>
 		<module>proto</module>
 		<module>kafka</module>
+		<module>designPattern</module>
 		<!-- <module>activeMQ</module> -->
     </modules>
     <version>0.0.1-SNAPSHOT</version>
