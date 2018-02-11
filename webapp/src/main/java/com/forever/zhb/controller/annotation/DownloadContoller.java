@@ -3,7 +3,6 @@ package com.forever.zhb.controller.annotation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ import com.forever.zhb.vo.FileVo;
 @RequestMapping("/htgl/fileDownloadController")
 public class DownloadContoller {
 	
-	protected Log log = LogFactory.getLog(UploadController.class);
+	protected Log log = LogFactory.getLog(DownloadContoller.class);
 	
 	@Resource(name="foreverManager")
     private IForeverManager foreverManager;
