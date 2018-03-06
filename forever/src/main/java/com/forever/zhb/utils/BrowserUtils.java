@@ -8,8 +8,29 @@ import javax.servlet.http.HttpServletRequest;
 import com.forever.zhb.dic.BrowserType;
 
 public class BrowserUtils {
+	
+	private final static String IE11 = "MSIE:11.0";
+	private final static String IE10 = "MSIE 10.0";
+	private final static String IE9 = "MSIE 9.0";
+	private final static String IE8 = "MSIE 8.0";
+	private final static String IE7 = "MSIE 7.0";
+	private final static String IE6 = "MSIE 6.0";
+	private final static String MAXTHON = "Maxthon";
+	private final static String QQ = "QQBrowser";
+	private final static String GREEN = "GreenBrowser";
+	private final static String SE360 = "360SE";
+	private final static String FIREFOX = "Firefox";
+	private final static String OPERA = "Opera";
+	private final static String CHROME = "Chrome";
+	private final static String SAFARI = "Safari";
+	private final static String OTHER = "其它";
 
-	// 判断是否是IE
+	/**
+	 * 判断是否是IE
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public static boolean isIE(HttpServletRequest request) {
 		return (request.getHeader("USER-AGENT").toLowerCase().indexOf("msie") > 0
 				|| request.getHeader("USER-AGENT").toLowerCase().indexOf("rv:11.0") > 0) ? true : false;
@@ -48,37 +69,37 @@ public class BrowserUtils {
 	public static BrowserType getBrowserType(HttpServletRequest request) {
 		BrowserType browserType = null;
 		if (getBrowserType(request, IE11)) {
-			browserType = BrowserType.IE11;
+			return BrowserType.IE11;
 		}
 		if (getBrowserType(request, IE10)) {
-			browserType = BrowserType.IE10;
+			return BrowserType.IE10;
 		}
 		if (getBrowserType(request, IE9)) {
-			browserType = BrowserType.IE9;
+			return BrowserType.IE9;
 		}
 		if (getBrowserType(request, IE8)) {
-			browserType = BrowserType.IE8;
+			return BrowserType.IE8;
 		}
 		if (getBrowserType(request, IE7)) {
-			browserType = BrowserType.IE7;
+			return BrowserType.IE7;
 		}
 		if (getBrowserType(request, IE6)) {
-			browserType = BrowserType.IE6;
+			return BrowserType.IE6;
 		}
 		if (getBrowserType(request, FIREFOX)) {
-			browserType = BrowserType.Firefox;
+			return BrowserType.Firefox;
 		}
 		if (getBrowserType(request, SAFARI)) {
-			browserType = BrowserType.Safari;
+			return BrowserType.Safari;
 		}
 		if (getBrowserType(request, CHROME)) {
-			browserType = BrowserType.Chrome;
+			return BrowserType.Chrome;
 		}
 		if (getBrowserType(request, OPERA)) {
-			browserType = BrowserType.Opera;
+			return BrowserType.Opera;
 		}
 		if (getBrowserType(request, "Camino")) {
-			browserType = BrowserType.Camino;
+			return BrowserType.Camino;
 		}
 		return browserType;
 	}
@@ -86,22 +107,6 @@ public class BrowserUtils {
 	private static boolean getBrowserType(HttpServletRequest request, String brosertype) {
 		return request.getHeader("USER-AGENT").toLowerCase().indexOf(brosertype) > 0 ? true : false;
 	}
-
-	private final static String IE11 = "rv:11.0";
-	private final static String IE10 = "MSIE 10.0";
-	private final static String IE9 = "MSIE 9.0";
-	private final static String IE8 = "MSIE 8.0";
-	private final static String IE7 = "MSIE 7.0";
-	private final static String IE6 = "MSIE 6.0";
-	private final static String MAXTHON = "Maxthon";
-	private final static String QQ = "QQBrowser";
-	private final static String GREEN = "GreenBrowser";
-	private final static String SE360 = "360SE";
-	private final static String FIREFOX = "Firefox";
-	private final static String OPERA = "Opera";
-	private final static String CHROME = "Chrome";
-	private final static String SAFARI = "Safari";
-	private final static String OTHER = "其它";
 
 	public static String checkBrowse(HttpServletRequest request) {
 		String userAgent = request.getHeader("USER-AGENT");

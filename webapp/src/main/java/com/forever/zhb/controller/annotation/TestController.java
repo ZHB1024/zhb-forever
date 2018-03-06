@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.forever.zhb.utils.AESUtil;
+import com.forever.zhb.utils.MessageUtil;
 
 import net.sf.json.JSONObject;
 
@@ -70,6 +71,13 @@ public class TestController {
 				}
             }
         }
+		return "test.body.index";
+	}
+	
+	@RequestMapping("/test")
+	public String test(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String message = MessageUtil.getMessage("2001", new Object[]{"张会彬","你好"});
+		logger.info(message);
 		return "test.body.index";
 	}
 

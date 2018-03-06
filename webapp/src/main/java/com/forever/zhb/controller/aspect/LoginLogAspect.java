@@ -21,6 +21,7 @@ import com.forever.zhb.dic.LoginEnum;
 import com.forever.zhb.pojo.LoginLogInfoData;
 import com.forever.zhb.service.LoginLogManager;
 import com.forever.zhb.service.LoginLogManagerFactory;
+import com.forever.zhb.utils.BrowserUtils;
 
 @Aspect
 @Component
@@ -56,6 +57,7 @@ public class LoginLogAspect {
 		}else{
 			loginLogInfoData.setLoginIn(LoginEnum.LOGIN_IN.getIndex());
 		}
+		loginLogInfoData.setBrowserName(BrowserUtils.checkBrowse(request));
 		loginLogInfoData.setClientIp(request.getRemoteAddr());
 		loginLogInfoData.setCreateTime(Calendar.getInstance());
 		loginLogManager.save(loginLogInfoData);

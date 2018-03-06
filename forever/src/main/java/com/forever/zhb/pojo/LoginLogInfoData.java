@@ -23,6 +23,7 @@ public class LoginLogInfoData extends PersistentObject {
 	private Integer loginIn;
 	private Calendar createTime;
 	private String loginInName;
+	private String browserName;
 
 	@Id
     @GeneratedValue(generator = "app_seq")
@@ -85,6 +86,15 @@ public class LoginLogInfoData extends PersistentObject {
 
 	public void setLoginInName(String loginInName) {
 		this.loginInName = loginInName;
+	}
+
+	@Column(name="BROWSER_NAME")
+	public String getBrowserName() {
+		return browserName;
+	}
+
+	public void setBrowserName(String browserName) {
+		this.browserName = browserName;
 	}
 
 }
