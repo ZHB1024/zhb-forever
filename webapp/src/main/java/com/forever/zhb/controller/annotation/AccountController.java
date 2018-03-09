@@ -14,8 +14,8 @@ import com.forever.zhb.Constants;
 import com.forever.zhb.pojo.LoginInfoData;
 import com.forever.zhb.pojo.UserInfoData;
 import com.forever.zhb.service.IForeverManager;
-import com.forever.zhb.utils.PasswordUtil;
 import com.forever.zhb.util.WebAppUtil;
+import com.forever.zhb.utils.PasswordUtil;
 
 @Controller
 @RequestMapping("/htgl/account")
@@ -118,5 +118,5 @@ public class AccountController {
         WebAppUtil.exit(request);
         return "login.home";
     }
-
+    
 }
