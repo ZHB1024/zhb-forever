@@ -18,12 +18,13 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.forever.zhb.basic.BasicController;
+import com.forever.zhb.util.AjaxMessage;
 import com.forever.zhb.utils.AESUtil;
 import com.forever.zhb.utils.MessageUtil;
 
@@ -31,144 +32,81 @@ import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/testController")
-public class TestController {
+public class TestController extends BasicController {
 
 	private Logger logger = LoggerFactory.getLogger(TestController.class);
 
-	/*
-	 * @RequestMapping("/contentTest") public void
-	 * contentTest(HttpServletRequest request,HttpServletResponse response)
-	 * throws Exception{ String groupId = request.getParameter("groupId");
-	 * String decGroupId = AESUtil.decrypt(groupId, AESUtil.findKeyById(""));
-	 * JSONObject jo = new JSONObject();
-	 * 
-	 * List<String> students = new ArrayList<String>(); students.add("张会彬");
-	 * students.add(decGroupId); jo.put("students", students);
-	 * 
-	 * String encryRes = AESUtil.encrypt(jo.toString(),
-	 * AESUtil.findKeyById(""));
-	 * 
-	 * response.setHeader("Content-Type", "application/json; charset=utf-8");//
-	 * 中文显示 PrintWriter pw = null; try { pw = response.getWriter(); } catch
-	 * (IOException e) { e.printStackTrace(); } pw.append(encryRes); pw.close();
-	 * }
-	 */
-
 	@RequestMapping("/contentTest")
 	public String contentTest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String title = "总共<span class=\"mod_fillblank\" data-nostyle=\"true\">________</span>人，其它<span class=\"mod_fillblank\" data-nostyle=\"true\">________</span>人";
-        int countNumber = countNumber(title, "</span>");
-        ArrayList<String> blankTitles = new ArrayList<String>();
-        String[] temp1 = title.split("<span");
-        if (temp1 != null) {
-        	blankTitles.add(temp1[0]);
-            for(int i=1;i<temp1.length;i++){
-                if (i != temp1.length-1) {
-					String[] temp2 = temp1[i].split("</span>");
-					if (temp2.length == 1) {
-						blankTitles.add("");
-					}else{
-						blankTitles.add(temp2[1]);
-					}
-					
-				}else{
-					String[] temp2 = temp1[i].split("</span>");
-					if (temp2.length > 1) {
-						blankTitles.add(temp2[1]);
-					}
-				}
-            }
-        }
+		String groupId = request.getParameter("groupId");
+		String decGroupId = AESUtil.decrypt(groupId, AESUtil.findKeyById(""));
+		JSONObject jo = new JSONObject();
+
+		List<String> students = new ArrayList<String>();
+		students.add("张会彬");
+		students.add(decGroupId);
+		jo.put("students", students);
+
+		String encryRes = AESUtil.encrypt(jo.toString(), AESUtil.findKeyById(""));
+
+		response.setHeader("Content-Type", "application/json; charset=utf-8");
+		// 中文显示
+		PrintWriter pw = null;
+		try {
+			pw = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		pw.append(encryRes);
+		pw.close();
 		return "test.body.index";
 	}
-	
+
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String message = MessageUtil.getMessage("0001", new Object[]{"张会彬"});
+		String message = MessageUtil.getMessage("0001", new Object[] { "张会彬" });
 		logger.info(message);
 		return "test.body.index";
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-		/*String title = "总共<span class=\"mod_fillblank\" data-nostyle=\"true\">________</span>人，其它<span class=\"mod_fillblank\" data-nostyle=\"true\">________</span>人<span class=\"mod_fillblank\" data-nostyle=\"true\">________</span>";
-        int countNumber = countNumber(title, "</span>");
-        ArrayList<String> blankTitles = new ArrayList<String>();
-        String[] temp1 = title.split("<span");
-        if (temp1 != null) {
-        	blankTitles.add(temp1[0]);
-            for(int i=1;i<temp1.length;i++){
-                if (i != temp1.length-1) {
-					String[] temp2 = temp1[i].split("</span>");
-					blankTitles.add(temp2[1]);
-				}else{
-					String[] temp2 = temp1[i].split("</span>");
-					if (StringUtils.isNotBlank(temp2[1])) {
-						blankTitles.add(temp2[1]);
-					}
-				}
-            }
-        }*/
-		
-		
-		
-		/*TestController inc = new TestController();
-		int i = 0;
-		inc.fermin(i);
-		i = i++;
-		System.out.println(i);*/
+	@RequestMapping("/ajaxTest")
+	public void ajaxTest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		List<String> names = new ArrayList<String>();
+		names.add("北京");
+		names.add("上海");
+		names.add("天津");
+		setResponse(response);
+		ajaxMessage.setFlag("true");
+		ajaxMessage.setO(names);
+		writeJSON(ajaxMessage, response);
+	}
+
+	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException,
+			IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException,
+			IllegalArgumentException, InvocationTargetException {
+
+		/*
+		 * TestController inc = new TestController(); int i = 0; inc.fermin(i);
+		 * i = i++; System.out.println(i);
+		 */
 
 		// System.out.println("main:" + returnFinally());
 		// printPrimeNumber(100);
 		
-		
-		// By using new keyword
-        Employee emp1 = new Employee("zhang");
-        emp1.setName("Naresh");
-        System.out.println(emp1 + ", hashcode : " + emp1.hashCode());
-        
-        // By using Class class's newInstance() method
-        Employee emp2 = (Employee) Class.forName("com.forever.zhb.controller.annotation.Employee")
-                               .newInstance();
-        // Or we can simply do this
-        // Employee emp2 = Employee.class.newInstance();
-        emp2.setName("Rishi");
-        System.out.println(emp2 + ", hashcode : " + emp2.hashCode());
-        
-        // By using Constructor class's newInstance() method
-        Constructor<Employee> constructor = Employee.class.getConstructor(String.class);
-        Employee emp3 = constructor.newInstance("");
-        emp3.setName("Yogesh");
-        System.out.println(emp3 + ", hashcode : " + emp3.hashCode());
-        
-        // By using clone() method
-        Employee emp4 = (Employee) emp3.clone();
-        emp4.setName("Atul");
-        System.out.println(emp4 + ", hashcode : " + emp4.hashCode());
-        
-        // By using Deserialization
-        // Serialization
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.obj"));
-        out.writeObject(emp4);
-        out.close();
-        //Deserialization
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.obj"));
-        Employee emp5 = (Employee) in.readObject();
-        in.close();
-        emp5.setName("Akash");
-        System.out.println(emp5 + ", hashcode : " + emp5.hashCode());
+		TestInstance.printName();
+		TestAbstract.printName();
 
 	}
-	
-	 private static int countNumber(String srcText, String findText){
-	        int count = 0;
-	        Pattern p = Pattern.compile(findText);
-	        Matcher m = p.matcher(srcText);
-	        while (m.find()) {
-	            count++;
-	        }
-	        return count;
-	    }
 
+	private static int countNumber(String srcText, String findText) {
+		int count = 0;
+		Pattern p = Pattern.compile(findText);
+		Matcher m = p.matcher(srcText);
+		while (m.find()) {
+			count++;
+		}
+		return count;
+	}
 
 	private static int returnFinally() {
 		int value = 0;
@@ -205,7 +143,45 @@ public class TestController {
 	void fermin(int i) {
 		i++;
 	}
-	
+
+	// java 5种 获取对象的方式
+	private void getObjects() throws Exception {
+		// By using new keyword
+		Employee emp1 = new Employee("zhang");
+		emp1.setName("Naresh");
+		System.out.println(emp1 + ", hashcode : " + emp1.hashCode());
+
+		// By using Class class's newInstance() method
+		Employee emp2 = (Employee) Class.forName("com.forever.zhb.controller.annotation.Employee").newInstance();
+		// Or we can simply do this
+		// Employee emp2 = Employee.class.newInstance();
+		emp2.setName("Rishi");
+		System.out.println(emp2 + ", hashcode : " + emp2.hashCode());
+
+		// By using Constructor class's newInstance() method
+		Constructor<Employee> constructor = Employee.class.getConstructor(String.class);
+		Employee emp3 = constructor.newInstance("");
+		emp3.setName("Yogesh");
+		System.out.println(emp3 + ", hashcode : " + emp3.hashCode());
+
+		// By using clone() method
+		Employee emp4 = (Employee) emp3.clone();
+		emp4.setName("Atul");
+		System.out.println(emp4 + ", hashcode : " + emp4.hashCode());
+
+		// By using Deserialization
+		// Serialization
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.obj"));
+		out.writeObject(emp4);
+		out.close();
+		// Deserialization
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.obj"));
+		Employee emp5 = (Employee) in.readObject();
+		in.close();
+		emp5.setName("Akash");
+		System.out.println(emp5 + ", hashcode : " + emp5.hashCode());
+	}
+
 }
 
 class Employee implements Serializable, Cloneable {
@@ -216,8 +192,8 @@ class Employee implements Serializable, Cloneable {
 	public Employee() {
 		System.out.println("Employee Constructor() Called...");
 	}
-	
-	public Employee(String name){
+
+	public Employee(String name) {
 		System.out.println("Employee Constructor(name) Called...");
 	}
 
@@ -272,3 +248,14 @@ class Employee implements Serializable, Cloneable {
 
 }
 
+interface TestInstance{
+	static void printName(){
+		System.out.println("this interface static method !");
+	}
+}
+
+abstract class TestAbstract{
+	static void printName(){
+		System.out.println("this abstract static method !");
+	}
+}

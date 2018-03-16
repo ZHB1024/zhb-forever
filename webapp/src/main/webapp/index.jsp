@@ -1,57 +1,54 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
+ <%@taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%
   String ctxPath = request.getContextPath();
 %>
-<link
-	href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css"
-	rel="stylesheet">
-<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=ctxPath%>/js/jquery-3.3.1.js"></script>
 
-<div class="navbar navbar-duomi navbar-static-top" role="navigation">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="/Admin/index.html" id="logo">配置管理系统（流量包月）
-			</a>
-		</div>
-	</div>
+
+<div align="center">
+<select name="ajaxName">
+     <option value=''>--分类--</option>
+</select>
+<input type="button" value="确 定" id="ajaxId">
 </div>
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-2">
-			<ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
-				<li class="active"><a href="#"> <i
-						class="glyphicon glyphicon-th-large"></i> 首页
-				</a></li>
-				<li><a href="#systemSetting" class="nav-header collapsed"
-					data-toggle="collapse"> <i class="glyphicon glyphicon-cog"></i>
-						系统管理 <span class="pull-right glyphicon glyphicon-chevron-down"></span>
-				</a>
-					<ul id="systemSetting" class="nav nav-list collapse secondmenu"
-						style="height: 0px;">
-						<li><a href="#"><i class="glyphicon glyphicon-user"></i>用户管理</a></li>
-						<li><a href="#"><i class="glyphicon glyphicon-th-list"></i>菜单管理</a></li>
-						<li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>角色管理</a></li>
-						<li><a href="#"><i class="glyphicon glyphicon-edit"></i>修改密码</a></li>
-						<li><a href="#"><i class="glyphicon glyphicon-eye-open"></i>日志查看</a></li>
-					</ul></li>
-				<li><a href="./plans.html"> <i
-						class="glyphicon glyphicon-credit-card"></i> 物料管理
-				</a></li>
-				<li><a href="./grid.html"> <i
-						class="glyphicon glyphicon-globe"></i> 分发配置 <span
-						class="label label-warning pull-right">5</span>
-				</a></li>
-				<li><a href="./charts.html"> <i
-						class="glyphicon glyphicon-calendar"></i> 图表统计
-				</a></li>
-				<li><a href="#"> <i class="glyphicon glyphicon-fire"></i>
-						关于系统
-				</a></li>
-			</ul>
-		</div>
-		<div class="col-md-10">主窗口</div>
-	</div>
-</div>
+
+<script type="text/javascript">
+$("#ajaxId").click(function(){
+	var url = "/testController/ajaxTest";
+    var result = "<option value='' selected>--分类--</option>";
+    $.post(url,function(data){
+        var rs = $.parseJSON(data),
+            o = rs.o;
+        for(i in o){
+            result += "<option value='"+o[i]+"' title='"+o[i]+"'>"+o[i]+"</option>";
+        }
+        $("select[name=ajaxName]").html(result);
+    });
+});
+
+
+function getCategory(){
+    var url = "/htgl/library/getCatetory.action";
+    var result = "<option value='' selected>--分类--</option>";
+    $.ajaxSettings.async = false;
+    $.post(url,function(data){
+        var rs = $.parseJSON(data),
+            o = rs.o,
+            tit = "";
+        for(i in o){
+
+            if(o[i].title.length > 20){
+                tit = o[i].title.substring(0,20) + "...";
+            }else{
+                tit = o[i].title;
+            }
+            result += "<option value='"+o[i].id+"' title='"+o[i].title+"'>"+tit+"</option>";
+        }
+    });
+    $.ajaxSettings.async = true;
+    return result;
+}
+</script>

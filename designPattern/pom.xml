@@ -38,6 +38,12 @@
     </build>
 <dependencies>
      
+     <dependency>
+      <groupId>com.zhb.forever</groupId>
+      <artifactId>zhb-forever</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
     <dependency>
       <groupId>org.apache.commons</groupId>
