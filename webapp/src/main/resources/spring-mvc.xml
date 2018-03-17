@@ -47,14 +47,6 @@
 		<property name="mongoDBManager" ref="mongoDBManager"></property>
 	</bean>
 
-	<bean name="/htgl/redis" class="com.forever.zhb.controller.RedisController">
-		<property name="methodNameResolver">
-			<ref bean="paramMethodResolver" />
-		</property>
-		<property name="redisManager" ref="redisManager"></property>
-	</bean>
-
-
 	<!-- 静态资源访问 -->
 	<mvc:resources location="/js/" mapping="/js/**" />
 	<mvc:resources location="/test/js/" mapping="/test/js/**" />

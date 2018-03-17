@@ -501,14 +501,21 @@
     <artifactId>opencv</artifactId>
     <version>1.1.0</version>
 </dependency> -->
-<dependency>
+<!-- <dependency>
         <groupId>org.opencv</groupId>
         <artifactId>opencv</artifactId>
         <version>3.2.0</version>
         <systemPath>C:/workFile/soft/openCV/install/opencv/build/java/opencv-320.jar</systemPath>
-        <!-- <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/opencv-320.jar</systemPath> -->
+        <systemPath>${basedir}/webapp/src/main/webapp/WEB-INF/lib/opencv-320.jar</systemPath>
         <scope>system</scope>
-    </dependency>
+    </dependency> -->
+<!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
+<dependency>
+    <groupId>org.openpnp</groupId>
+    <artifactId>opencv</artifactId>
+    <version>3.2.0-0</version>
+</dependency>
+
 
 <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 <dependency>

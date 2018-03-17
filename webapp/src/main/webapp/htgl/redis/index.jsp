@@ -23,7 +23,8 @@
        <h1>添加List</h1>
       </div>
       <div align="center">
-       <form name="userForm" action="<%=conPath%>/htgl/redis?action=addRedis" method="post">
+       <%-- <form name="userForm" action="<%=conPath%>/htgl/redis?action=addRedis" method="post"> --%>
+       <form name="userForm" action="<%=conPath%>/htgl/redisController/addRedis" method="post">
 		countries：<input type="text" name="country">
 		<input type="submit" value="添加">
 	   </form>

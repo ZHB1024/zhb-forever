@@ -14,31 +14,30 @@ import com.forever.zhb.design.pattern.proxy.Master;
 import com.forever.zhb.design.pattern.proxy.Person;
 import com.forever.zhb.design.pattern.proxy.cglib.ProxyFactory;
 import com.forever.zhb.design.pattern.proxy.cglib.User;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 
 
 @Controller
 @RequestMapping("/designPatterController")
 public class DesignPatternController {
-	
-	private Logger logger = LoggerFactory.getLogger(DesignPatternController.class);
-	
-	/*动态代理*/
-	@RequestMapping(value = "/proxy",method = RequestMethod.GET)
-	public void getLoginLogInfos(HttpServletRequest request,HttpServletResponse response){
-		Person person = (Person)new HomeLink().bind(new Master("校长"));
-		person.searchHouse();
-	}
-	
-	/*cglib代理*/
-	@RequestMapping(value = "/cglibProxy",method = RequestMethod.GET)
-	public void cglibProxy(HttpServletRequest request,HttpServletResponse response){
-		User user = (User)new ProxyFactory(new User()).getProxyInstance();
-		user.save();
-	}
-	
-	
-	
+    
+    private Logger logger = LoggerFactory.getLogger(DesignPatternController.class);
+    
+    /*动态代理*/
+    @RequestMapping(value = "/proxy",method = RequestMethod.GET)
+    public void getLoginLogInfos(HttpServletRequest request,HttpServletResponse response){
+        Person person = (Person)new HomeLink().bind(new Master("校长"));
+        person.searchHouse();
+    }
+    
+    /*cglib代理*/
+    @RequestMapping(value = "/cglibProxy",method = RequestMethod.GET)
+    public void cglibProxy(HttpServletRequest request,HttpServletResponse response){
+        User user = (User)new ProxyFactory(new User()).getProxyInstance();
+        user.save();
+    }
+    
+    
+    
 
 }
