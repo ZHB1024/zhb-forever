@@ -1,10 +1,14 @@
 package com.forever.zhb.controller.annotation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +22,21 @@ public class AlgorithmController {
 
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		List<String> name = new ArrayList<String>();
+		name.add("aa");
+		name.add("bb");
+		name.add("cc");
+		name.add("dd");
+		int num = name.size();
+		Map<Character, Integer> charMap = new HashMap<Character, Integer>();
+		charMap.put('a', 12);
+		charMap.put('a', 34);
+		int temp = charMap.get('a');
+		for(int i = 0 ; i < name.size() ; i++){
+			if (name.get(i).equals("bb")) {
+				name.remove(i);
+			}
+		}
 		return "test.body.index";
 	}
 
@@ -30,10 +49,17 @@ public class AlgorithmController {
 		 */
 
 		// 10,10+2,10+2+2,......
-		System.out.println(sum2(4));
-		
+		// System.out.println(sum2(4));
+
 		// 斐波那契数
-		System.out.println(getFibo(9));
+		// System.out.println(getFibo(9));
+
+		// 统计字符串中每个字符出现的次数
+		countChar1("aabbbcdd2f2c");
+		System.out.println("--------------------------------");
+		countChar2("aabbbcdd2f2c");
+		System.out.println("--------------------------------");
+		find("aaabbbcdd2f2c");
 
 	}
 
@@ -72,8 +98,85 @@ public class AlgorithmController {
 		}
 		if (i == 1 || i == 2) {
 			return 1;
-		}else {
+		} else {
 			return getFibo(i - 1) + getFibo(i - 2);
+		}
+
+	}
+
+	// 统计字符串中每个字符出现的次数
+	private static void countChar1(String str) {
+		if (StringUtils.isBlank(str)) {
+			return;
+		}
+		char[] charArray = str.toCharArray();
+		Map<Character, Integer> charMap = new HashMap<Character, Integer>();
+		for (char c : charArray) {
+			if (charMap.containsKey(c)) {
+				charMap.put(c, charMap.get(c) + 1);
+			} else {
+				charMap.put(c, 1);
+			}
+		}
+		charMap.forEach((k, v) -> {
+			System.out.println(k + " : " + v);
+		});
+	}
+
+	// 统计字符串中每个字符出现的次数
+	private static void countChar2(String str) {
+		if (StringUtils.isBlank(str)) {
+			return;
+		}
+		int length = 0;
+		while (str.length() > 0) {
+			String firstChar = String.valueOf(str.charAt(0));
+			String newString = str.replaceAll(firstChar, "");
+			length = str.length() - newString.length();
+			System.out.println(firstChar + " : " + length);
+			str = newString;
+		}
+	}
+
+	public static void find(String s) {
+        //aabbbcdd2f2c
+		StringBuffer sb = new StringBuffer(s);
+		sb.append('%');
+		int i = 0;// 字符串下标
+		int j = 1; // 记录重复数
+		int max = 1; // 记录最大的重复数
+		int m = 0; // 作为note数组的下标
+		int note[] = new int[20]; // 该数组是记录输出最大重复的子字符串的下标
+		while (i < sb.length() - 1) {
+			if (sb.charAt(i) == sb.charAt(i + 1)) {
+
+				j = j + 1;
+
+			} else {
+				if (j == max && j != 1) { // 该判断就是为了以防如出现多个最大重复长度的字串，比如aaabbbcc就该有aaa，bbb两个
+					m++;
+					note[m] = i - max + 1;
+				}
+				if (j > max) {
+
+					max = j;
+					note[0] = i - max + 1;
+					for (int n = 1; n < note.length; n++) {
+						note[n] = -1; // 出现更大的重复字串则将以前记录的小标清除
+					}
+				}
+				j = 1;
+			}
+			i++;
+		}
+		if (max == 1) {
+			System.out.println("所有字符都只单个出现，并无连续");
+			return;
+		}
+		for (int p = 0; p < note.length; p++) {
+			if (note[p] != -1) {
+				System.out.println(sb.substring(note[p], note[p] + max));
+			}
 		}
 
 	}
