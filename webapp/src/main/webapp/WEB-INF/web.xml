@@ -32,6 +32,9 @@
 	<listener>
 		<listener-class>com.forever.zhb.timer.listener.TimerTestThreadListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>com.forever.zhb.timer.listener.ScheduledExecutorTimerListener</listener-class>
+	</listener>
 
 	<filter>
 		<filter-name>openSession</filter-name>

@@ -22,6 +22,36 @@ public class AlgorithmController {
 
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int[] array = { 0, 1, 5, 6, 7, 9, 11, 14, 50, 69 };
+		System.out.println(binarySearch(array,  7, 0, array.length));
+		return "test.body.index";
+	}
+
+	public static void main(String[] args) {
+
+		// 二分查找、折半查找
+		/*int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
+		System.out.println(binarySearch(array, 7, 0, array.length-1));*/
+
+		// 10,10+2,10+2+2,......
+		// System.out.println(sum2(4));
+
+		// 斐波那契数
+		// System.out.println(getFibo(9));
+
+		// 统计字符串中每个字符出现的次数
+		/*
+		 * countChar1("aabbbcdd2f2c");
+		 * System.out.println("--------------------------------");
+		 * countChar2("aabbbcdd2f2c");
+		 * System.out.println("--------------------------------");
+		 * find("aaabbbcdd2f2c");
+		 */
+
+	}
+	
+	//遍历list时，删除其中元素，可能引发的问题
+	private void removeList(){
 		List<String> name = new ArrayList<String>();
 		name.add("aa");
 		name.add("bb");
@@ -32,49 +62,25 @@ public class AlgorithmController {
 		charMap.put('a', 12);
 		charMap.put('a', 34);
 		int temp = charMap.get('a');
-		for(int i = 0 ; i < name.size() ; i++){
+		for (int i = 0; i < name.size(); i++) {
 			if (name.get(i).equals("bb")) {
 				name.remove(i);
 			}
 		}
-		return "test.body.index";
-	}
-
-	public static void main(String[] args) {
-
-		// 二分查找、折半查找
-		/*
-		 * int[] array = {0,2,5,6,7,9,11,14,50,69,70};
-		 * System.out.println(binarySearch(array, 2, 0, 11));
-		 */
-
-		// 10,10+2,10+2+2,......
-		// System.out.println(sum2(4));
-
-		// 斐波那契数
-		// System.out.println(getFibo(9));
-
-		// 统计字符串中每个字符出现的次数
-		countChar1("aabbbcdd2f2c");
-		System.out.println("--------------------------------");
-		countChar2("aabbbcdd2f2c");
-		System.out.println("--------------------------------");
-		find("aaabbbcdd2f2c");
-
 	}
 
 	// 二分查找、折半查找
-	private static int binarySearch(int[] array, int target, int low, int high) {
+	private static String binarySearch(int[] array, int target, int low, int high) {
 		if (low >= high) {
-			return Integer.MAX_VALUE;
+			return "没有";
 		}
-		int mid = low + (high - low) / 2;
+		int mid = ( low + high ) / 2 ;
 		if (array[mid] == target) {
-			return mid;
-		} else if (array[mid] > target) {
-			return binarySearch(array, target, low, mid - 1);
+			return "值为：" + target + " 位置在：" + mid;
+		} else if (target < array[mid]  ) {
+			return binarySearch(array, target, low, mid-1);
 		} else {
-			return binarySearch(array, target, mid + 1, high);
+			return binarySearch(array, target, mid+1, high);
 		}
 	}
 
@@ -139,26 +145,24 @@ public class AlgorithmController {
 	}
 
 	public static void find(String s) {
-        //aabbbcdd2f2c
+		// aabbbcdd2f2c
+		// aaabbbcc
 		StringBuffer sb = new StringBuffer(s);
 		sb.append('%');
 		int i = 0;// 字符串下标
 		int j = 1; // 记录重复数
 		int max = 1; // 记录最大的重复数
 		int m = 0; // 作为note数组的下标
-		int note[] = new int[20]; // 该数组是记录输出最大重复的子字符串的下标
+		int note[] = new int[s.length() / 2]; // 该数组是记录输出最大重复的子字符串的下标
 		while (i < sb.length() - 1) {
 			if (sb.charAt(i) == sb.charAt(i + 1)) {
-
 				j = j + 1;
-
 			} else {
 				if (j == max && j != 1) { // 该判断就是为了以防如出现多个最大重复长度的字串，比如aaabbbcc就该有aaa，bbb两个
 					m++;
 					note[m] = i - max + 1;
 				}
 				if (j > max) {
-
 					max = j;
 					note[0] = i - max + 1;
 					for (int n = 1; n < note.length; n++) {
@@ -179,6 +183,55 @@ public class AlgorithmController {
 			}
 		}
 
+	}
+	
+//----------------------------------   排序   ------------------------------------------------------
+	//冒泡排序O(n^2)
+	public void bubbleSort(int[] values){
+		if (null == values || values.length == 0) {
+			System.out.println("--冒泡排序，请插入值");
+		}
+		int length = values.length;
+		for(int i=1 ; i<length ; i++){
+			for(int j = length-1; j >= i ; j--){
+				if (values[j-1] > values[j]) {
+					swap(values, j-1, j);
+				}
+			}
+		}
+		for (int i : values) {
+			System.out.print(i + " , ");
+		}
+		
+	}
+	
+	public void sort(int[] values){
+		if (null == values || values.length == 0) {
+			System.out.println("--排序，请插入值");
+		}
+		int length = values.length;
+		for(int i=1 ; i<length ; i++){
+			int low = i;
+			for(int j = i; j >= low ; j--){
+				if (values[j-1] > values[j]) {
+					swap(values, j-1, j);
+					low--;
+				}
+			}
+		}
+		
+		for (int i : values) {
+			System.out.print(i + " , ");
+		}
+		
+	}
+	
+	
+	
+	private void swap(int[] values,int left,int right){
+		int temp = values[left];
+		values[left] = values[right];
+		values[right] = temp;
 	}
 
 }

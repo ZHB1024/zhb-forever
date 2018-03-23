@@ -14,6 +14,7 @@ import com.forever.zhb.design.pattern.proxy.Master;
 import com.forever.zhb.design.pattern.proxy.Person;
 import com.forever.zhb.design.pattern.proxy.cglib.ProxyFactory;
 import com.forever.zhb.design.pattern.proxy.cglib.User;
+import com.forever.zhb.design.pattern.singleton.Singleton;
 
 
 
@@ -35,6 +36,13 @@ public class DesignPatternController {
     public void cglibProxy(HttpServletRequest request,HttpServletResponse response){
         User user = (User)new ProxyFactory(new User()).getProxyInstance();
         user.save();
+    }
+    
+    
+    /*单例*/
+    @RequestMapping(value = "/singleton",method = RequestMethod.GET)
+    public void singleton(HttpServletRequest request,HttpServletResponse response){
+        Singleton singleton = Singleton.getInstance();
     }
     
     
