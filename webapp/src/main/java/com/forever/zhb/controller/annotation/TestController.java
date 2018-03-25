@@ -24,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.forever.zhb.basic.BasicController;
-import com.forever.zhb.util.AjaxMessage;
 import com.forever.zhb.utils.AESUtil;
 import com.forever.zhb.utils.MessageUtil;
 

@@ -22,8 +22,10 @@ public class AlgorithmController {
 
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int[] array = { 0, 1, 5, 6, 7, 9, 11, 14, 50, 69 };
-		System.out.println(binarySearch(array,  7, 0, array.length));
+		/*int[] array = { 0, 1, 5, 6, 7, 9, 11, 14, 50, 69 };
+		System.out.println(binarySearch(array,  7, 0, array.length));*/
+	    int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56 ,34};
+        shellSort(array);
 		return "test.body.index";
 	}
 
@@ -47,6 +49,8 @@ public class AlgorithmController {
 		 * System.out.println("--------------------------------");
 		 * find("aaabbbcdd2f2c");
 		 */
+	    int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56 ,34};
+	    /*shellSort(array);*/
 
 	}
 	
@@ -224,6 +228,59 @@ public class AlgorithmController {
 			System.out.print(i + " , ");
 		}
 		
+	}
+	
+	//插入排序
+	private static void insertSort(int[] arrays) {
+	    if (null == arrays) {
+            return;
+        }
+	    for (int i : arrays) {
+	        System.out.print(i + " ,");
+        }
+	    
+	    int length = arrays.length;
+	    int j ;
+	    for(int i=1; i< length;i++) {
+	        int temp = arrays[i];
+	        for(j = i ; j>0 && temp<arrays[j-1];j--) {
+	            arrays[j] = arrays[j-1];
+	        }
+	        arrays[j] = temp;
+	    }
+	    
+	    System.out.println("");
+	    for (int i : arrays) {
+            System.out.print(i + " ,");
+        }
+	}
+	
+	//希尔排序
+	private static void shellSort(int[] arrays) {
+	    if (null == arrays) {
+            return ;
+        }
+	    for (int i : arrays) {
+            System.out.print(i + " ,");
+        }
+	    
+	    int j;
+	    int length = arrays.length;
+	    for(int gap = length/2;gap > 0; gap /=2) {
+	        for(int i = gap ; i<length; i++) {
+	            int temp = arrays[i];
+	            for(j = i ; j >= gap&& temp<arrays[j-gap];j -= gap) {
+	                arrays[j] = arrays[j-gap];
+	            }
+	            arrays[j]= temp;
+	        }
+	    }
+	    
+	    
+	    System.out.println("");
+        for (int i : arrays) {
+            System.out.print(i + " ,");
+        }
 	}
 	
 	
