@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import sun.util.logging.resources.logging;
+
 @Controller
 @RequestMapping("/algorithmController")
 public class AlgorithmController {
@@ -22,18 +24,22 @@ public class AlgorithmController {
 
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/*int[] array = { 0, 1, 5, 6, 7, 9, 11, 14, 50, 69 };
-		System.out.println(binarySearch(array,  7, 0, array.length));*/
-	    int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56 ,34};
-        shellSort(array);
+		/*
+		 * int[] array = { 0, 1, 5, 6, 7, 9, 11, 14, 50, 69 };
+		 * System.out.println(binarySearch(array, 7, 0, array.length));
+		 */
+		int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56, 34 };
+		shellSort(array);
 		return "test.body.index";
 	}
 
 	public static void main(String[] args) {
 
 		// 二分查找、折半查找
-		/*int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
-		System.out.println(binarySearch(array, 7, 0, array.length-1));*/
+		/*
+		 * int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
+		 * System.out.println(binarySearch(array, 7, 0, array.length-1));
+		 */
 
 		// 10,10+2,10+2+2,......
 		// System.out.println(sum2(4));
@@ -49,13 +55,29 @@ public class AlgorithmController {
 		 * System.out.println("--------------------------------");
 		 * find("aaabbbcdd2f2c");
 		 */
-	    int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56 ,34};
-	    /*shellSort(array);*/
+		int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56, 34 };
+		/* shellSort(array); */
+
+		// 冒泡排序
+		// bubbleSort(array);
+
+		// 简单选择排序
+		/* selectSort(array); */
+
+		// 归并排序
+		for (int i : array) {
+			System.out.print(i + " ,");
+		}
+		mergeSort(array, 0, array.length - 1);
+		System.out.println();
+		for (int i : array) {
+			System.out.print(i + " ,");
+		}
 
 	}
-	
-	//遍历list时，删除其中元素，可能引发的问题
-	private void removeList(){
+
+	// 遍历list时，删除其中元素，可能引发的问题
+	private void removeList() {
 		List<String> name = new ArrayList<String>();
 		name.add("aa");
 		name.add("bb");
@@ -78,13 +100,13 @@ public class AlgorithmController {
 		if (low >= high) {
 			return "没有";
 		}
-		int mid = ( low + high ) / 2 ;
+		int mid = (low + high) / 2;
 		if (array[mid] == target) {
 			return "值为：" + target + " 位置在：" + mid;
-		} else if (target < array[mid]  ) {
-			return binarySearch(array, target, low, mid-1);
+		} else if (target < array[mid]) {
+			return binarySearch(array, target, low, mid - 1);
 		} else {
-			return binarySearch(array, target, mid+1, high);
+			return binarySearch(array, target, mid + 1, high);
 		}
 	}
 
@@ -188,104 +210,179 @@ public class AlgorithmController {
 		}
 
 	}
-	
-//----------------------------------   排序   ------------------------------------------------------
-	//冒泡排序O(n^2)
-	public void bubbleSort(int[] values){
-		if (null == values || values.length == 0) {
-			System.out.println("--冒泡排序，请插入值");
+
+	// ---------------------------------- 排序
+	// ------------------------------------------------------
+
+	// 冒泡排序O(n^2)
+	public static void bubbleSort(int[] values) {
+		if (null == values) {
+			return;
 		}
+		for (int i : values) {
+			System.out.print(i + " ,");
+		}
+
 		int length = values.length;
-		for(int i=1 ; i<length ; i++){
-			for(int j = length-1; j >= i ; j--){
-				if (values[j-1] > values[j]) {
-					swap(values, j-1, j);
+		for (int i = 1; i < length - 1; i++) {
+			for (int j = length - 1; j >= i; j--) {
+				if (values[j - 1] > values[j]) {
+					swap(values, j - 1, j);
 				}
 			}
 		}
+
+		System.out.println("");
 		for (int i : values) {
-			System.out.print(i + " , ");
+			System.out.print(i + " ,");
 		}
-		
+
 	}
-	
-	public void sort(int[] values){
-		if (null == values || values.length == 0) {
-			System.out.println("--排序，请插入值");
+
+	// 简单选择排序
+	private static void selectSort(int[] arrays) {
+		if (null == arrays) {
+			return;
 		}
-		int length = values.length;
-		for(int i=1 ; i<length ; i++){
-			int low = i;
-			for(int j = i; j >= low ; j--){
-				if (values[j-1] > values[j]) {
-					swap(values, j-1, j);
-					low--;
+		for (int i : arrays) {
+			System.out.print(i + " ,");
+		}
+
+		int length = arrays.length;
+		int min, j;
+		for (int i = 0; i < length; i++) {
+			min = i;
+			for (j = i + 1; j < length; j++) {
+				if (arrays[min] > arrays[j]) {
+					min = j;
 				}
 			}
+			if (min != i) {
+				swap(arrays, i, min);
+			}
 		}
-		
-		for (int i : values) {
-			System.out.print(i + " , ");
+
+		System.out.println("");
+		for (int i : arrays) {
+			System.out.print(i + " ,");
 		}
-		
 	}
-	
-	//插入排序
+
+	// 插入排序
 	private static void insertSort(int[] arrays) {
-	    if (null == arrays) {
-            return;
-        }
-	    for (int i : arrays) {
-	        System.out.print(i + " ,");
-        }
-	    
-	    int length = arrays.length;
-	    int j ;
-	    for(int i=1; i< length;i++) {
-	        int temp = arrays[i];
-	        for(j = i ; j>0 && temp<arrays[j-1];j--) {
-	            arrays[j] = arrays[j-1];
-	        }
-	        arrays[j] = temp;
-	    }
-	    
-	    System.out.println("");
-	    for (int i : arrays) {
-            System.out.print(i + " ,");
-        }
+		if (null == arrays) {
+			return;
+		}
+		for (int i : arrays) {
+			System.out.print(i + " ,");
+		}
+
+		int length = arrays.length;
+		int j;
+		for (int i = 1; i < length; i++) {
+			int temp = arrays[i];
+			for (j = i; j > 0 && temp < arrays[j - 1]; j--) {
+				arrays[j] = arrays[j - 1];
+			}
+			arrays[j] = temp;
+		}
+
+		System.out.println("");
+		for (int i : arrays) {
+			System.out.print(i + " ,");
+		}
 	}
-	
-	//希尔排序
+
+	// 希尔排序
 	private static void shellSort(int[] arrays) {
-	    if (null == arrays) {
-            return ;
-        }
-	    for (int i : arrays) {
-            System.out.print(i + " ,");
-        }
-	    
-	    int j;
-	    int length = arrays.length;
-	    for(int gap = length/2;gap > 0; gap /=2) {
-	        for(int i = gap ; i<length; i++) {
-	            int temp = arrays[i];
-	            for(j = i ; j >= gap&& temp<arrays[j-gap];j -= gap) {
-	                arrays[j] = arrays[j-gap];
-	            }
-	            arrays[j]= temp;
-	        }
-	    }
-	    
-	    
-	    System.out.println("");
-        for (int i : arrays) {
-            System.out.print(i + " ,");
-        }
+		if (null == arrays) {
+			return;
+		}
+		for (int i : arrays) {
+			System.out.print(i + " ,");
+		}
+
+		int j;
+		int length = arrays.length;
+		for (int gap = length / 2; gap > 0; gap /= 2) {
+			for (int i = gap; i < length; i++) {
+				int temp = arrays[i];
+				for (j = i; j >= gap && temp < arrays[j - gap]; j -= gap) {
+					arrays[j] = arrays[j - gap];
+				}
+				arrays[j] = temp;
+			}
+		}
+
+		System.out.println("");
+		for (int i : arrays) {
+			System.out.print(i + " ,");
+		}
 	}
-	
-	
-	
-	private void swap(int[] values,int left,int right){
+
+	// 归并排序
+	private static int[] sort(int[] a, int low, int high) {
+		if (low < high) {
+			int mid = (low + high) / 2;
+			sort(a, low, mid);
+			sort(a, mid + 1, high);
+			// 左右归并
+			merge(a, low, mid, high);
+		}
+		return a;
+	}
+
+	/*
+	 * private static void merge(int[] a, int low, int mid, int high) { int[]
+	 * temp = new int[high - low + 1]; int i = low; int j = mid + 1; int k = 0;
+	 * // 把较小的数先移到新数组中 while (i <= mid && j <= high) { if (a[i] < a[j]) {
+	 * temp[k++] = a[i++]; } else { temp[k++] = a[j++]; } } // 把左边剩余的数移入数组 while
+	 * (i <= mid) { temp[k++] = a[i++]; } // 把右边边剩余的数移入数组 while (j <= high) {
+	 * temp[k++] = a[j++]; } // 把新数组中的数覆盖nums数组 for (int x = 0; x < temp.length;
+	 * x++) { a[x + low] = temp[x]; } }
+	 */
+
+	private static int[] mergeSort(int[] arrays, int low, int high) {
+		if (low < high) {
+			int mid = (low + high) / 2;
+			mergeSort(arrays, low, mid);
+			mergeSort(arrays, mid + 1, high);
+			merge(arrays, low, mid, high);
+		}
+		return arrays;
+	}
+
+	private static void merge(int[] arrays, int low, int mid, int high) {
+		int[] temp = new int[high - low + 1];
+		int i = low;
+		int j = mid + 1;
+		int k = 0;
+		//把较小的放入临时数组中
+		while (i <= mid && j <= high) {
+			if (arrays[i] < arrays[j]) {
+				temp[k++] = arrays[i++];
+			} else {
+				temp[k++] = arrays[j++];
+			}
+		}
+
+		//如果左边还剩余，则把左边剩余的放入临时数组中
+		while (i <= mid) {
+			temp[k++] = arrays[i++];
+		}
+		
+		//如果右边还剩余，则把右边剩余的放入临时数组中
+		while (j <= high) {
+			temp[k++] = arrays[j++];
+		}
+
+		//把排好序的临时数组，整理到目标数组中
+		for (int t = 0; t < temp.length; t++) {
+			arrays[t + low] = temp[t];
+		}
+	}
+
+	private static void swap(int[] values, int left, int right) {
 		int temp = values[left];
 		values[left] = values[right];
 		values[right] = temp;
