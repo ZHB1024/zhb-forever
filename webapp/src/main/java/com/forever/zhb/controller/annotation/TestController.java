@@ -11,7 +11,9 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.forever.zhb.basic.BasicController;
 import com.forever.zhb.utils.AESUtil;
@@ -79,6 +82,18 @@ public class TestController extends BasicController {
 		ajaxMessage.setO(names);
 		writeJSON(ajaxMessage, response);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/ajaxResponseBody")
+	public Map<String, Object> ajaxResponseBody(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Map<String, Object> names = new HashMap<String, Object>();
+		names.put("name","zhanghuibin");
+		return names;
+		/*setResponse(response);
+		ajaxMessage.setFlag("true");
+		ajaxMessage.setO(names);
+		writeJSON(ajaxMessage, response);*/
+	}
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException,
 			IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException,
@@ -92,9 +107,9 @@ public class TestController extends BasicController {
 		// System.out.println("main:" + returnFinally());
 		// printPrimeNumber(100);
 		
-		TestInstance.printName();
-		TestAbstract.printName();
-
+		//TestInstance.printName();
+		//TestAbstract.printName();
+		
 	}
 
 	private static int countNumber(String srcText, String findText) {

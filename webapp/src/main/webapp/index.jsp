@@ -5,7 +5,7 @@
 <%
   String ctxPath = request.getContextPath();
 %>
-<script type="text/javascript" src="<%=ctxPath%>/js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="<%=ctxPath%>/js/jquery-1.8.0.js"></script>
 
 
 <div align="center">
@@ -27,7 +27,18 @@ $("#ajaxId").click(function(){
         }
         $("select[name=ajaxName]").html(result);
     });
-});
+}); 
+
+/* $("#ajaxId").click(function(){
+	var url = "/testController/ajaxResponseBody";
+    var result = "<option value='' selected>--分类--</option>";
+    $.post(url,function(data){
+    	console.log(data)
+    	var value = data.name;
+        var o = $.parseJSON(data);
+        var ddd = o.name;
+    });
+}); */
 
 
 function getCategory(){

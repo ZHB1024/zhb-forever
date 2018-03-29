@@ -9,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.forever.zhb.design.pattern.chainOfResponsibility.BossLeader;
+import com.forever.zhb.design.pattern.chainOfResponsibility.DirectorLeader;
+import com.forever.zhb.design.pattern.chainOfResponsibility.Leader;
+import com.forever.zhb.design.pattern.chainOfResponsibility.LeaveRequest;
+import com.forever.zhb.design.pattern.chainOfResponsibility.ManagerLeader;
 import com.forever.zhb.design.pattern.proxy.HomeLink;
 import com.forever.zhb.design.pattern.proxy.Master;
 import com.forever.zhb.design.pattern.proxy.Person;
@@ -45,6 +50,36 @@ public class DesignPatternController {
         Singleton singleton = Singleton.getInstance();
     }
     
+    /*职责链*/
+    @RequestMapping(value = "/chainOfResponsibility",method = RequestMethod.GET)
+    public void chainOfResponsibility(HttpServletRequest request,HttpServletResponse response){
+    	Leader director = new DirectorLeader("张三");
+    	Leader manager = new ManagerLeader("李四");
+    	Leader boss = new BossLeader("王五");
+    	
+    	director.setNextLeader(manager);
+    	manager.setNextLeader(boss);
+    	
+    	LeaveRequest leaveRequest = new LeaveRequest("小明", 10, "回家");
+    	
+    	director.handerRequest(leaveRequest);
+    }
+    
+    
+    
+    
+    public static void main(String[] args) {
+    	Leader director = new DirectorLeader("张三");
+    	Leader manager = new ManagerLeader("李四");
+    	Leader boss = new BossLeader("王五");
+    	
+    	director.setNextLeader(manager);
+    	manager.setNextLeader(boss);
+    	
+    	LeaveRequest leaveRequest = new LeaveRequest("小明", 10, "回家");
+    	
+    	director.handerRequest(leaveRequest);
+    }
     
     
 

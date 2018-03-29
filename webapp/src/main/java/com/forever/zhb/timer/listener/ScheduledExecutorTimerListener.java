@@ -14,7 +14,12 @@ public class ScheduledExecutorTimerListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent paramServletContextEvent) {
 		ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-		scheduledExecutorService.scheduleAtFixedRate(new ScheduledExecutorRunnableTask(), 0, 5, TimeUnit.MINUTES);
+		ScheduledExecutorRunnableTask task = new ScheduledExecutorRunnableTask();
+		scheduledExecutorService.scheduleAtFixedRate(task, 0, 5, TimeUnit.MINUTES);
+		
+		//程序无关
+		Executors.newFixedThreadPool(2);
+		Executors.newSingleThreadExecutor();
 		Executors.newCachedThreadPool();
 
 	}

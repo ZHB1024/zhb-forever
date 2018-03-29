@@ -20,6 +20,7 @@ public class HomeLink implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		System.out.println("这是代理----前");
 		Object ob = method.invoke(this.object, args);
+		System.out.println(ob.toString());
 		System.out.println("这是代理----后");
 		return ob;
 	}
