@@ -15,7 +15,7 @@ public class RedisTemplateUtil {
 	private RedisTemplate redisTemplate;  
 	
 	public void set(String key, Object value) {  
-        ValueOperations valueOperations = redisTemplate.opsForValue();  
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();  
         valueOperations.set(key, value);  
     }  
   
@@ -24,7 +24,7 @@ public class RedisTemplateUtil {
     }  
   
     public void setList(String key, List<?> value) {  
-        ListOperations listOperations = redisTemplate.opsForList();  
+        ListOperations<String, List<?>> listOperations = redisTemplate.opsForList();  
         listOperations.leftPush(key, value);  
     }  
   
@@ -38,11 +38,11 @@ public class RedisTemplateUtil {
     }  
   
     public void setSet(String key, Set<?> value) {  
-        SetOperations setOperations = redisTemplate.opsForSet();  
+        SetOperations<String, Set<?>> setOperations = redisTemplate.opsForSet();  
         setOperations.add(key, value);  
     }  
   
-    public Object getSet(String key) {
+    public Set<?> getSet(String key) {
     	Object result = redisTemplate.opsForSet().members(key);
     	if (null != result) {
 			return (Set<?>)result;
@@ -52,7 +52,7 @@ public class RedisTemplateUtil {
     }  
   
     public void setHash(String key, Map<String, ?> value) {  
-        HashOperations hashOperations = redisTemplate.opsForHash();  
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();  
         hashOperations.putAll(key, value);  
     }  
   

@@ -2,6 +2,8 @@ package com.forever.zhb.controller.annotation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +48,13 @@ public class RedisController {
          * ArrayList<String>(); Object value = redisManager.getRedis("wode"); if (null
          * != value) { result.add(value.toString()); }
          */
+        Set<String> sets = new TreeSet<String>();
+        sets.add("11");
+        sets.add("33");
+        sets.add("22");
+        redisManager.addSet("number", sets);
+        Set<?> setTemps = redisManager.getSet("number");
+        Set<?> setTemps2 = redisManager.getSet("number");
         RedisListVO vo = new RedisListVO();
         vo.setKey("countries");
         vo.setValues(result);

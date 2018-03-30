@@ -1,6 +1,7 @@
 package com.forever.zhb.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import com.forever.zhb.dao.IRedisDAO;
 import com.forever.zhb.service.IRedisManager;
@@ -33,5 +34,15 @@ public class RedisManagerImpl implements IRedisManager{
 
 	public void setRedisDao(IRedisDAO redisDao) {
 		this.redisDao = redisDao;
+	}
+
+	@Override
+	public void addSet(String key, Set<?> value) {
+		this.redisDao.addSet(key, value);
+	}
+
+	@Override
+	public Set<?> getSet(String key) {
+		return this.redisDao .getSet(key);
 	}
 }

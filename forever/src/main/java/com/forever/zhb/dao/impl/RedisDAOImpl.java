@@ -1,6 +1,7 @@
 package com.forever.zhb.dao.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +28,16 @@ public class RedisDAOImpl extends RedisTemplateBase implements IRedisDAO {
 	
 	public List<?> getList(String key){
 		return redisTemplateUtil.getList(key);
+	}
+
+	@Override
+	public void addSet(String key, Set<?> value) {
+		redisTemplateUtil.setSet(key, value);
+	}
+
+	@Override
+	public Set<?> getSet(String key) {
+		return redisTemplateUtil.getSet(key);
 	}
 
 }
