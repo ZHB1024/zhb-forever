@@ -104,9 +104,17 @@
         <put-attribute name="main" value="/htgl/upload/index.jsp"/>
     </definition>
     
+    <definition name="htgl.uploadVideo.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/attachment/uploadVideo.jsp"/>
+    </definition>
+    
     <!-- download -->
     <definition name="htgl.download.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/download/index.jsp"/>
+    </definition>
+    
+    <definition name="htgl.downloadVideo.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/attachment/downloadVideo.jsp"/>
     </definition>
     
     <!-- search -->

@@ -20,11 +20,25 @@ public class Constants {
     //image
     public static String IMAGE_PATH = "image";
     
+    //image 最大
+    public static Long IMAGE_MAX_SIZE = 10*1024*1024L;
+    
+    //video
+    public static String VIDEO_PATH = "video";
+    
+    //video 最大
+    public static Long VIDEO_MAX_SIZE = 50*1024*1024L;
+    
+    
     public static int PAGE_SIZE = 12;
     
     public static String SESSION_LOGINFODATA = "session_UserInfoData";
     
     public static String NEWSPROTO_PATH = "com.forever.zhb.proto.NewsProto$News";
+    
+    
+    
+    
     
     
     public static String TEMPLATE = "<%if(flag){%>flag:true！" + "\n"+

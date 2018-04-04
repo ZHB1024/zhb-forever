@@ -109,6 +109,11 @@ public class TestController extends BasicController {
 		
 		//TestInstance.printName();
 		//TestAbstract.printName();
+		Integer a = 100;
+		Integer b = 100;
+		Integer c = new Integer(100);
+		Integer d = new Integer(100);
+		System.out.println(a==b);
 		
 	}
 
