@@ -19,6 +19,15 @@ public class PropertyUtil {
     private static String uploadPath ;
     private static String downloadPath ;
     
+    //mail
+    private static String mailHost;
+    private static String mailUserName;
+    private static String mailPassword;
+    private static String mailPort;
+    private static String mailProtocol;
+    private static String mailSmtpAuth;
+    private static String mailSmtpTimeOut;
+    
     static{
         String propertyPath = System.getenv("propertyPath");
         if (null == propertyPath) {
@@ -35,6 +44,15 @@ public class PropertyUtil {
                 password = properties.getProperty("sys.jdbc.datasourse.forever.password");
                 uploadPath = properties.getProperty("sys.upload.path");
                 downloadPath = properties.getProperty("sys.download.path");
+                
+                //mail
+                mailHost = properties.getProperty("sys.mail.forever.host");
+                mailUserName = properties.getProperty("sys.mail.forever.username");
+                mailPassword = properties.getProperty("sys.mail.forever.password");
+                mailPort = properties.getProperty("sys.mail.forever.port");
+                mailProtocol = properties.getProperty("sys.mail.forever.protocol");
+                mailSmtpAuth = properties.getProperty("sys.mail.forever.smtp.auth");
+                mailSmtpTimeOut = properties.getProperty("sys.mail.forever.smtp.timeout");
             } catch (IOException e) {
             }
         }
@@ -49,32 +67,16 @@ public class PropertyUtil {
         return jdbcUrl;
     }
 
-    public static void setJdbcUrl(String jdbcUrl) {
-        PropertyUtil.jdbcUrl = jdbcUrl;
-    }
-
     public static String getDriverClassName() {
         return driverClassName;
-    }
-
-    public static void setDriverClassName(String driverClassName) {
-        PropertyUtil.driverClassName = driverClassName;
     }
 
     public static String getUserName() {
         return userName;
     }
 
-    public static void setUserName(String userName) {
-        PropertyUtil.userName = userName;
-    }
-
     public static String getPassword() {
         return password;
-    }
-
-    public static void setPassword(String password) {
-        PropertyUtil.password = password;
     }
 
     public static String getUploadPath() {
@@ -84,5 +86,33 @@ public class PropertyUtil {
     public static String getDownloadPath() {
         return downloadPath;
     }
+
+	public static String getMailHost() {
+		return mailHost;
+	}
+
+	public static String getMailUserName() {
+		return mailUserName;
+	}
+
+	public static String getMailPassword() {
+		return mailPassword;
+	}
+
+	public static String getMailPort() {
+		return mailPort;
+	}
+
+	public static String getMailProtocol() {
+		return mailProtocol;
+	}
+
+	public static String getMailSmtpAuth() {
+		return mailSmtpAuth;
+	}
+
+	public static String getMailSmtpTimeOut() {
+		return mailSmtpTimeOut;
+	}
 
 }

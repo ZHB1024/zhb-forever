@@ -55,7 +55,7 @@
       <tr>
         <td>电子邮箱：</td>
         <td>
-          <input type="text" name="email" value="${user.email}"/>
+          <input type="email" name="email" value="${user.email}"/>
         </td>
       </tr>
       <tr>

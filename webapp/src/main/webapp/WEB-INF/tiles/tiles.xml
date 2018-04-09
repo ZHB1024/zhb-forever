@@ -186,5 +186,13 @@
         <put-attribute name="main" value="/test/index.jsp"/>
     </definition>
     
+    <!-- mail -->
+    <definition name="htgl.mail.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/mail/index.jsp"/>
+    </definition>
+    <definition name="htgl.mail.sendMail" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/mail/sendMail.jsp"/>
+    </definition>
+    
     
 </tiles-definitions>
