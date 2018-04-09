@@ -34,6 +34,7 @@ public class MailController extends BasicController {
 
 	@RequestMapping(value = "/sendMail", method = RequestMethod.POST)
 	public String sendMail(HttpServletRequest request, HttpServletResponse response, MailVo mailVo) {
+		//MailVo 包含 接收方的邮箱地址、邮件标题、邮件内容
 		if (null == mailVo) {
 			request.setAttribute("errorMsg", "信息必须填写！");
 			return "htgl.mail.index";
@@ -61,32 +62,20 @@ public class MailController extends BasicController {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.auth", PropertyUtil.getMailSmtpAuth());
-		// properties.put("mail.smtp.socketFactory.port", MAIL_PORT);
 		properties.put("mail.smtp.socketFactory.fallback", "false");
 		properties.put("mail.smtp.timeout", PropertyUtil.getMailSmtpTimeOut());
 		sender.setJavaMailProperties(properties);
 		
 		MimeMessage mimeMessage = sender.createMimeMessage();
 		
-		/*String template_start = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf8\"/></head><body>";
-        String template_end = "</body></html>";
+		//可以对邮件内容加自定义样式，我这里没有加
+		String content_start = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf8\"/></head><body>";
+        String content_end = "</body></html>";
         StringBuilder str = new StringBuilder();
-        str.append(template_start);
-        str.append("老师 ，您好："
-                + "<BR><BR>"
-                + "您正在申请学信网数字证书解锁或初始化PIN码业务，您的验证码为：<strong>"  + "</strong>。<BR>"
-                + "请点击<A href=" + ">学信网数字证书在线解锁系统</A>，登录并输入动态验证码进行解锁，解锁后数字证书PIN码将重置为1234。" 
-                + "<BR><BR>"
-                + "提示："
-                + "<BR>"
-                + "&nbsp;&nbsp;&nbsp;&nbsp;1、请小心保存您的验证码及电子钥匙，以确保您的电子钥匙安全。"
-                + "<BR>"
-                + "&nbsp;&nbsp;&nbsp;&nbsp;2、为了保证您的账户安全，您需要重置"  + "平台密码。"
-                + "<BR>"
-                + "&nbsp;&nbsp;&nbsp;&nbsp;3、此邮件为审核通过后系统通知邮件，请不要直接回复此邮件，如有其他疑问，请点击<A href='http://cert.chsi.com.cn/help/questions.jsp'>联系我们</A>获取咨询方式。"
-                );
-        str.append(template_end);
-        String text = str.toString();*/
+        str.append(content_start);
+        str.append(mailVo.getContent());
+        str.append(content_end);
+        String content = str.toString();
         
         //mimeMessage.setContent(text, "text/html;charset=GB18030");
         MimeMessageHelper helper;
@@ -95,7 +84,7 @@ public class MailController extends BasicController {
             helper.setFrom(sender.getUsername());
             helper.setTo(mailVo.getToMail());
             helper.setSubject(mailVo.getTitle());
-            helper.setText(mailVo.getContent(), true);
+            helper.setText(content, true);
             sender.send(mimeMessage);
         } catch (MessagingException e1) {
         	logger.info("发送邮件时，发送失败");

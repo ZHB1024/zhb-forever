@@ -93,7 +93,9 @@
     <definition name="htgl.user.users" extends="htgl.mainLayout">
         <put-attribute name="main" value="/htgl/user/users.jsp"/>
     </definition>
-    
+  
+<!-- attachment -->
+
     <!-- photo -->
     <definition name="htgl.photoIndex" extends="htgl.mainLayout">
         <put-attribute name="main" value="/htgl/photo/photo.jsp"/>
@@ -116,6 +118,13 @@
     <definition name="htgl.downloadVideo.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/attachment/downloadVideo.jsp"/>
     </definition>
+    
+    <!-- excel -->
+    <definition name="htgl.excel.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/attachment/excel/index.jsp"/>
+    </definition>
+    
+    
     
     <!-- search -->
     <definition name="htgl.search.index" extends="htgl.main.layout">
@@ -186,7 +195,7 @@
         <put-attribute name="main" value="/test/index.jsp"/>
     </definition>
     
-    <!-- mail -->
+    <!-- email -->
     <definition name="htgl.mail.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/mail/index.jsp"/>
     </definition>
