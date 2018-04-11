@@ -84,14 +84,19 @@ public class PasswordUtil {
 
         Key key = getPBEKey(password);
         byte[] encipheredData = null;
-        PBEParameterSpec parameterSpec = new PBEParameterSpec(salt, ITERATIONCOUNT);
         try {
+        	//使用PBEWithMD5AndDES算法获取Cipher实例  
             Cipher cipher = Cipher.getInstance(ALGORITHM);
-
+            
+            //初始化Cipher为加密器 
+            PBEParameterSpec parameterSpec = new PBEParameterSpec(salt, ITERATIONCOUNT);
+            
             cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
-
+            
+            //对数据进行加密 
             encipheredData = cipher.doFinal(plaintext.getBytes());
         } catch (Exception e) {
+        	e.printStackTrace();
         }
         return bytesToHexString(encipheredData);
     }

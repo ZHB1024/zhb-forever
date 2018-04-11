@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.forever.zhb.basic.BasicController;
+import com.forever.zhb.controller.annotation.test.Integer;
+import com.forever.zhb.controller.annotation.test.StaticTest;
 import com.forever.zhb.utils.AESUtil;
 import com.forever.zhb.utils.MessageUtil;
 
@@ -109,11 +111,12 @@ public class TestController extends BasicController {
 		
 		//TestInstance.printName();
 		//TestAbstract.printName();
-		Integer a = 100;
-		Integer b = 100;
-		Integer c = new Integer(100);
-		Integer d = new Integer(100);
-		System.out.println(a==b);
+		/*Integer i = new Integer(10);
+		java.lang.Integer in = new java.lang.Integer(10);
+		System.out.println(i.toString(10));
+		System.out.println( in.toString(10));*/
+		System.out.println( StaticTest.VALUE20);
+		//StaticTest.getInstance();
 		
 	}
 

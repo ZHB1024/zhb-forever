@@ -62,5 +62,9 @@ public class Base64Util {
 
 		return to.toString();
 	}
+	
+	public static void main(String[] args){
+		System.out.println(encode("A".getBytes()));
+	}
 
 }
