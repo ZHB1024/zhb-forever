@@ -1,4 +1,4 @@
-package com.forever.zhb.utils.password;
+package com.forever.zhb.utils.password.symmetric;
 
 import java.security.Key;
 import java.security.SecureRandom;
@@ -9,15 +9,25 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-public class PBEWithMD5AndDESUtil {
-
+public class PBEUtil {
+	
 	/**
+	 * PBE (Password Based Encryption，基于口令加码) ，综合了对称加密和消息摘要的优势
+	 * 
+	 * 特点：口令用户自己保管，采用随机数（盐）杂凑多重加密
+	 * 口令代替秘钥，口令易于记忆
+	 * 口令不会很长，易于穷举破解，所以加入了随机信息盐，它能够阻止字典攻击或预先计算的攻击。
+	 * 
+	 * 常见算法如：PBEWithMD5AndDES(MD5和DES)
 	 * JAVA6支持以下任意一种算法 PBEWITHMD5ANDDES PBEWITHMD5ANDTRIPLEDES
 	 * PBEWITHSHAANDDESEDE PBEWITHSHA1ANDRC2_40 PBKDF2WITHHMACSHA1
+	 * 
+	 * 秘钥长度：
 	 */
 
+	
 	/**
-	 * 定义使用的算法为:PBEwithMD5andDES算法
+	 * 定义使用的算法为:PBEwithMD5AndDES算法
 	 */
 	public static final String ALGORITHM = "PBEWithMD5AndDES";// 加密算法
 
@@ -37,7 +47,7 @@ public class PBEWithMD5AndDESUtil {
 	 *            待加密的明文字符串
 	 * @param password
 	 *            生成密钥时所使用的密码
-	 * @return 加密后的密文字符串
+	 * @return 加密后的密文字符串(已转为十六进制)
 	 * @throws Exception
 	 */
 	public static String encryptByStaticSalt(String userName, String password) {
@@ -58,6 +68,7 @@ public class PBEWithMD5AndDESUtil {
 			encipheredData = cipher.doFinal(userName.getBytes());
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 		return bytesToHexString(encipheredData);
 	}
@@ -72,7 +83,7 @@ public class PBEWithMD5AndDESUtil {
 	 *            生成密钥时所使用的密码
 	 * @param randomSalt
 	 *            随机盐值
-	 * @return 加密后的密文字符串
+	 * @return 加密后的密文字符串(已转为十六进制)
 	 * @throws Exception
 	 */
 	public static String encryptByRandomSalt(String userName, String password, byte[] randomSalt) {
@@ -256,13 +267,13 @@ public class PBEWithMD5AndDESUtil {
 	
 	public static void main(String[] args) {
         
-        String str = "230hldbc";
-        String password = "heilongjiangdbc";
+        String useName = "zhanghuibin";
+        String password = "ZHB1024";
 
         try {
             //静态盐值
         	System.out.println("静态盐值:");
-            String ciphertext1 = encryptByStaticSalt(str, password);
+            String ciphertext1 = encryptByStaticSalt(useName, password);
             System.out.println("密文:" + ciphertext1);
             String plaintext1 = decryptByStaticSalt(ciphertext1, password);
             System.out.println("明文："+ plaintext1);
@@ -272,7 +283,7 @@ public class PBEWithMD5AndDESUtil {
             //动态盐值
             System.out.println("动态盐值:");
             byte[] salt = getRandomSalt();
-            String ciphertext2 = encryptByRandomSalt(str, password,salt);
+            String ciphertext2 = encryptByRandomSalt(useName, password,salt);
             System.out.println("密文:" + ciphertext2);
             String plaintext2 = decryptByRandomSalt(ciphertext2, password,salt);
             System.out.println("明文："+ plaintext2);
