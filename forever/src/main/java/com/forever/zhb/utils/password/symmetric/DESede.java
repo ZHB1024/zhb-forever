@@ -1,9 +1,6 @@
 package com.forever.zhb.utils.password.symmetric;
 
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -11,9 +8,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 
-import org.apache.commons.lang3.StringUtils;
+import com.forever.zhb.utils.password.PrintByteArray;
 
-public class DESede {
+public class DESede extends PrintByteArray{
 	
 	
 	public static final String KEY_ALGORITHM = "DESede";
@@ -29,10 +26,10 @@ public class DESede {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] encrypt(String data,String key) throws Exception{
+	public static byte[] encrypt(String data,byte[] key) throws Exception{
 		byte[] datas = data.getBytes();
-		byte[] bytes = initKey(key);
-		SecretKey sk = toKey(bytes);
+		
+		SecretKey sk = toKey(key);
 		
 		/*
 		 * 使用PKCS7Padding 填充方式,bouncy castle 支持此方式
@@ -51,9 +48,8 @@ public class DESede {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String decrypt(byte[] datas,String key) throws Exception{
-		byte[] bytes = initKey(key);
-		SecretKey sk = toKey(bytes);
+	public static String decrypt(byte[] datas,byte[] key) throws Exception{
+		SecretKey sk = toKey(key);
 		Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, sk);
 		byte[] results = cipher.doFinal(datas);
@@ -67,16 +63,9 @@ public class DESede {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] initKey(String key) throws NoSuchAlgorithmException{
+	public static byte[] initKey() throws NoSuchAlgorithmException{
 		KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM);
-		SecureRandom sr = null;
-		if (StringUtils.isBlank(key)) {
-			sr = new SecureRandom();
-		}else{
-			byte[] bytes = key.getBytes();
-			sr = new SecureRandom(bytes);
-		}
-		kg.init(sr);
+		kg.init(168);
 		SecretKey sk =  kg.generateKey();
 		return sk.getEncoded();
 	}
@@ -88,7 +77,7 @@ public class DESede {
 	 * @return
 	 * @throws Exception
 	 */
-	public static SecretKey toKey(byte[] keys) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException{
+	public static SecretKey toKey(byte[] keys) throws Exception{
 		if (null == keys) {
 			return null;
 		}
@@ -101,17 +90,14 @@ public class DESede {
 	
 	public static void main(String[] args) throws Exception{
 		String data = "hello world";
-		String key = "ZHB1024";
-		System.out.println("加密前：\n data:" + data + "\n key:" + key);
+		System.out.println("加密前 :" + data) ;
+		byte[] key = initKey();
 		byte[] bytes = encrypt(data, key);
 		System.out.println("加密后：");
-		for (byte b : bytes) {
-			System.out.print(b);
-		}
-		System.out.println();
+		printByte(bytes);
 		
 		System.out.println("解密后：");
-		System.out.println(decrypt(bytes, key));
+		System.out.println(new String(decrypt(bytes, key)));
 		
 		
 	}

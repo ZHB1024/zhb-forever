@@ -1,4 +1,4 @@
-package com.forever.zhb.utils.password.encryptAndDecrypt;
+package com.forever.zhb.utils.password;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;

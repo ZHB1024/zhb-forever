@@ -9,7 +9,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.util.encoders.Base64;
 
-public class AESUtil {
+import com.forever.zhb.utils.password.PrintByteArray;
+
+public class AESUtil extends PrintByteArray{
 
 	/*
 	 * AES (Advanced Encryption Standard) 高级加密标准，包括：MARS、RC6、Blowfish、Twofish
@@ -68,11 +70,8 @@ public class AESUtil {
 		byte[] bytes = encrypt(data, keys);// 加密
 
 		System.out.println("加密后：");
-		for (byte b : bytes) {
-			System.out.print(b);
-		}
+		printByte(bytes);
 
-		System.out.println();
 		System.out.println("------------------------------");
 
 		// 解密
@@ -84,9 +83,7 @@ public class AESUtil {
 		String base64 = Base64.toBase64String(bytes);
 		System.out.println(base64);
 		byte[] temp = Base64.decode(base64);
-		for (byte b : temp) {
-			System.out.print(b);
-		}
+		printByte(temp);
 	}
 
 }

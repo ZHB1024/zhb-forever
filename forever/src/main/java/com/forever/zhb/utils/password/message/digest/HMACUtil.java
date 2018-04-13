@@ -5,7 +5,7 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.forever.zhb.utils.password.encryptAndDecrypt.Base64Util;
+import com.forever.zhb.utils.password.Base64Util;
 
 public class HMACUtil {
 	

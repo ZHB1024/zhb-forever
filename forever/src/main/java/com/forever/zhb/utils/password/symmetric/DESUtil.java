@@ -1,7 +1,6 @@
 package com.forever.zhb.utils.password.symmetric;
 
 import java.security.Key;
-import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -9,9 +8,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-import org.apache.commons.lang3.StringUtils;
+import com.forever.zhb.utils.password.PrintByteArray;
 
-public class DESUtil {
+public class DESUtil extends PrintByteArray{
 
 	/*
 	 * DES：Data Encryption Standard,即数据加密算法。是IBM公司于1975年研究成功并公开发表的。
@@ -35,12 +34,10 @@ public class DESUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] encrypt(String data, String key) throws Exception {
-		// 生成二进制秘钥
-		byte[] bytes = initKey(key);
+	public static byte[] encrypt(String data, byte[] key) throws Exception {
 		// 转为秘钥对象
-		Key k = toKey(bytes);
-		Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+		Key k = toKey(key);
+		Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 		cipher.init(Cipher.ENCRYPT_MODE, k);
 
 		byte[] datas = data.getBytes();
@@ -55,48 +52,25 @@ public class DESUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] decrypt(byte[] data, String key) throws Exception {
-		// 生成二进制秘钥
-		byte[] bytes = initKey(key);
+	public static byte[] decrypt(byte[] data, byte[] key) throws Exception {
 		// 转为秘钥对象
-		Key k = toKey(bytes);
-		Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+		Key k = toKey(key);
+		Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, k);
 		
 		return cipher.doFinal(data);
 	}
 
 	/**
-	 * 生成密钥
+	 * 生成二进制密钥
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public static byte[] initKey() throws Exception {
-		return initKey(null);
-	}
-
-	/**
-	 * 生成二进制密钥
-	 * 
-	 * @param seed
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] initKey(String seed) throws Exception {
-		SecureRandom secureRandom = null;
-
-		if (StringUtils.isNotBlank(seed)) {
-			secureRandom = new SecureRandom(seed.getBytes());
-		} else {
-			secureRandom = new SecureRandom();
-		}
-
 		KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM);
-		kg.init(secureRandom);
-
+		kg.init(56);
 		SecretKey secretKey = kg.generateKey();
-
 		return secretKey.getEncoded();
 	}
 
@@ -116,29 +90,23 @@ public class DESUtil {
 		//生成私密秘钥对象
 		SecretKey secretKey = keyFactory.generateSecret(dks);
 
-		// 当使用其他对称加密算法时，如AES、Blowfish等算法时，用下述代码替换上述三行代码
-		// SecretKey secretKey = new SecretKeySpec(key, ALGORITHM);
-
 		return secretKey;
 	}
 
 	public static void main(String args[]) throws Exception {
 		String data = "zhanghuibin";
-		String password = "123456";
 		System.out.println("加密前：" + data);
-		
+		byte[] key = initKey();
 		//加密
-		byte[] bytes = encrypt(data, password);
+		byte[] bytes = encrypt(data, key);
 		System.out.println("加密后：" );
-		for (byte b : bytes) {
-			System.out.print(b);
-		}
+		printByte(bytes);
 		
 		//解密
-		byte[] decrypt = decrypt(bytes, password);
-		System.out.println();
-		String decryptValue = new String(decrypt);
-		System.out.println("解密后：" + decryptValue);
+		byte[] decrypt = decrypt(bytes,key);
+		System.out.println("解密后：" );
+		printByte(decrypt);
+		System.out.println("解密后：" + new String(decrypt));
 	}
 
 }
