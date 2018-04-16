@@ -18,8 +18,9 @@
         <c:if test="${errorMsg != null}">
           <p style="color:red;"><c:out value="${errorMsg}"/></p>
         </c:if>  
-        <p><input type="text" name="name" id="name" placeholder="用户名" maxlength="30"/></p>
-        <p><input type="password" name="password" id="password" placeholder="密码" maxlength="30"/></p>
+        <p><input type="text" name="name" id="name" value="${name}" placeholder="用户名" maxlength="30"/></p>
+        <p><input type="password" name="password" id="password" value="${password}" placeholder="密码" maxlength="30"/></p>
+        <input type="hidden" name="redirectUrl" value="${redirectUrl}"/>
         <p><input type="button" name="login" id="login" value="登录"></p>
     </form>
 </div>
@@ -44,7 +45,13 @@ function loginSys(){
         alert("用户名 和 密码都不能为空！");
         return false;
     }
-    var url ='<%=ctxPath%>/loginController/login';
+    var url ;
+    var redirectUrl = $("input[name='redirectUrl']").val().trim();
+    if(null == redirectUrl || "" == redirectUrl){
+    	url ='<%=ctxPath%>/loginController/login';
+    }else{
+    	url ='<%=ctxPath%>/loginController/loginWithUrl';
+    }
     $("#theform").attr("action",url);
     $("#theform").submit();
 }

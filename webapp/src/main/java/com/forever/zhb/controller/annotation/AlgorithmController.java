@@ -1,6 +1,7 @@
 package com.forever.zhb.controller.annotation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,17 @@ public class AlgorithmController {
 	public static void main(String[] args) {
 
 		// 二分查找、折半查找
-		/*
-		 * int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
-		 * System.out.println(binarySearch(array, 7, 0, array.length-1));
-		 */
+		
+		  int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
+		  System.out.println(binarySearch(array, 2, 0, array.length-1));
+		 
+
+		/*Object[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
+		int index = binarySearchByComparable(array, 0, array.length, 2);
+		System.out.println("位置：" + index );
+		if (index >= 0) {
+			System.out.println("值为：" + array[index]);
+		}*/
 
 		// 10,10+2,10+2+2,......
 		// System.out.println(sum2(4));
@@ -53,7 +61,7 @@ public class AlgorithmController {
 		 * System.out.println("--------------------------------");
 		 * find("aaabbbcdd2f2c");
 		 */
-		int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56, 34 };
+		//int[] array = { 4, 2, 108, 1, 85, 9, 0, 14, 13, 56, 34 };
 		/* shellSort(array); */
 
 		// 冒泡排序
@@ -63,14 +71,14 @@ public class AlgorithmController {
 		/* selectSort(array); */
 
 		// 归并排序
-		for (int i : array) {
+		/*for (int i : array) {
 			System.out.print(i + " ,");
 		}
 		mergeSort(array, 0, array.length - 1);
 		System.out.println();
 		for (int i : array) {
 			System.out.print(i + " ,");
-		}
+		}*/
 
 	}
 
@@ -93,8 +101,33 @@ public class AlgorithmController {
 		}
 	}
 
-	// 二分查找、折半查找
-	private static String binarySearch(int[] array, int target, int low, int high) {
+	/**
+	 * 二分查找、折半查找
+	 * @param array 目标有序序列，从小到大排列
+	 * @param target  待查找的目标对象
+	 * @param fromIndex  数组的开始查找下标位置
+	 * @param toIndex    数组的结束查找下标位置
+	 * @return 数组的位置
+	 */
+	private static int binarySearch(int[] array, int target, int fromIndex, int toIndex) {
+		if (fromIndex > toIndex) {
+			return -(fromIndex+1);
+		}
+		
+		while(toIndex >= fromIndex){
+			int mid = (fromIndex + toIndex) / 2;
+			if (array[mid] == target) {
+				return mid;
+			}else if (target < array[mid]) {
+				toIndex = mid - 1;
+			} else {
+				fromIndex = mid + 1;
+			}
+		}
+		return -(fromIndex+1);
+	}
+	
+	private static String binarySearchByRecursion(int[] array, int target, int low, int high) {
 		if (low >= high) {
 			return "没有";
 		}
@@ -102,12 +135,41 @@ public class AlgorithmController {
 		if (array[mid] == target) {
 			return "值为：" + target + " 位置在：" + mid;
 		} else if (target < array[mid]) {
-			return binarySearch(array, target, low, mid - 1);
+			return binarySearchByRecursion(array, target, low, mid - 1);
 		} else {
-			return binarySearch(array, target, mid + 1, high);
+			return binarySearchByRecursion(array, target, mid + 1, high);
 		}
 	}
+	
+	/**
+	 * 二分查找、折半查找
+	 * @param array 目标有序序列，从小到大排列
+	 * @param target  待查找的目标对象
+	 * @param fromIndex  数组的开始查找下标位置
+	 * @param arrayLength    array.length
+	 * @return 数组的位置
+	 */
+	private static int binarySearchByComparable(Object[] array, int fromIndex, int arrayLength, Object key) {
+		int low = fromIndex;
+		int high = arrayLength - 1;
 
+		while (low <= high) {
+			int mid = (low + high) >>> 1;
+			@SuppressWarnings("rawtypes")
+			Comparable midVal = (Comparable) array[mid];
+			@SuppressWarnings("unchecked")
+			int cmp = midVal.compareTo(key);
+
+			if (cmp < 0)
+				low = mid + 1;
+			else if (cmp > 0)
+				high = mid - 1;
+			else
+				return mid; // key found
+		}
+		return -(low + 1); // key not found.
+	}
+	
 	// 10,10+2,10+2+2,......
 	private static int sum2(int num) {
 		if (num < 1) {
@@ -355,7 +417,7 @@ public class AlgorithmController {
 		int i = low;
 		int j = mid + 1;
 		int k = 0;
-		//把较小的放入临时数组中
+		// 把较小的放入临时数组中
 		while (i <= mid && j <= high) {
 			if (arrays[i] < arrays[j]) {
 				temp[k++] = arrays[i++];
@@ -364,17 +426,17 @@ public class AlgorithmController {
 			}
 		}
 
-		//如果左边还剩余，则把左边剩余的放入临时数组中
+		// 如果左边还剩余，则把左边剩余的放入临时数组中
 		while (i <= mid) {
 			temp[k++] = arrays[i++];
 		}
-		
-		//如果右边还剩余，则把右边剩余的放入临时数组中
+
+		// 如果右边还剩余，则把右边剩余的放入临时数组中
 		while (j <= high) {
 			temp[k++] = arrays[j++];
 		}
 
-		//把排好序的临时数组，整理到目标数组中
+		// 把排好序的临时数组，整理到目标数组中
 		for (int t = 0; t < temp.length; t++) {
 			arrays[t + low] = temp[t];
 		}

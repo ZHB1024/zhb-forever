@@ -34,6 +34,7 @@ public class LoginFilter implements Filter {
             String ctxPath = request.getContextPath();
             try {
             	request.setAttribute(Constants.REQUEST_ERROR, "登陆后才能访问系统");
+            	request.setAttribute("redirectUrl", request.getRequestURL());
 				request.getRequestDispatcher(ctxPath + "/login/login.jsp").forward(request, response);
 			} catch (ServletException | IOException e) {
 				e.printStackTrace();

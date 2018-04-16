@@ -1,8 +1,10 @@
 package com.forever.zhb.controller.annotation;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,24 +42,66 @@ public class LoginController {
     
     /*登录*/
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(HttpServletRequest request,HttpServletResponse response){
+    public String login(HttpServletRequest request,HttpServletResponse response) throws IOException{
         String name = request.getParameter("name");
         String password = request.getParameter("password");
+        String redirectUrl = request.getParameter("redirectUrl");
         if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
             request.setAttribute(Constants.REQUEST_ERROR, "用户名或密码错误不能为空");
+            request.setAttribute("name", name);
+            request.setAttribute("password", password);
             return "login.home";
         }
         UserInfoData userInfo = foreverManager.getLoginInfo(name, PasswordUtil.encrypt(name,password,PasswordUtil.getStaticSalt()));
         if (null == userInfo) {
             request.setAttribute(Constants.REQUEST_ERROR, "用户名或密码错误");
+            request.setAttribute("name", name);
+            request.setAttribute("password", password);
             return "login.home";
         }
         
         /*初始化session*/
         WebAppUtil.setIP(request);
         WebAppUtil.setUserInfoData(request, userInfo);
-        
+        if (StringUtils.isNotBlank(redirectUrl)) {
+			response.sendRedirect(redirectUrl);
+			return "";
+		}
         return "htgl.main.index";
+    }
+    
+    /*登录*/
+    @RequestMapping(value = "/loginWithUrl",method = RequestMethod.POST)
+    public void loginWithUrl(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException{
+    	String ctxPath = request.getContextPath();
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        String redirectUrl = request.getParameter("redirectUrl");
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
+            request.setAttribute(Constants.REQUEST_ERROR, "用户名或密码错误不能为空");
+            request.setAttribute("name", name);
+            request.setAttribute("password", password);
+            request.setAttribute("redirectUrl", redirectUrl);
+            request.getRequestDispatcher(ctxPath + "/login/login.jsp").forward(request, response);
+            return;
+        }
+        UserInfoData userInfo = foreverManager.getLoginInfo(name, PasswordUtil.encrypt(name,password,PasswordUtil.getStaticSalt()));
+        if (null == userInfo) {
+            request.setAttribute(Constants.REQUEST_ERROR, "用户名或密码错误");
+            request.setAttribute("name", name);
+            request.setAttribute("password", password);
+            request.setAttribute("redirectUrl", redirectUrl);
+            request.getRequestDispatcher(ctxPath + "/login/login.jsp").forward(request, response);
+            return ;
+        }
+        
+        /*初始化session*/
+        WebAppUtil.setIP(request);
+        WebAppUtil.setUserInfoData(request, userInfo);
+        if (StringUtils.isNotBlank(redirectUrl)) {
+			response.sendRedirect(redirectUrl);
+			return ;
+		}
     }
     
     /*to注册*/
