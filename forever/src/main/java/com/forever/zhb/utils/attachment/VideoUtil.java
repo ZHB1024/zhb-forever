@@ -23,6 +23,7 @@ import org.bytedeco.javacv.AndroidFrameConverter;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
@@ -395,6 +396,7 @@ public class VideoUtil {
 		
 		File targetFile = new File(framefile);
 		FFmpegFrameGrabber ff = new FFmpegFrameGrabber(videofile);
+		Java2DFrameConverter converter = new Java2DFrameConverter(); 
 		try {
 			ff.start();
 		} catch (org.bytedeco.javacv.FrameGrabber.Exception e) {
@@ -416,20 +418,12 @@ public class VideoUtil {
 			}
 			i++;
 		}
-		/*IplImage img = f.image;
-		int owidth = img.width();
-		int oheight = img.height();
-		// 对截取的帧进行等比例缩放
-		int width = 800;
-		int height = (int) (((double) width / owidth) * oheight);
-		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-		bi.getGraphics().drawImage(f.image.getBufferedImage().getScaledInstance(width, height, Image.SCALE_SMOOTH), 0,
-				0, null);
+		BufferedImage bi = converter.getBufferedImage(f);
 		try {
 			ImageIO.write(bi, "jpg", targetFile);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 		// ff.flush();
 		try {
 			ff.stop();

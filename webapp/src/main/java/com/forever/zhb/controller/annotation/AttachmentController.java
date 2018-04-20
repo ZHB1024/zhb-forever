@@ -569,7 +569,8 @@ public class AttachmentController extends BasicController {
 
 		// ffmpeg能解析的格式：（asx，asf，mpg，wmv，3gp，mp4，mov，avi，flv等）
 		
-		VideoUtil.transferCut("C:\\Users\\ZHB\\Videos\\Wildlife.wmv","C:\\Users\\ZHB\\Videos\\1234.flv");
+		//VideoUtil.transferCut("C:\\Users\\ZHB\\Videos\\Wildlife.wmv","C:\\Users\\ZHB\\Videos\\1234.flv");
+		VideoUtil.screenCut("C:\\Users\\ZHB\\Videos\\Wildlife.wmv","C:\\Users\\ZHB\\Videos\\1234.jpg");
 		
 	}
 
