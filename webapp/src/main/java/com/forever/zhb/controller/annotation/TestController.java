@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.forever.zhb.basic.BasicController;
-import com.forever.zhb.controller.annotation.test.Integer;
 import com.forever.zhb.controller.annotation.test.StaticTest;
 import com.forever.zhb.utils.AESUtil;
 import com.forever.zhb.utils.MessageUtil;
@@ -115,9 +114,23 @@ public class TestController extends BasicController {
 		java.lang.Integer in = new java.lang.Integer(10);
 		System.out.println(i.toString(10));
 		System.out.println( in.toString(10));*/
-		System.out.println( StaticTest.VALUE20);
+		//System.out.println( StaticTest.VALUE20);
 		//StaticTest.getInstance();
 		
+		/*Boolean isBoolean = new Boolean(false);
+		String isString = new String("false");
+		updateBoolean(isBoolean,isString);
+		System.out.println(isBoolean + " " + isString);*/
+		
+		
+		
+		System.out.println( java.lang.Integer.valueOf(128) == new java.lang.Integer(128));
+		
+	}
+	
+	public static void updateBoolean(Boolean isBoo,String isString){
+		isBoo = true;
+		isString = "true";
 	}
 
 	private static int countNumber(String srcText, String findText) {

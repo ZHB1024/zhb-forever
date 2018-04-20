@@ -551,6 +551,13 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.1</version>
 		</dependency>
+		
+		<!-- 视频处理 -->
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 
 	</dependencies>

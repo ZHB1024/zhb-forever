@@ -107,7 +107,7 @@
     </definition>
     
     <definition name="htgl.uploadVideo.index" extends="htgl.main.layout">
-        <put-attribute name="main" value="/htgl/attachment/uploadVideo.jsp"/>
+        <put-attribute name="main" value="/htgl/attachment/video/uploadIndex.jsp"/>
     </definition>
     
     <!-- download -->
@@ -116,7 +116,7 @@
     </definition>
     
     <definition name="htgl.downloadVideo.index" extends="htgl.main.layout">
-        <put-attribute name="main" value="/htgl/attachment/downloadVideo.jsp"/>
+        <put-attribute name="main" value="/htgl/attachment/video/downIndex.jsp"/>
     </definition>
     
     <!-- excel -->

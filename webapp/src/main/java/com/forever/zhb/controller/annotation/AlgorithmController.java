@@ -36,8 +36,8 @@ public class AlgorithmController {
 
 		// 二分查找、折半查找
 		
-		  int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
-		  System.out.println(binarySearch(array, 2, 0, array.length-1));
+		  /*int[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
+		  System.out.println(binarySearch(array, 2, 0, array.length-1));*/
 		 
 
 		/*Object[] array = { 0, 2, 5, 6, 7, 9, 11, 14, 50, 69 ,90};
@@ -65,10 +65,10 @@ public class AlgorithmController {
 		/* shellSort(array); */
 
 		// 冒泡排序
-		// bubbleSort(array);
+		 //bubbleSort(array);
 
 		// 简单选择排序
-		/* selectSort(array); */
+		 //selectSort(array); 
 
 		// 归并排序
 		/*for (int i : array) {
@@ -113,6 +113,8 @@ public class AlgorithmController {
 		if (fromIndex > toIndex) {
 			return -(fromIndex+1);
 		}
+		
+		//int mid = fromIndex + (target-array[fromIndex])/(array[toIndex]-array[fromIndex])*(toIndex-fromIndex);
 		
 		while(toIndex >= fromIndex){
 			int mid = (fromIndex + toIndex) / 2;

@@ -1,7 +1,16 @@
 package com.forever.zhb;
 
+import com.forever.zhb.utils.attachment.VideoUtil;
+
 public class Constants {
-    
+	
+	
+	//classes目录
+	public static final String RESOURCE_PATH = VideoUtil.class.getClassLoader().getResource("").getPath();
+	
+	//项目的根路径,war包里
+	//String realPath = request.getSession().getServletContext().getRealPath("/");
+	
     //ip地址
     public static String IP = "ip";
     

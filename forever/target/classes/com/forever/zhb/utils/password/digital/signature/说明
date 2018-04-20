@@ -1,0 +1,11 @@
+
+
+数字签名  （私钥签名、公钥验证）/签名验证
+
+用途：抗否认性
+
+结合 非对称加密和消息摘要
+
+主要包括：RSA、DSA、ECDSA
+
+RSA: MD2WithRSA、MD5WithRSA、SHA1WithRSA、SHA224WithRSA、SHA256WithRSA、SHA384WithRSA、SHA512WithRSA
