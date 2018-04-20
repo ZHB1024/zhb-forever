@@ -382,7 +382,8 @@ public class AttachmentController extends BasicController {
 		String afterConvertPath = realPath + "/1243.jpg";
 		
 		//VideoUtil.screenCutByLinux(filePath,afterConvertPath,2);
-		VideoUtil.screenCut(filePath,afterConvertPath);
+		//VideoUtil.screenCut(filePath,afterConvertPath);
+		VideoUtil.transferCut(filePath,afterConvertPath);
 		
 		boolean success = false;
 		File file = new File(afterConvertPath);
@@ -567,6 +568,8 @@ public class AttachmentController extends BasicController {
 	public static void main(String[] args) {
 
 		// ffmpeg能解析的格式：（asx，asf，mpg，wmv，3gp，mp4，mov，avi，flv等）
+		
+		VideoUtil.transferCut("C:\\Users\\ZHB\\Videos\\Wildlife.wmv","C:\\Users\\ZHB\\Videos\\1234.flv");
 		
 	}
 

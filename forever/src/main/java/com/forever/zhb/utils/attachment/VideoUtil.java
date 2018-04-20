@@ -17,9 +17,11 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hslf.blip.Bitmap;
+import org.bytedeco.javacpp.avcodec;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.AndroidFrameConverter;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 
 import it.sauronsoftware.jave.Encoder;
@@ -435,6 +437,50 @@ public class VideoUtil {
 			e.printStackTrace();
 		}
 		System.out.println(System.currentTimeMillis() - start);
+	}
+	
+	public static void transferCut(String videofile, String afterConvertPath) {
+		FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(videofile);
+
+		Frame captured_frame = null;
+
+		FFmpegFrameRecorder recorder = null;
+
+		try {
+			frameGrabber.start();
+			recorder = new FFmpegFrameRecorder(afterConvertPath, frameGrabber.getImageWidth(), frameGrabber.getImageHeight(),
+					frameGrabber.getAudioChannels());
+			recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264); // avcodec.AV_CODEC_ID_H264
+																// //AV_CODEC_ID_MPEG4
+			recorder.setFormat("flv");
+			recorder.setFrameRate(frameGrabber.getFrameRate());
+			//recorder.setSampleFormat(frameGrabber.getSampleFormat()); 
+			recorder.setSampleRate(frameGrabber.getSampleRate());
+
+			// -----recorder.setAudioChannels(frameGrabber.getAudioChannels());
+			recorder.setFrameRate(frameGrabber.getFrameRate());
+
+			recorder.start();
+			while (true) {
+				try {
+					captured_frame = frameGrabber.grabFrame();
+
+					if (captured_frame == null) {
+						break;
+
+					}
+					recorder.setTimestamp(frameGrabber.getTimestamp());
+					recorder.record(captured_frame);
+
+				} catch (Exception e) {
+				}
+			}
+			recorder.stop();
+			recorder.release();
+			frameGrabber.stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
