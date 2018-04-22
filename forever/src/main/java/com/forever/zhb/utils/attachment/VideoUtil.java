@@ -24,6 +24,7 @@ import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameGrabber;
 
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
@@ -42,6 +43,8 @@ public class VideoUtil {
 	
 	public static final String FFMPEG_EXE_PATH = RESOURCE_PATH + "video/ffmpeg.exe";
 	public static final String MENCODER_EXE_PATH = RESOURCE_PATH + "video/mencoder.exe";
+	
+	public static final int AV_TIME_BASE =  1000000;
 
 	
 	/*
@@ -396,6 +399,8 @@ public class VideoUtil {
 		
 		File targetFile = new File(framefile);
 		FFmpegFrameGrabber ff = new FFmpegFrameGrabber(videofile);
+		OpenCVFrameGrabber ocfg = new OpenCVFrameGrabber(videofile);
+		//printVideoParameter(ff);
 		Java2DFrameConverter converter = new Java2DFrameConverter(); 
 		try {
 			ff.start();
@@ -403,17 +408,38 @@ public class VideoUtil {
 			e.printStackTrace();
 		}
 		int lenght = ff.getLengthInFrames();
+		//int frameNumber = ff.getFrameNumber();
+		long longInIime = ff.getLengthInTime()/AV_TIME_BASE;
+		double frameRate = ff.getFrameRate();
+		String format = ff.getFormat();
+		String videoSize = getVideoSize(videofile);
+		int timeOut = ff.getTimeout();
+		int imageHeight = ff.getImageHeight();
+		int imageWidth = ff.getImageWidth();
+		
+		System.out.println("共： " + lenght + " 帧");
+		System.out.println("时长:" + longInIime + " s");
+		//System.out.println("共： " + frameNumber + " 帧");
+		System.out.println("帧率： " + frameRate);
+		System.out.println("format： " + format);
+		System.out.println("videoSize： " + videoSize);
+		System.out.println("timeOut： " + timeOut);
+		System.out.println("imageHeight： " + imageHeight);
+		System.out.println("imageWidth： " + imageWidth);
+		
+		//System.out.println("视频长度： " + new BigDecimal(lenght).divide(new BigDecimal(frameRate),2,RoundingMode.HALF_UP));
+		//System.out.println("视频长度： " + new BigDecimal(frameNumber).divide(new BigDecimal(frameRate),2,RoundingMode.HALF_UP));
+		
 		int i = 0;
 		Frame f = null;
 		while (i < lenght) {
 			// 过滤前5帧，避免出现全黑的图片，依自己情况而定
 			try {
 				f = ff.grabFrame();
-				
 			} catch (org.bytedeco.javacv.FrameGrabber.Exception e) {
 				e.printStackTrace();
 			}
-			if ((i > 5) && (f.image != null)) {
+			if ((i > 100) && (f.image != null)) {
 				break;
 			}
 			i++;
@@ -475,6 +501,17 @@ public class VideoUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void printVideoParameter(FFmpegFrameGrabber fffg) {
+	    if (null != fffg) {
+            //long length = fffg.getLengthInTime();
+            int frameLong = fffg.getLengthInFrames();
+            int time = fffg.getTimeout();
+            //System.out.println(length);
+            System.out.println(frameLong);
+            System.out.println(time);
+        }
 	}
 
 }
