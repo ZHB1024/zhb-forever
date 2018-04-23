@@ -53,7 +53,8 @@ import com.forever.zhb.utils.DownloadUtil;
 import com.forever.zhb.utils.ImageUtils;
 import com.forever.zhb.utils.PropertyUtil;
 import com.forever.zhb.utils.attachment.ExcelUtil;
-import com.forever.zhb.utils.attachment.VideoUtil;
+import com.forever.zhb.utils.attachment.video.FFmpegEXEUtil;
+import com.forever.zhb.utils.attachment.video.JavacvUtil;
 
 @Controller
 @RequestMapping("/htgl/attachmentController")
@@ -373,23 +374,26 @@ public class AttachmentController extends BasicController {
 		File f = fi.getStoreLocation();
 		String filePath = f.getPath();
 		
-		System.out.println(VideoUtil.getVideoSize(filePath));
-		System.out.println(VideoUtil.getVideoLength(filePath));
-		System.out.println(VideoUtil.getVideoHeight(filePath));
-		System.out.println(VideoUtil.getVideoWidth(filePath));
+		System.out.println(FFmpegEXEUtil.getVideoSize(filePath));
+		System.out.println(FFmpegEXEUtil.getVideoLength(filePath));
+		System.out.println(FFmpegEXEUtil.getVideoHeight(filePath));
+		System.out.println(FFmpegEXEUtil.getVideoWidth(filePath));
 		
 		//String videoType = VideoUtil.getVideoContentType(filePath);
-		String afterConvertPath = realPath + "/1243.jpg";
+		//String afterConvertPath = realPath + "/1243.jpg";
+		String afterConvertPath = "C:\\Users\\ZHB\\Videos\\12345678.flv";
 		
 		//VideoUtil.screenCutByLinux(filePath,afterConvertPath,2);
 		//VideoUtil.screenCut(filePath,afterConvertPath);
-		VideoUtil.transferCut(filePath,afterConvertPath);
+		//JavacvUtil.transferCut(filePath,afterConvertPath);
+		
+		JavacvUtil.transferCut2(filePath, afterConvertPath);
 		
 		boolean success = false;
 		File file = new File(afterConvertPath);
 		if (file.isFile()) {
 			success = true;
-			file.delete();
+			//file.delete();
 		}
 		System.out.println(success);
 		
@@ -571,17 +575,18 @@ public class AttachmentController extends BasicController {
 		
 		//VideoUtil.transferCut("C:\\Users\\ZHB\\Videos\\Wildlife.wmv","C:\\Users\\ZHB\\Videos\\1234.flv");
 		//VideoUtil.screenCut("C:\\Users\\ZHB\\Videos\\Wildlife.wmv","C:\\Users\\ZHB\\Videos\\1234.jpg");
-	    String filePath = "F:\\log\\upload\\zhb_forever\\video\\44.mp4";
-	    String afterPath = "F:\\log\\upload\\zhb_forever\\video\\1234.jpg";
+	    //String filePath = "F:\\log\\upload\\zhb_forever\\video\\44.mp4";
+	    //String afterPath = "F:\\log\\upload\\zhb_forever\\video\\1234.jpg";
+		
+		String filePath = "C:\\Users\\ZHB\\Videos\\音乐之声-njluyou.rm";
+		String afterCutPath = "C:\\Users\\ZHB\\Videos\\1234.jpg";
+		String afterConvertPath = "C:\\Users\\ZHB\\Videos\\1234.flv";
 	   
-	    //System.out.println(VideoUtil.getVideoSize(filePath));
-        //System.out.println(VideoUtil.getVideoLength(filePath));
-       // System.out.println(VideoUtil.getVideoHeight(filePath));
-        //System.out.println(VideoUtil.getVideoWidth(filePath));
-        //System.out.println(VideoUtil.getVideoContentType(filePath));
-        
 	    
-	    VideoUtil.screenCut(filePath,afterPath);
+	    //FFmpegEXEUtil.makeScreenCut(filePath,afterPath,2);
+	    
+	    //JavacvUtil.screenCut(filePath, afterCutPath);
+	    JavacvUtil.transferCut2(filePath, afterConvertPath);
 		
 	}
 
