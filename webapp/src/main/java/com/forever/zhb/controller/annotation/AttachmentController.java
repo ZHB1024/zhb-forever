@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -381,7 +384,7 @@ public class AttachmentController extends BasicController {
 		
 		//String videoType = VideoUtil.getVideoContentType(filePath);
 		//String afterConvertPath = realPath + "/1243.jpg";
-		String afterConvertPath = "C:\\Users\\ZHB\\Videos\\12345678.flv";
+		String afterConvertPath = "C:\\Users\\ZHB\\Videos\\12345678";
 		
 		//VideoUtil.screenCutByLinux(filePath,afterConvertPath,2);
 		//VideoUtil.screenCut(filePath,afterConvertPath);
@@ -551,8 +554,14 @@ public class AttachmentController extends BasicController {
 			fos = response.getOutputStream();
 
 			response.setContentType("application/force-download");
-			response.setHeader("Content-Disposition",
-					"attachment; filename=" + URLEncoder.encode("zhb-forever-test" + ".xls", "UTF-8"));
+			String agentName = request.getHeader("User-Agent").toLowerCase();
+	        String fileName = null;
+	        if (-1 != agentName.indexOf("firefox")) {
+	            fileName = new String("zhb-forever-test.xls".getBytes("UTF-8"),"iso-8859-1");
+	        }else {
+	            fileName = URLEncoder.encode("zhb-forever-test.xls", "UTF-8");
+	        }
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName );
 
 			wb.write(fos);
 		} catch (IOException e) {
@@ -569,7 +578,7 @@ public class AttachmentController extends BasicController {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		// ffmpeg能解析的格式：（asx，asf，mpg，wmv，3gp，mp4，mov，avi，flv等）
 		
@@ -582,11 +591,14 @@ public class AttachmentController extends BasicController {
 		String afterCutPath = "C:\\Users\\ZHB\\Videos\\1234.jpg";
 		String afterConvertPath = "C:\\Users\\ZHB\\Videos\\1234.flv";
 	   
-	    
+		String file = "C:\\Users\\ZHB\\Videos\\ffmpeg.exe";
+		Path path = Paths.get(file);
+        String contentType = Files.probeContentType(path);
+        System.out.println(contentType);
 	    //FFmpegEXEUtil.makeScreenCut(filePath,afterPath,2);
 	    
 	    //JavacvUtil.screenCut(filePath, afterCutPath);
-	    JavacvUtil.transferCut2(filePath, afterConvertPath);
+	    //JavacvUtil.transferCut2(filePath, afterConvertPath);
 		
 	}
 

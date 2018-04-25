@@ -165,15 +165,15 @@ public class FFmpegEXEUtil {
 	 * 截取视频第second秒的图片
 	 * @return
 	 */
-	public static boolean makeScreenCut(String videoPath,String picturePathName,int second) {
+	public static boolean makeScreenCut(String videoPath,String afterConvertPath ,int second) {
 		File file = new File(videoPath);
 		if (!file.exists()) {
 			return false;
 		}
 		List<String> commands = new ArrayList<String>();
-		//getPicture(commands, videoPath, picturePathName);
-		getPictureBySecond(commands, videoPath, second, picturePathName);
-		//getDynamicPicture(commands, videoPath, second, picturePathName);
+		//getPicture(commands, videoPath, afterConvertPath);
+		getPictureBySecond(commands, videoPath, second, afterConvertPath);
+		//getDynamicPicture(commands, videoPath, second, afterConvertPath);
 		BufferedReader stdout = null;  
 		try {
 
@@ -371,6 +371,13 @@ public class FFmpegEXEUtil {
 	    } catch (IOException e1) {
 	        e1.printStackTrace();
 	    } 
+	}
+	
+	public static void main(String[] args){
+		String videoPath = "C:\\Users\\ZHB\\Videos\\03权限传递.mp4";
+		String afterConvertPath = "C\\:/Users/ZHB/Videos/123.png";
+		
+		makeScreenCut(videoPath,afterConvertPath,2);
 	}
 	
 }

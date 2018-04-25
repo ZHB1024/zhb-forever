@@ -115,6 +115,90 @@ public class ImageUtils {
 				is.close();
 		}
 	}
+	
+	
+	public static BufferedImage pressText(BufferedImage image, float alpha, int xNum, int yNum, String[] txts)
+			throws Exception {
+		try {
+			//Image image = ImageIO.read(is);
+			int width = image.getWidth(null);
+			int height = image.getHeight(null);
+			double radian = Math.atan(height / width);
+			radian *= 0.8D;
+			double sinRadian = Math.sin(radian);
+			double cosRadian = Math.cos(radian);
+
+			BufferedImage bufferedImage = new BufferedImage(width, height, 1);
+			Graphics2D g = bufferedImage.createGraphics();
+			g.drawImage(image, 0, 0, width, height, null);
+
+			int halfX = width / 2;
+			int halfY = height / 2;
+			double xiexian = halfX / cosRadian;
+
+			Map TXT_WatermarkVO = new HashMap();
+
+			for (String str : txts) {
+				if (StringUtils.isNotBlank(str)) {
+					String fontName;
+					int fitPixelWidth;
+					if (str.matches("^[a-zA-Z]*")) {
+						fontName = "Times New Roman";
+						fitPixelWidth = (int) Math.round(xiexian * 0.0428D * str.length());
+					} else {
+						fontName = "宋体";
+						fitPixelWidth = (int) Math.round(xiexian * 0.06D * str.length());
+					}
+					Font font = getFitFontPointSizeFont(g, fontName, 1, str, fitPixelWidth);
+					g.setFont(font);
+					Rectangle2D r = g.getFontMetrics().getStringBounds(str, g);
+					TXT_WatermarkVO.put(str, new WatermarkVO(font, (int) r.getCenterX(), (int) r.getCenterY()));
+				}
+			}
+
+			g.setColor(FONT_COLOR);
+			g.setComposite(AlphaComposite.getInstance(10, alpha));
+
+			int right_y = (int) (width / xNum * sinRadian);
+			int right_x = (int) (width / xNum * cosRadian);
+			int top_x = -(int) (height / yNum * sinRadian);
+			int top_y = (int) (height / yNum * cosRadian);
+
+			int cnt = 0;
+			for (int i = 0; i < yNum; ++i) {
+				int index = cnt % txts.length;
+				if (i == 0) {
+					g.translate(halfX / xNum, halfY / yNum);
+					g.rotate(-radian);
+				} else {
+					g.translate(top_x, top_y);
+				}
+				WatermarkVO watermarkVO = (WatermarkVO) TXT_WatermarkVO.get(txts[index]);
+				g.setFont(watermarkVO.font);
+				g.drawString(txts[index], -watermarkVO.centerX, -watermarkVO.centerY);
+				++cnt;
+				for (int j = 1; j < xNum; ++j) {
+					g.translate(right_x, right_y);
+					index = cnt % txts.length;
+					watermarkVO = (WatermarkVO) TXT_WatermarkVO.get(txts[index]);
+					g.setFont(watermarkVO.font);
+					g.drawString(txts[index], -watermarkVO.centerX, -watermarkVO.centerY);
+					++cnt;
+				}
+				for (int j = 1; j < xNum; ++j) {
+					g.translate(-right_x, -right_y);
+				}
+			}
+			g.dispose();
+			return bufferedImage;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} /*finally {
+			if (is != null)
+				is.close();
+		}*/
+		return null;
+	}
 
 	private static Font getFitFontPointSizeFont(Graphics2D g, String fontName, int fontStyle, String pressText,
 			int fitPixelWidth) {

@@ -558,7 +558,6 @@
 			<artifactId>javacv</artifactId>
 			<version>1.0</version>
 		</dependency> -->
-		<!-- 视频处理 -->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
@@ -612,22 +611,22 @@
                      <groupId>org.bytedeco.javacpp-presets</groupId>
                       <artifactId>librealsense-platform</artifactId>
                 </exclusion>
-                 <!-- <exclusion>
+                 <exclusion>
                      <groupId>org.bytedeco.javacpp-presets</groupId>
                       <artifactId>opencv</artifactId>
                 </exclusion>
                  <exclusion>
                      <groupId>org.bytedeco.javacpp-presets</groupId>
                       <artifactId>opencv-platform</artifactId>
-                </exclusion> -->
-                 <!-- <exclusion>
+                </exclusion>
+                 <exclusion>
                      <groupId>org.bytedeco.javacpp-presets</groupId>
                       <artifactId>videoinput</artifactId>
                 </exclusion>
                  <exclusion>
                      <groupId>org.bytedeco.javacpp-presets</groupId>
                       <artifactId>videoinput-platform</artifactId>
-                </exclusion> -->
+                </exclusion>
                  
             </exclusions>
         </dependency>
