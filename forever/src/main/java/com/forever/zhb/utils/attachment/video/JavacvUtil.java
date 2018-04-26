@@ -31,6 +31,10 @@ public class JavacvUtil {
 	
 	public static final int AV_TIME_BASE =  1000000;
 	
+	public static void test(String videoPath){
+		
+	}
+	
 	
 	/*
 	 * 视频大小 MB

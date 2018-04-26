@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +34,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -55,9 +62,16 @@ import com.forever.zhb.service.IForeverManager;
 import com.forever.zhb.utils.DownloadUtil;
 import com.forever.zhb.utils.ImageUtils;
 import com.forever.zhb.utils.PropertyUtil;
+import com.forever.zhb.utils.RandomUtil;
+import com.forever.zhb.utils.TestUtil;
 import com.forever.zhb.utils.attachment.ExcelUtil;
 import com.forever.zhb.utils.attachment.video.FFmpegEXEUtil;
 import com.forever.zhb.utils.attachment.video.JavacvUtil;
+import com.forever.zhb.utils.zip.ZipUtils;
+
+import eu.medsea.mimeutil.MimeUtil;
+import eu.medsea.mimeutil.MimeUtil2;
+
 
 @Controller
 @RequestMapping("/htgl/attachmentController")
@@ -67,6 +81,47 @@ public class AttachmentController extends BasicController {
 
 	@Resource(name = "foreverManager")
 	private IForeverManager foreverManager;
+	
+	@RequestMapping("/test")
+	public String test(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		/*String sourceFile = "C:\\Users\\ZHB\\Videos\\w3school.gif";
+		String zipFile ="C:\\Users\\ZHB\\Videos\\test.zip";
+		List regExp = new ArrayList();
+        regExp.add(".+\\.dbf$");
+        String password = RandomUtil.getRandomString(6);
+        ZipUtils.createEncryptedFile(sourceFile, zipFile, regExp, request, response, password);*/
+		
+		/*String url= "https://v.qq.com/iframe/txp/player.html?vid=u0627uagpoy";
+		Document document = Jsoup.connect(url).get();
+		if (null != document) {
+			Element el = document.getElementById("video_container");
+			logger.info(el.html());
+			logger.info(el.outerHtml());
+			Attributes attributes = document.attributes();
+			if (null != attributes) {
+				for (Attribute attr : attributes) {
+					logger.info(attr.html());
+					logger.info(attr.getKey());
+					logger.info(attr.getValue());
+					logger.info("-------------------------------------------------------------------");
+				}
+			}
+			
+			Elements elements = document.getElementsByAttribute("body");
+			if (null != elements) {
+				for (Element element : elements) {
+					logger.info(element.outerHtml());
+					logger.info("-------------------------------------------------------------------");
+				}
+			}
+		}*/
+		
+		 String source = TestUtil.getTencentMovieSource("http://v.qq.com/cover/y/y1xpnck2llvs7wa.html");  
+        System.out.println("视频源地址:" + source);  
+		
+		
+		return "htgl.upload.index";
+	}
 
 	@RequestMapping("/toUpload")
 	public String toUpload(HttpServletRequest request, HttpServletResponse response) {
@@ -587,18 +642,26 @@ public class AttachmentController extends BasicController {
 	    //String filePath = "F:\\log\\upload\\zhb_forever\\video\\44.mp4";
 	    //String afterPath = "F:\\log\\upload\\zhb_forever\\video\\1234.jpg";
 		
-		String filePath = "C:\\Users\\ZHB\\Videos\\音乐之声-njluyou.rm";
+		String filePath = "C:\\Users\\ZHB\\Videos\\w3school.gif";
 		String afterCutPath = "C:\\Users\\ZHB\\Videos\\1234.jpg";
 		String afterConvertPath = "C:\\Users\\ZHB\\Videos\\1234.flv";
 	   
-		String file = "C:\\Users\\ZHB\\Videos\\ffmpeg.exe";
+		/*String file = "C:\\Users\\ZHB\\Videos\\ffmpeg.exe";
 		Path path = Paths.get(file);
         String contentType = Files.probeContentType(path);
-        System.out.println(contentType);
+        System.out.println(contentType);*/
 	    //FFmpegEXEUtil.makeScreenCut(filePath,afterPath,2);
 	    
 	    //JavacvUtil.screenCut(filePath, afterCutPath);
 	    //JavacvUtil.transferCut2(filePath, afterConvertPath);
+		
+		/*Collection<Object> collections = MimeUtil.getMimeTypes(filePath);
+		if (null != collections) {
+			for (Object string : collections) {
+				System.out.println(string);
+			}
+		}*/
+		
 		
 	}
 
