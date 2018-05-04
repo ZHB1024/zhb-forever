@@ -1,18 +1,7 @@
-2018-04-23 17:41:05,388 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] 时长:138 s
-2018-04-23 17:41:05,389 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] format： rm
-2018-04-23 17:41:05,389 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] videoSize： 1.84MB
-2018-04-23 17:41:05,389 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] 共： 4168 帧
-2018-04-23 17:41:05,390 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] 帧率： 30.0
-2018-04-23 17:41:05,390 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] timeOut： 10000
-2018-04-23 17:41:05,390 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] imageHeight： 324
-2018-04-23 17:41:05,390 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] imageWidth： 576
-2018-04-23 17:41:05,554 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] screenCutTime:794
-2018-04-23 17:48:23,079 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] 时长:138 s
-2018-04-23 17:48:23,079 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] format： rm
-2018-04-23 17:48:23,079 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] videoSize： 1.84MB
-2018-04-23 17:48:23,079 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] 共： 4168 帧
-2018-04-23 17:48:23,081 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] 帧率： 30.0
-2018-04-23 17:48:23,081 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] timeOut： 10000
-2018-04-23 17:48:23,081 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] imageHeight： 324
-2018-04-23 17:48:23,081 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] imageWidth： 576
-2018-04-23 17:48:23,184 INFO  [com.forever.zhb.utils.attachment.video.JavacvUtil] screenCutTime:734
+2018-05-03 15:22:33,577 INFO  [org.reflections.Reflections] Reflections took 559 ms to scan 7 urls, producing 419 keys and 2077 values 
+2018-05-03 15:23:41,533 INFO  [org.reflections.Reflections] Reflections took 280 ms to scan 7 urls, producing 419 keys and 2077 values 
+2018-05-03 15:23:58,890 INFO  [org.reflections.Reflections] Reflections took 293 ms to scan 7 urls, producing 419 keys and 2077 values 
+2018-05-03 15:24:33,896 INFO  [org.reflections.Reflections] Reflections took 290 ms to scan 7 urls, producing 419 keys and 2077 values 
+2018-05-03 15:25:13,254 INFO  [org.reflections.Reflections] Reflections took 281 ms to scan 7 urls, producing 419 keys and 2077 values 
+2018-05-03 15:38:19,002 INFO  [org.nd4j.linalg.factory.Nd4jBackend] Loaded [CpuBackend] backend
+2018-05-03 15:38:19,039 WARN  [org.reflections.Reflections] given scan urls are empty. set urls in the configuration

@@ -1,97 +1,122 @@
 package com.forever.zhb.utils;
 
-import java.io.ByteArrayOutputStream;  
-import java.io.InputStream;  
-import java.net.HttpURLConnection;  
-import java.net.URL;  
-  
+import java.awt.Color;
+import java.awt.Font;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 /**获取的网络视频地址无任何广告，为CDN最后返回的结果，可直接播放或下载。有些视频过大，CDN有分段处理，如果多段以“$”隔开。
- * 只对获取腾讯网络视频进行了整理，实际上各大网络视频获取方式都一样，只要分析下请求链接与参数，然后模拟请求整理成代码即可。*/  
-/** 解析腾讯视频 */  
+ * 只对获取腾讯网络视频进行了整理，实际上各大网络视频获取方式都一样，只要分析下请求链接与参数，然后模拟请求整理成代码即可。*/
+/** 解析腾讯视频 */
 public class TestUtil {
-	
-	public static String getTencentMovieSource(String url) {  
-        String html = getHtml(url, true).replaceAll("    ", "");  
-        //String vid = getValue(html, "vid=", 1, "\",", 0);  
-        String vid = "goo14p94tqk";  
-        String urlXml = "http://vv.video.qq.com/geturl?platform=1&otype=xml&vid="  
-                + vid;  
-        if (urlXml.indexOf("|") == -1)  
-            return parseXmlSource(urlXml);  
-        else {  
-            String urls = "";  
-            String[] uls = urlXml.replace("|", "-").split("-");  
-            for (int i = 0; i < uls.length; i++) {  
-                String htmls = "http://vv.video.qq.com/geturl?platform=1&otype=xml&vid="  
-                        + uls[i];  
-                urls += parseXmlSource(htmls) + "$";  
-            }  
-            return urls.substring(0, urls.lastIndexOf("$"));  
-        }  
-    }  
-  
-    private static String parseXmlSource(String urlXml) {  
-        String videoXml = getHtml(urlXml, false);  
-        return getValue(videoXml, "<url>", "</url>");  
-    }  
-  
-    private static String getHtml(String url, boolean isformat) {  
-        System.out.println("Request URL:" + url);  
-        try {  
-            URL u = new URL(url);  
-            HttpURLConnection httpConn = (HttpURLConnection) u.openConnection();  
-            // 设置user agent确保系统与浏览器版本兼容  
-            HttpURLConnection.setFollowRedirects(true);  
-            httpConn.setRequestMethod("GET");  
-            httpConn.setRequestProperty(  
-                    "User-Agent",  
-                    "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727)");  
-            InputStream is = u.openStream();  
-            int length = 0;  
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();  
-            while ((length = is.read()) != -1) {  
-                bos.write(length);  
-            }  
-            if (isformat)  
-                return new String(bos.toByteArray(), "UTF-8").replace("\r", "")  
-                        .replace("\n", "");  
-            else  
-                return new String(bos.toByteArray(), "UTF-8");  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-            return null;  
-        }  
-    }  
-  
-    private static String getValue(String html, String s1, String s2) {  
-        try {  
-            String subHtml = html.substring(html.indexOf(s1));  
-            subHtml = subHtml.substring(s1.length());  
-            int s2Len = subHtml.indexOf(s2);  
-            return String.valueOf(subHtml.substring(0, s2Len));  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-            return null;  
-        }  
-    }  
-  
-    private static String getValue(String html, String s1, int s1length, String s2,  
-            int s2length) {  
-        try {  
-        	String temp = html.substring(html.indexOf(s1));
-            StringBuffer subHtml = new StringBuffer(temp);  
-            String result = subHtml.substring(s1.length() + s1length,subHtml.indexOf(s2) - s2length);
-            return result;  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-            return null;  
-        }  
-    }  
-  
-    public static void main(String[] args) {  
-        String s = new TestUtil()  
-                .getTencentMovieSource("http://v.qq.com/cover/8/8oec1592nwztc70.html?vid=b01973axj9x");  
-        System.out.println("视频源地址:" + s);  
-    }  
+
+	public static CategoryDataset GetDataset() {
+		DefaultCategoryDataset mDataset = new DefaultCategoryDataset();
+		mDataset.addValue(1.10, "First", "5");
+		mDataset.addValue(1.05, "First", "10");
+		mDataset.addValue(1.00, "First", "15");
+		mDataset.addValue(0.95, "First", "20");
+		mDataset.addValue(0.90, "First", "25");
+
+		mDataset.addValue(1.05, "Second", "5");
+		mDataset.addValue(1.00, "Second", "10");
+		mDataset.addValue(0.96, "Second", "15");
+		mDataset.addValue(0.91, "Second", "20");
+		mDataset.addValue(0.88, "Second", "25");
+
+		mDataset.addValue(1.02, "Third", "5");
+		mDataset.addValue(0.90, "Third", "10");
+		mDataset.addValue(0.88, "Third", "15");
+		mDataset.addValue(0.85, "Third", "20");
+		mDataset.addValue(0.7, "Third", "25");
+		return mDataset;
+	}
+
+	public static void main(String[] args) {
+		StandardChartTheme mChartTheme = new StandardChartTheme("CN");
+		mChartTheme.setLargeFont(new Font("黑体", Font.BOLD, 20));
+		mChartTheme.setExtraLargeFont(new Font("宋体", Font.PLAIN, 15));
+		mChartTheme.setRegularFont(new Font("宋体", Font.PLAIN, 15));
+		ChartFactory.setChartTheme(mChartTheme);
+		CategoryDataset mDataset = GetDataset();
+		JFreeChart mChart = ChartFactory.createLineChart("折线图", // 图名字
+				"邻居用户数", // 横坐标
+				"RMSE", // 纵坐标
+				mDataset, // 数据集
+				PlotOrientation.VERTICAL, true, // 显示图例
+				true, // 采用标准生成器
+				false);// 是否生成超链接
+		// .LIGHT_GRAY
+		CategoryPlot mPlot = (CategoryPlot) mChart.getPlot();
+		mPlot.setBackgroundPaint(Color.white);
+		mPlot.setRangeGridlinePaint(Color.BLUE);// 背景底部横虚线
+		mPlot.setOutlinePaint(Color.RED);// 边界线
+
+		/*
+		 * Y轴设置
+		 */
+		NumberAxis vn = (NumberAxis) mPlot.getRangeAxis();
+		// DecimalFormat df = new DecimalFormat("#0.00");
+		// vn.setNumberFormatOverride(df); // 数据轴数据标签的显示格式
+		vn.setUpperMargin(0.1);
+		vn.setLowerMargin(0.1);
+		vn.setAutoRangeMinimumSize(0.01);// 最小跨度
+		vn.setLowerBound(0.70);// 最小值显示
+		vn.setUpperBound(1.10);
+		
+		LineAndShapeRenderer lasp = (LineAndShapeRenderer) mPlot.getRenderer();// 获取显示线条的对象
+		lasp.setBaseShapesVisible(true);// 设置拐点是否可见/是否显示拐点
+		lasp.setDrawOutlines(true);// 设置拐点不同用不同的形状
+		lasp.setUseFillPaint(true);// 设置线条是否被显示填充颜色
+		lasp.setBaseFillPaint(Color.BLACK);//// 设置拐点颜色
+
+		/*
+		 * X轴
+		 */
+		CategoryAxis domainAxis = mPlot.getDomainAxis();
+		// domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
+		domainAxis.setLowerMargin(-0.08);
+
+		// domainAxis.setCategoryMargin(0.5);;
+		// System.out.println(domainAxis.getCategoryMargin());;
+
+		// domainAxis.setLabelFont(new Font("宋书", Font.PLAIN, 15)); // 设置横轴字体
+		// domainAxis.setTickLabelFont(new Font("宋书", Font.PLAIN, 15));//
+		// 设置坐标轴标尺值字体
+		// domainAxis.setLowerMargin(0.01);// 左边距 边框距离
+		// domainAxis.setUpperMargin(0.06);// 右边距 边框距离,防止最后边的一个数据靠近了坐标轴。
+		// domainAxis.setMaximumCategoryLabelLines(10);
+		// domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);//
+		// 横轴 lable 的位置 横轴上的 Lable 45度倾斜 DOWN_45
+		// domainAxis.setm
+
+		try {
+			File file = new File("c:/student.png");
+			ChartUtilities.saveChartAsPNG(file, mChart, 400, 300);// 把报表保存为文件
+		} catch (Exception e) {
+			String s = e.getLocalizedMessage();
+			s = e.getMessage();
+			s = e.toString();
+		}
+		ChartFrame mChartFrame = new ChartFrame("折线图", mChart);
+		mChartFrame.pack();
+		mChartFrame.setVisible(true);
+	}
 
 }

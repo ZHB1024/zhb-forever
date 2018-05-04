@@ -91,6 +91,7 @@
                 <prop key="hibernate.hbm2ddl.auto">${sys.jdbc.hibernate.hbm2ddl.auto}</prop> 
                 <prop key="hibernate.show_sql">${sys.jdbc.hibernate.show_sql}</prop>
                 <prop key="hiberante.format_sql">${sys.jdbc.hibernate.format_sql}</prop>
+                <prop key="javax.persistence.validation.mode">none</prop>  
             </props>
         </property>
     </bean>

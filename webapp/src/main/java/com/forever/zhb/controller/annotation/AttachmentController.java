@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -115,9 +116,6 @@ public class AttachmentController extends BasicController {
 				}
 			}
 		}*/
-		
-		 String source = TestUtil.getTencentMovieSource("http://v.qq.com/cover/y/y1xpnck2llvs7wa.html");  
-        System.out.println("视频源地址:" + source);  
 		
 		
 		return "htgl.upload.index";
@@ -662,7 +660,12 @@ public class AttachmentController extends BasicController {
 			}
 		}*/
 		
-		
+		String[] teStrings = {"12","23","34"};
+		List<String> list = Arrays.asList(teStrings);
+		System.out.println(list.size());
+		for (String string : list) {
+			System.out.println(string);
+		}
 	}
 
 }

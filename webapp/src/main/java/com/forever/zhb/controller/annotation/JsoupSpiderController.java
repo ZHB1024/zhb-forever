@@ -3,7 +3,6 @@ package com.forever.zhb.controller.annotation;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,13 +22,13 @@ public class JsoupSpiderController extends BasicController {
 	
 	private Logger logger = LoggerFactory.getLogger(JsoupSpiderController.class);
 	
-	@RequestMapping(name="/toSpider",method=RequestMethod.GET)
+	@RequestMapping(value="/toSpider",method=RequestMethod.GET)
 	public String toSpider(HttpServletRequest request,HttpServletResponse response){
 		
 		return "htgl.spider.index";
 	}
-	
-	@RequestMapping(name="/spider",method=RequestMethod.GET)
+
+	@RequestMapping(value="/spider",method=RequestMethod.POST)
 	public String spider(HttpServletRequest request,HttpServletResponse response){
 		String url = request.getParameter("url");
 		if (StringUtil.isBlank(url)) {

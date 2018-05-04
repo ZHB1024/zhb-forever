@@ -203,5 +203,15 @@
         <put-attribute name="main" value="/htgl/mail/sendMail.jsp"/>
     </definition>
     
+    <!-- spider -->
+    <definition name="htgl.spider.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/spider/index.jsp"/>
+    </definition>
+    
+    <!-- jfree -->
+    <definition name="htgl.jfree.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/jfree/index.jsp"/>
+    </definition>
+    
     
 </tiles-definitions>
