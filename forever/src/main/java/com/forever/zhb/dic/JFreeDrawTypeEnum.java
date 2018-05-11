@@ -13,7 +13,7 @@ public enum JFreeDrawTypeEnum {
 	}
 	
 	public static String getName(int index){
-		for (DeleteFlagEnum deleteFlagEnum : DeleteFlagEnum.values()) {
+		for (JFreeDrawTypeEnum deleteFlagEnum : JFreeDrawTypeEnum.values()) {
 			if (deleteFlagEnum.getIndex() == index) {
 				return deleteFlagEnum.getName();
 			}
