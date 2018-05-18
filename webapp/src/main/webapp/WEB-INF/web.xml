@@ -135,6 +135,23 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
+	
+	<error-page>
+        <error-code>403</error-code>
+        <location>/error/c403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/c404.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/error/null.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error/exception.jsp</location>
+    </error-page>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
