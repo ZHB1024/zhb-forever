@@ -1,0 +1,14 @@
+
+数字指纹
+通常为十六进制
+
+用途：主要是为了校验数据在传输过程中是否被修改,验证数据的一致性、完整性，是数字签名算法的核心算法。 
+
+MD5  (message-digest algorithm 5 信息-摘要算法)
+SHA  (Secure Hash Algorithm，安全散列算法)
+MAC  (Message Authentication Code 消息验证码算法)
+HMAC (Hash Message Authentication Code 散列消息验证码算法)
+是单向加密，加密并不可靠，任何数据加密后只会产生唯一的一个加密串，通常用来校验数据在传输过程中是否被修改。
+其中HMAC算法有一个密钥，增强了数据传输过程中的安全性，强化了算法外的不可控因素。
+
+CRC不属于加密的范畴，它属于散列函数

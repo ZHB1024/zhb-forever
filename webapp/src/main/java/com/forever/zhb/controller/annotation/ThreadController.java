@@ -97,6 +97,63 @@ public class ThreadController extends BasicController {
         }  
     }
     
+    
+  //----------------------------synchronized-----------阻塞------------------
+    public static void synchronizedTest(){
+    	Message message = new Message("test");
+    	Thread thread01 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				message.smsSender();
+			}
+		});
+    	
+    	Thread thread02 = new Thread(new Runnable() {
+    		@Override
+    		public void run() {
+    			message.mailSender();
+    		}
+    	});
+    	
+    	thread01.start();
+    	thread02.start();
+    }
+    
+  //--------------lock-----------------非阻塞---------------------------
+    public static void lockTest(){
+    	MessageLock messageLock = new MessageLock("lockTest");
+    	Thread thread01 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					messageLock.smsSender();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+    	
+    	Thread thread02 = new Thread(new Runnable() {
+    		@Override
+    		public void run() {
+    			try {
+					messageLock.mailSender();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+    		}
+    	});
+    	
+    	thread01.start();
+    	thread02.start();
+    	/*try {
+			Thread.currentThread().sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
+    	
+    }
+    
   //----------------countDownLatch--------------------------------------- 
     public static void countDownLatch(){
     	CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -258,7 +315,9 @@ public class ThreadController extends BasicController {
     	//cyclicBarrier();
     	//cyclicBarrier();
     	//semaphore();
-    	blockingQueue();
+    	//blockingQueue();
+    	//synchronizedTest();
+    	lockTest();
         
     }
 

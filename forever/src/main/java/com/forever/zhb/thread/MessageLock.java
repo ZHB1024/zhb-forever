@@ -13,27 +13,32 @@ public class MessageLock {
         this.name = name;
     }
 
-    public void smsSender() {
-        lock.lock();
-        System.out.println(name + "--锁住5s--smsSender-----------");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }finally {
-            lock.unlock();
-        }
-    }
-
-    public void mailSender() throws InterruptedException {
-        if(lock.tryLock(2000,TimeUnit.MILLISECONDS)) {
-            try {
-                System.out.println(name + "-获取到锁了---mailSender-----------");
+    public void smsSender() throws InterruptedException {
+    	if(lock.tryLock(500,TimeUnit.MILLISECONDS)) {
+    		try {
+    			System.out.println(Thread.currentThread().getName() + "-获取到锁了---smsSender-----------");
+            	System.out.println(Thread.currentThread().getName() + "--锁住2s--smsSender-----------");
+                Thread.sleep(2000);
             }finally {
                 lock.unlock();
             }
         }else {
-            System.out.println(name + "--等待2s没获取到锁--mailSender-----------");
+            System.out.println(Thread.currentThread().getName() + "--等待0.5s没获取到锁--smsSender-----------");
+        }
+    	
+    }
+
+    public void mailSender() throws InterruptedException {
+        if(lock.tryLock(500,TimeUnit.MILLISECONDS)) {
+            try {
+                System.out.println(Thread.currentThread().getName() + "-获取到锁了---mailSender-----------");
+                System.out.println(Thread.currentThread().getName() + "--锁住2s--smsSender-----------");
+                Thread.sleep(2000);
+            }finally {
+                lock.unlock();
+            }
+        }else {
+            System.out.println(Thread.currentThread().getName() + "--等待0.5s没获取到锁--mailSender-----------");
         }
         
     }
