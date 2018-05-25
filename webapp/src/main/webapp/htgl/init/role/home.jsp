@@ -16,6 +16,7 @@
     <table class="table table-hover table-bordered">
       <thead>
        <tr>
+		<th>序号</th>
         <th>角色名称</th>
         <th>描述</th>
         <th>创建时间</th>
@@ -23,9 +24,10 @@
        </tr>
       </thead>
       <tbody>
-       <c:forEach var="role" items="${roles}">
+       <c:forEach var="role" items="${roles}" varStatus="status">
         <tr>
          <td><c:out value="${role.name}"/></td>
+         <td>${status.index + 1}</td>
          <td><c:out value="${role.description}"/></td>
          <td><fmt:formatDate value="${role.createTime.time}" pattern="yy-MM-dd HH:mm:ss"/></td>
          <td><fmt:formatDate value="${role.updateTime.time}" pattern="yy-MM-dd HH:mm:ss"/></td>

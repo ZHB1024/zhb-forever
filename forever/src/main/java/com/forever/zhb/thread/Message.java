@@ -4,8 +4,14 @@ public class Message {
     
     String name ;
     
+    public Message(){}
+    
     public Message(String name) {
         this.name = name;
+    }
+    
+    public void send(){
+    	System.out.println(name + "----send------非同步代码块不受限制----");
     }
     
     public synchronized void smsSender() {

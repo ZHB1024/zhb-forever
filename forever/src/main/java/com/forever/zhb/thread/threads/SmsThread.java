@@ -18,7 +18,12 @@ public class SmsThread extends Thread {
     @Override
     public void run() {
         //message.smsSender();
-        messageLock.smsSender();
+        try {
+			messageLock.smsSender();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

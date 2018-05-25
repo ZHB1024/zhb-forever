@@ -73,33 +73,8 @@ public class ThreadController extends BasicController {
         thread2.start();
     }
     
-    
-  //----------------ExecutorService Future---------------------------------------   
-    public static void executorService() throws InterruptedException, ExecutionException{
-    	int taskSize = 5;
-        List<Future> results = new ArrayList<>();
-        
-        ExecutorService executorService = Executors.newFixedThreadPool(taskSize);
-        for (int i = 0; i < taskSize; i++) {  
-            Callable c = new SubmitCallable(i + " ");  
-            // 执行任务并获取Future对象  
-            Future f = executorService.submit(c);  
-            results.add(f);  
-        }  
-        
-        // 关闭线程池  
-        executorService.shutdown();  
-  
-        // 获取所有并发任务的运行结果  
-        for (Future f : results) {  
-            // 从Future对象上获取任务的返回值，并输出到控制台  
-            System.out.println(">>>" + f.get().toString());  
-        }  
-    }
-    
-    
   //----------------------------synchronized-----------阻塞------------------
-    public static void synchronizedTest(){
+    public static void synchronizedTest() throws InterruptedException{
     	Message message = new Message("test");
     	Thread thread01 = new Thread(new Runnable() {
 			@Override
@@ -115,8 +90,41 @@ public class ThreadController extends BasicController {
     		}
     	});
     	
+    	Thread thread03 = new Thread(new Runnable() {
+    		@Override
+    		public void run() {
+    			message.send();
+    		}
+    	});
+    	
     	thread01.start();
     	thread02.start();
+    	Thread.currentThread().sleep(500);
+    	thread03.start();
+    }
+    
+    
+  //----------------ExecutorService Future---------------------------------------   
+    public static void executorService() throws InterruptedException, ExecutionException{
+    	int taskSize = 5;
+        List<Future> results = new ArrayList<>();
+        
+        ExecutorService executorService = Executors.newFixedThreadPool(taskSize);
+        for (int i = 0; i < taskSize; i++) {  
+            Callable c = new SubmitCallable(i + " ");  
+            // 执行任务并获取Future对象  
+            Future f = executorService.submit(c); 
+            results.add(f);  
+        }  
+        
+        // 关闭线程池  
+        executorService.shutdown();  
+  
+        // 获取所有并发任务的运行结果  
+        for (Future f : results) {  
+            // 从Future对象上获取任务的返回值，并输出到控制台  
+            System.out.println(">>>" + f.get().toString());  
+        }  
     }
     
   //--------------lock-----------------非阻塞---------------------------
@@ -310,14 +318,14 @@ public class ThreadController extends BasicController {
     	
     	//extendsThread();
     	//implementsRunnable();
+    	synchronizedTest();
     	//executorService();
     	//countDownLatch();
     	//cyclicBarrier();
     	//cyclicBarrier();
     	//semaphore();
     	//blockingQueue();
-    	//synchronizedTest();
-    	lockTest();
+    	//lockTest();
         
     }
 
