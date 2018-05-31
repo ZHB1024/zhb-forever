@@ -109,7 +109,7 @@
     <slf4j-log4j12.version>1.7.5</slf4j-log4j12.version>
     <mongo-java-driver.version>3.4.2</mongo-java-driver.version>
     <jxl.version>2.4.2</jxl.version>
-    <lucene.version>4.0.0</lucene.version>
+    <lucene.version>7.0.1</lucene.version>
     <deeplearning4j.version>0.8.0</deeplearning4j.version>
 <!--     <deeplearning4j.version>1.0.0-alpha</deeplearning4j.version> -->
     

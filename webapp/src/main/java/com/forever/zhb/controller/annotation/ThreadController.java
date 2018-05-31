@@ -2,7 +2,9 @@ package com.forever.zhb.controller.annotation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -11,7 +13,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -73,7 +82,116 @@ public class ThreadController extends BasicController {
         thread2.start();
     }
     
-  //----------------------------synchronized-----------阻塞------------------
+    //-------------------------callable futureTask--------------------------
+    public static void futureTask(){
+    	Callable<Integer> call = new Callable<Integer>() {
+    		 public Integer call() throws Exception {
+                 return new Random().nextInt(100);
+             }
+		};
+		
+		FutureTask<Integer> ft = new FutureTask<Integer>(call);
+		new Thread(ft).start();
+		try{
+			Thread.currentThread().sleep(500);
+			System.out.println(ft.get());
+		}catch(InterruptedException | ExecutionException e){
+			e.printStackTrace();
+		}
+    }
+    
+    //------------------------------------ThreadPoolExecutor------------------------------
+    public static void threadPoolExecutor(){
+    	ThreadPoolExecutor tpe = new ThreadPoolExecutor(5, 5, 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>());
+    	
+    	List<Future<Object>> results = new ArrayList<>();
+        
+        for (int i = 0; i < 10; i++) {  
+            Callable<Object> c = new SubmitCallable(i + " ");  
+            // 执行任务并获取Future对象  
+            Future<Object> f = tpe.submit(c); 
+            results.add(f);  
+        }  
+        
+        // 关闭线程池  
+        tpe.shutdown();  
+        
+        // 获取所有并发任务的运行结果  
+        for (Future<Object> f : results) {  
+            // 从Future对象上获取任务的返回值，并输出到控制台  
+            try {
+				System.out.println(">>>" + f.get().toString());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}  
+        }  
+    }
+    
+  //------------------------------------ThreadPoolExecutor----自定义 线程日志--------------------------
+    public static void threadPoolExecutorByMyself(){
+    	int corePoolSize = 5;
+    	int maxPoolSize = 5;
+    	long keepAliveTime = 0;
+    	BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
+    	ThreadFactory threadFactory = Executors.defaultThreadFactory();
+    	RejectedExecutionHandler handler = new ThreadPoolExecutor.DiscardPolicy();
+    	
+    	ThreadPoolExecutor tpe = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.MILLISECONDS, queue,threadFactory,handler){
+    		@Override
+    		protected void beforeExecute(Thread t, Runnable r) { 
+    			System.out.println(t.getName() + "---------before----------------");
+    		}
+    		
+    		@Override
+    		protected void afterExecute(Runnable r, Throwable t) { 
+    			System.out.println(((HandleRunnable)r).toString() + "-------------------after----------------");
+    		}
+    		
+    		@Override
+    		protected void terminated() { 
+    			System.out.println("-------------------terminated----------------");
+    		}
+    	};
+    	
+        for (int i = 0; i < 10; i++) {  
+            HandleRunnable hr = new HandleRunnable(i+ " ");
+            tpe.execute(hr);
+        }  
+        
+        // 关闭线程池  
+        tpe.shutdown();  
+    }
+    
+    
+  //---------------------------------------Executors Future--------------------------------  
+    public static void executorService() throws InterruptedException, ExecutionException{
+    	int taskSize = 5;
+        List<Future<Object>> results = new ArrayList<>();
+        
+        ExecutorService executorService = Executors.newFixedThreadPool(taskSize);
+        for (int i = 0; i < taskSize; i++) {  
+            Callable<Object> c = new SubmitCallable(i + " ");  
+            // 执行任务并获取Future对象  
+            Future<Object> f = executorService.submit(c); 
+            results.add(f);  
+        }  
+        
+        // 关闭线程池  
+        executorService.shutdown();  
+  
+        // 获取所有并发任务的运行结果  
+        for (Future<Object> f : results) {  
+            // 从Future对象上获取任务的返回值，并输出到控制台  
+            System.out.println(">>>" + f.get().toString());  
+        }  
+    }
+    
+    
+//---------------------------------------------------------------锁------------------------------------    
+    
+  //----------------------------synchronized-----同步------阻塞-------内置锁-----------
     public static void synchronizedTest() throws InterruptedException{
     	Message message = new Message("test");
     	Thread thread01 = new Thread(new Runnable() {
@@ -104,30 +222,7 @@ public class ThreadController extends BasicController {
     }
     
     
-  //----------------ExecutorService Future---------------------------------------   
-    public static void executorService() throws InterruptedException, ExecutionException{
-    	int taskSize = 5;
-        List<Future> results = new ArrayList<>();
-        
-        ExecutorService executorService = Executors.newFixedThreadPool(taskSize);
-        for (int i = 0; i < taskSize; i++) {  
-            Callable c = new SubmitCallable(i + " ");  
-            // 执行任务并获取Future对象  
-            Future f = executorService.submit(c); 
-            results.add(f);  
-        }  
-        
-        // 关闭线程池  
-        executorService.shutdown();  
-  
-        // 获取所有并发任务的运行结果  
-        for (Future f : results) {  
-            // 从Future对象上获取任务的返回值，并输出到控制台  
-            System.out.println(">>>" + f.get().toString());  
-        }  
-    }
-    
-  //--------------lock-----------------非阻塞---------------------------
+  //------------------------------------lock--------显示锁---------非阻塞-------读写锁--------------------
     public static void lockTest(){
     	MessageLock messageLock = new MessageLock("lockTest");
     	Thread thread01 = new Thread(new Runnable() {
@@ -162,7 +257,7 @@ public class ThreadController extends BasicController {
     	
     }
     
-  //----------------countDownLatch--------------------------------------- 
+  //-------------------------------countDownLatch-------不可重用---------例如：发射火箭，前期准备完成后，才能发射---------- 
     public static void countDownLatch(){
     	CountDownLatch countDownLatch = new CountDownLatch(1);
     	Lock lock = new ReentrantLock();
@@ -211,7 +306,7 @@ public class ThreadController extends BasicController {
     	
     }
     
-    //-----------------CyclicBarrier --------------------------------
+    //------------------------------------CyclicBarrier -----------循环栅栏--------------------
     public static void cyclicBarrier(){
     	CyclicBarrier cyclicBarrier = new CyclicBarrier(3);
     	for(int i=0; i<3; i++){
@@ -236,7 +331,7 @@ public class ThreadController extends BasicController {
 		}
     }
     
-    //-------------semaphore---------------------------------------
+    //--------------------------------semaphore------------信号量-------可重用--------------------
     public static void semaphore(){
     	Semaphore semaphore = new Semaphore(2);
     	for(int i=0; i<3; i++){
@@ -318,7 +413,10 @@ public class ThreadController extends BasicController {
     	
     	//extendsThread();
     	//implementsRunnable();
-    	synchronizedTest();
+    	//threadPoolExecutor();
+    	threadPoolExecutorByMyself();
+    	//futureTask();
+    	//synchronizedTest();
     	//executorService();
     	//countDownLatch();
     	//cyclicBarrier();

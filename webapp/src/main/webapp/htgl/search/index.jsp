@@ -10,7 +10,7 @@
   </div>
   <ul class="states">
      <li class="succes">
-       <form id="theform" action="<%=ctxPath %>/searchController/searchKonwSolr">
+       <form id="theform" action="<%=ctxPath %>/htgl/searchController/searchKonwSolr">
       <input type="hidden" name="start" value="${start}">
       <input type="text" name="keyword" placeholder="请输入关键字" value="${keyword}"/>
       &nbsp;

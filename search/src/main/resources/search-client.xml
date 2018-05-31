@@ -28,11 +28,14 @@
         <constructor-arg index="0" value="http://${serverName}:${httpPort}${contextPathAccount}/" />
     </bean>
 
-    <bean id="searchServiceClient" class="com.forever.zhb.search.client.impl.SearchServiceClientImpl">
+    <bean id="searchServiceClient" class="com.forever.zhb.search.solr.client.impl.SearchServiceClientImpl">
         <property name="solrAccount" ref="solrServerAccount" />
     </bean>
     
-    <bean id="luceneSearchClient" class="com.forever.zhb.lucene.client.impl.LuceneSearchClientImpl">
+    <bean id="luceneSearchClient" class="com.forever.zhb.search.lucene.impl.LuceneSearchClientImpl">
+    </bean>
+    
+    <bean id="elasticSearchClient" class="com.forever.zhb.search.elasticsearch.impl.ElasticSearchImpl">
     </bean>
 
 </beans>    

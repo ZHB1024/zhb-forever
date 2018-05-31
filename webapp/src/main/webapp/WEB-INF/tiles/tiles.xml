@@ -135,6 +135,10 @@
         <put-attribute name="main" value="/htgl/lucene/index.jsp"/>
     </definition>
     
+    <definition name="htgl.elasticSearch.index" extends="htgl.main.layout">
+        <put-attribute name="main" value="/htgl/elasticSearch/index.jsp"/>
+    </definition>
+    
     <!-- xss -->
     <definition name="htgl.xss.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/xss/index.jsp"/>

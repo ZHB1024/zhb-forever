@@ -11,7 +11,7 @@
   </div>
   <div class="states" id="states">
     <div class="succes">
-     <form id="theform" action="<%=ctxPath %>/searchController/luceneSearch">
+     <form id="theform" action="<%=ctxPath %>/htgl/searchController/luceneSearch">
       <input type="hidden" name="start" value="${start}">
       <input type="text" name="keyword" placeholder="请输入关键字" value="${keyword}"/>
       &nbsp;
@@ -39,7 +39,7 @@
       </c:forEach>
      </table>
              共：${ page.totalCount } &nbsp; 条  &nbsp;&nbsp;
-     <jsp:include page="/page/pageNavigator.jsp" />
+     <jsp:include page="/page/pageNavigatorSearch.jsp" />
     </c:if>
    </form>
   </div>

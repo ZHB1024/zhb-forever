@@ -17,24 +17,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.forever.zhb.Constants;
-import com.forever.zhb.common.indexdata.KnowIndexData;
-import com.forever.zhb.lucene.client.LuceneSearchClient;
-import com.forever.zhb.lucene.client.LuceneSearchClientFactory;
-import com.forever.zhb.page.Page;
+import com.forever.zhb.search.elasticsearch.ElasticSearch;
+import com.forever.zhb.search.elasticsearch.ElasticSearchClientFactory;
+import com.forever.zhb.search.lucene.LuceneSearchClient;
+import com.forever.zhb.search.lucene.LuceneSearchClientFactory;
+import com.forever.zhb.search.page.Page;
 import com.forever.zhb.pojo.NewsInfoData;
-import com.forever.zhb.search.client.SearchServiceClient;
-import com.forever.zhb.search.client.SearchServiceClientFactory;
-import com.forever.zhb.search.index.NewsIndexData;
+import com.forever.zhb.search.solr.client.SearchServiceClient;
+import com.forever.zhb.search.solr.client.SearchServiceClientFactory;
+import com.forever.zhb.search.solr.index.KnowIndexData;
+import com.forever.zhb.search.solr.index.NewsIndexData;
+import com.forever.zhb.search.util.LuceneUtil;
+import com.forever.zhb.search.vo.DocumentVo;
+import com.forever.zhb.search.vo.KnowledgeVO;
 import com.forever.zhb.service.IForeverManager;
-import com.forever.zhb.util.lucene.LuceneUtil;
-import com.forever.zhb.vo.DocumentVo;
-import com.forever.zhb.vo.KnowledgeVO;
 
 import org.apache.lucene.document.Field;
 import org.apache.solr.client.solrj.SolrServerException;
 
 @Controller
-@RequestMapping("/searchController")
+@RequestMapping("/htgl/searchController")
 public class SearchController {
 	
     protected Log log = LogFactory.getLog(this.getClass());
@@ -44,6 +46,7 @@ public class SearchController {
     
     private SearchServiceClient solrClient = SearchServiceClientFactory.getSearchServiceClientBean();
     private LuceneSearchClient luceneSearchClient = LuceneSearchClientFactory.getLuceneSearchClientBean();
+    private ElasticSearch elasticSearchClient = ElasticSearchClientFactory.getElasticSearchClientBean();
     
     
     /*to solr*/
@@ -155,12 +158,21 @@ public class SearchController {
     	return "htgl.search.index";
     }
     
-    
+ /*-----------------------------------Lucene--------------------------------------------------------------------*/   
     
     @RequestMapping("/initLuceneIndex")
 	public String initLuceneIndex(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		List<Document> documents = new ArrayList<Document>();
 		List<NewsInfoData> newInfos = new ArrayList<NewsInfoData>();
+		NewsInfoData data = new NewsInfoData();
+		data.setId("8");
+		data.setTitle("测试一下");
+		data.setContent("北京天津深圳重庆上海广州");
+		NewsInfoData data1 = new NewsInfoData();
+		data1.setId("2");
+		data1.setTitle("数据56");
+		data1.setContent("大数据56，中央工45作组大数据56");
+		newInfos.add(data);
 		if (null != newInfos && newInfos.size() > 0) {
 			for (NewsInfoData newInfo : newInfos) {
 				Document document = LuceneUtil.createDocument();
@@ -193,6 +205,29 @@ public class SearchController {
         return "htgl.lucene.index";
     }
 	
-	
+//-----------------------------------------elasticsearch-------------------------------------------------------
+    
+    @RequestMapping("/elasticSearch")
+	public String elasticSearch(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		/*String keyword = request.getParameter("keyword");
+		if (StringUtils.isBlank(keyword)) {
+			request.setAttribute("errorMsg", "请输入查询关键字！");
+			return "htgl.lucene.index";
+		}
+		String start = request.getParameter("start");
+		if (StringUtils.isBlank(start)) {
+			start = "0";
+		}
+		int pageSize = Constants.PAGE_SIZE;
+		Page<DocumentVo> page = luceneSearchClient.luceneSearch(keyword, Integer.parseInt(start), pageSize);
+		request.setAttribute("page", page);
+		request.setAttribute("keyword", keyword);
+		request.setAttribute("count", page.getSize());*/
+    	elasticSearchClient.getConnect();
+    	//elasticSearchClient.createIndex();
+    	elasticSearchClient.query();
+    	elasticSearchClient.closeConnect();
+        return "htgl.elasticSearch.index";
+    }
 
 }
