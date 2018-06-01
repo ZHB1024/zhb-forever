@@ -1,14 +1,29 @@
 package com.forever.zhb.search.elasticsearch.indexdata;
 
+import java.util.Calendar;
+import java.util.Map;
+
 public class ElasticSearchIndexData {
 	
 	private String id;
 	private String name;
 	private String sex;
 	private int age;
+	private Calendar birthday;
 	private String phone;
 	private String email;
 	
+	public void setData(Map<String, Object> map){
+		if (null != map) {
+			this.setId(null==map.get("id")?"":map.get("id").toString());
+			this.setName(null==map.get("name")?"":map.get("name").toString());
+			this.setAge(null==map.get("age")?0:Integer.parseInt(map.get("age").toString()));
+			this.setSex(null==map.get("sex")?"":map.get("sex").toString());
+			this.setBirthday(null==map.get("birthday")?null:(Calendar)map.get("birthday"));
+			this.setPhone(null==map.get("phone")?"":map.get("phone").toString());
+			this.setEmail(null==map.get("email")?"":map.get("email").toString());
+		}
+	}
 	
 	
 	public String getId() {
@@ -28,6 +43,13 @@ public class ElasticSearchIndexData {
 	}
 	public void setAge(int age) {
 		this.age = age;
+	}
+	
+	public Calendar getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Calendar birthday) {
+		this.birthday = birthday;
 	}
 	public String getSex() {
 		return sex;

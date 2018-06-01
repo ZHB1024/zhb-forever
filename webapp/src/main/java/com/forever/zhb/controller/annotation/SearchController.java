@@ -16,9 +16,11 @@ import org.apache.lucene.document.Document;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.forever.zhb.Constants;
+import com.forever.zhb.search.Constants;
 import com.forever.zhb.search.elasticsearch.ElasticSearch;
 import com.forever.zhb.search.elasticsearch.ElasticSearchClientFactory;
+import com.forever.zhb.search.elasticsearch.indexdata.ElasticSearchIndexData;
+import com.forever.zhb.search.elasticsearch.init.InitDataElasticSearch;
 import com.forever.zhb.search.lucene.LuceneSearchClient;
 import com.forever.zhb.search.lucene.LuceneSearchClientFactory;
 import com.forever.zhb.search.page.Page;
@@ -172,7 +174,7 @@ public class SearchController {
 		data1.setId("2");
 		data1.setTitle("数据56");
 		data1.setContent("大数据56，中央工45作组大数据56");
-		newInfos.add(data);
+		//newInfos.add(data);
 		if (null != newInfos && newInfos.size() > 0) {
 			for (NewsInfoData newInfo : newInfos) {
 				Document document = LuceneUtil.createDocument();
@@ -207,26 +209,43 @@ public class SearchController {
 	
 //-----------------------------------------elasticsearch-------------------------------------------------------
     
+    @RequestMapping("/toElasticSearch")
+    public String toElasticSearch(HttpServletRequest request,HttpServletResponse response){
+        return "htgl.elasticSearch.index";
+    }
+    
     @RequestMapping("/elasticSearch")
 	public String elasticSearch(HttpServletRequest request,HttpServletResponse response) throws Exception{
-		/*String keyword = request.getParameter("keyword");
+		String keyword = request.getParameter("keyword");
 		if (StringUtils.isBlank(keyword)) {
 			request.setAttribute("errorMsg", "请输入查询关键字！");
-			return "htgl.lucene.index";
+			return "htgl.elasticSearch.index";
 		}
 		String start = request.getParameter("start");
 		if (StringUtils.isBlank(start)) {
 			start = "0";
 		}
 		int pageSize = Constants.PAGE_SIZE;
-		Page<DocumentVo> page = luceneSearchClient.luceneSearch(keyword, Integer.parseInt(start), pageSize);
-		request.setAttribute("page", page);
-		request.setAttribute("keyword", keyword);
-		request.setAttribute("count", page.getSize());*/
+		
     	elasticSearchClient.getConnect();
-    	//elasticSearchClient.createIndex();
-    	elasticSearchClient.query();
+    	
+    	ElasticSearchIndexData data =elasticSearchClient.getIndexById("02a1022520fc4a308617619b1708a5e0", Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
+    	
+    	data.setAge(64);
+    	
+    	//elasticSearchClient.updateIndexById(data, Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
+    	
+        data =elasticSearchClient.getIndexById("02a1022520fc4a308617619b1708a5e0", Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
+    	
+    	//InitDataElasticSearch.initData();
+    	
+    	Page<ElasticSearchIndexData> page = elasticSearchClient.query(Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE,keyword, Integer.parseInt(start), pageSize);
+    	
     	elasticSearchClient.closeConnect();
+    	
+    	request.setAttribute("page", page);
+		request.setAttribute("keyword", keyword);
+		request.setAttribute("count", page.getSize());
         return "htgl.elasticSearch.index";
     }
 

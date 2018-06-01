@@ -8,5 +8,8 @@ public class ServicesConstants {
     public static String ELASTIC_SEARCH_CLIENT = "elasticSearchClient";
     
     public static String SEARCH_CLIENT_CONF = "search-client.xml";
+    
+    
+    
 
 }

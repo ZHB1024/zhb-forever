@@ -3,28 +3,48 @@ package com.forever.zhb.search.elasticsearch.impl;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.elasticsearch.action.index.IndexResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.document.DocumentField;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.WildcardQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.forever.zhb.search.elasticsearch.ElasticSearch;
 import com.forever.zhb.search.elasticsearch.indexdata.ElasticSearchIndexData;
+import com.forever.zhb.search.page.Page;
+import com.forever.zhb.search.page.PageUtil;
 import com.forever.zhb.search.util.UUIDUtil;
 
 public class ElasticSearchImpl implements ElasticSearch {
@@ -41,107 +61,226 @@ public class ElasticSearchImpl implements ElasticSearch {
 	@Override
 	@SuppressWarnings("resource")
 	public void getConnect() throws UnknownHostException {
-		if (null == client) {
-			Settings settings = Settings.builder().put("client.transport.sniff", true).put("cluster.name", "my-application").build();
+		if (null == client || client.connectedNodes().isEmpty()) {
+			Settings settings = Settings.builder().put("client.transport.sniff", true)
+					.put("cluster.name", "my-application").build();
 			client = new PreBuiltTransportClient(settings)
 					.addTransportAddresses(new TransportAddress(InetAddress.getByName(HOST), PORT));
 			logger.info("连接信息:" + client.toString());
 		}
+		/*
+		 * Settings settings = Settings.builder().put("cluster.name",
+		 * "my-application").build(); client = new
+		 * PreBuiltTransportClient(settings) .addTransportAddresses(new
+		 * TransportAddress(InetAddress.getByName(HOST), PORT));
+		 * List<DiscoveryNode> nodes = client.connectedNodes(); if (null !=
+		 * nodes) { for (DiscoveryNode node : nodes) {
+		 * logger.info(node.getName() + node.getHostAddress()); } }
+		 * logger.info("连接信息:" + client.toString());
+		 */
 	}
 
-	public void createIndex() {
-		try {
-			for (int i = 300; i <= 350; i++) {
-				Map<String, Object> json = new HashMap<String, Object>();
-				json.put("id",UUIDUtil.getRandomUUID());
-				json.put("name","zhanghubin" + i);
-				json.put("age",i % 10);
-				IndexResponse indexResponse = client.prepareIndex("zhb", "forever",i+"")
-						.setSource(json)
-						.get();
-				System.out.println("responseIsCreated: " + indexResponse);
-			}
-			System.out.println("it is ok ！");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-	
-	public void initIndex(ElasticSearchIndexData data) {
+	@Override
+	public void initIndex(String index, String type, ElasticSearchIndexData data) {
 		try {
 			Map<String, Object> json = new HashMap<String, Object>();
-			json.put("id",UUIDUtil.getRandomUUID());
-			json.put("name",data.getName());
+			String id = UUIDUtil.getRandomUUID();
+			json.put("id", id);
+			json.put("name", data.getName());
 			json.put("sex", data.getSex());
-			json.put("age",data.getAge());
+			json.put("age", data.getAge());
+			json.put("birthday", data.getBirthday());
 			json.put("phone", data.getPhone());
 			json.put("email", data.getEmail());
-			client.prepareIndex("zhb", "forever").setSource(json).get();
+			client.prepareIndex(index, type, id).setSource(json).get();
 			logger.info("initIndex data total 1  个");
 		} catch (Exception e) {
 			e.printStackTrace();
+			client.close();
 			logger.info("initIndex data fail.....");
 		}
 	}
-	
-	public void initIndex(List<ElasticSearchIndexData> datas) {
+
+	@Override
+	public void initIndex(String index, String type, List<ElasticSearchIndexData> datas) {
 		try {
 			if (null != datas && datas.size() > 0) {
 				for (ElasticSearchIndexData data : datas) {
 					Map<String, Object> json = new HashMap<String, Object>();
-					json.put("id",UUIDUtil.getRandomUUID());
-					json.put("name",data.getName());
+					String id = UUIDUtil.getRandomUUID();
+					json.put("id", id);
+					json.put("name", data.getName());
 					json.put("sex", data.getSex());
-					json.put("age",data.getAge());
+					json.put("age", data.getAge());
+					json.put("birthday", data.getBirthday());
 					json.put("phone", data.getPhone());
 					json.put("email", data.getEmail());
-					client.prepareIndex("zhb", "forever").setSource(json).get();
+					client.prepareIndex(index, type, id).setSource(json).get();
 				}
 				logger.info("initIndex data total " + datas.size() + " 个");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			client.close();
 			logger.info("initIndex data fail.....");
 		}
 
 	}
 
-	public void query() throws Exception {
+	@Override
+	public ElasticSearchIndexData getIndexById(String id, String index, String type) {
+		ElasticSearchIndexData data = null;
+		GetResponse response = client.prepareGet(index, type, id).get();
+		Map<String, DocumentField> fields = response.getFields();
+		Map<String, Object> map = response.getSource();
+		if (null != map) {
+			data = new ElasticSearchIndexData();
+			data.setData(map);
+		}
+		return data;
+	}
+
+	public boolean updateIndexById(ElasticSearchIndexData data, String index, String type) {
 		try {
-			QueryBuilder rangeQuery = QueryBuilders.rangeQuery("age").gt(1); //大于1
-			QueryBuilder matchQueryName = QueryBuilders.matchQuery("name","zhanghubin340"); //精确匹配
-			QueryBuilder matchQueryAge = QueryBuilders.matchQuery("age",1); 
-			SearchResponse searchResponse = client.prepareSearch("zhb")
-					.setTypes("forever")
-					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-					.setQuery(rangeQuery)
-					//.setPostFilter(QueryBuilders.rangeQuery("age").from(20).to(30)) // Filter
-					//.addSort("age", SortOrder.DESC) 
-					.setFrom(0).setSize(20).setExplain(true)// 不设置的话，默认取10条数据
-					.get();
-			SearchHits hits = searchResponse.getHits();
-			System.out.println("查到记录数：" + hits.getTotalHits());
-			SearchHit[] searchHists = hits.getHits();
-			if (searchHists.length > 0) {
-				for (SearchHit hit : searchHists) {
-					String name = (String) hit.getSourceAsMap().get("name");
-					Integer age = Integer.parseInt(hit.getSourceAsMap().get("age").toString());
-					System.out.format("name:%s ,age :%d \n", name, age);
-				}
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("id", data.getId());
+			json.put("name", data.getName());
+			json.put("sex", data.getSex());
+			json.put("age", data.getAge());
+			json.put("birthday", data.getBirthday());
+			json.put("phone", data.getPhone());
+			json.put("email", data.getEmail());
+
+			UpdateRequest updateRequest = new UpdateRequest();
+			updateRequest.index(index);
+			updateRequest.type(type);
+			updateRequest.id(data.getId());
+			updateRequest.doc(XContentFactory.jsonBuilder().startObject().field("name", data.getName())
+					.field("sex", data.getSex()).field("age", data.getAge()).field("birthday", data.getBirthday())
+					.field("phone", data.getPhone()).field("email", data.getEmail()).endObject());
+			UpdateResponse response1 = client.update(updateRequest).get();
+
+			/*
+			 * client.prepareUpdate(index,type,data.getId())
+			 * .setDoc(json).execute().get();
+			 */
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("updateIndex fail.......");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean delIndexByIndex(String index) {
+		try {
+			IndicesExistsRequest inExistsRequest = new IndicesExistsRequest(index);
+			IndicesExistsResponse inExistsResponse = client.admin().indices().exists(inExistsRequest).actionGet();
+			if (inExistsResponse.isExists()) {
+				DeleteIndexResponse dResponse = client.admin().indices().prepareDelete(index).execute().actionGet();
+				return dResponse.isAcknowledged();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean delIndexById(String id, String index, String type) {
+		try {
+			DeleteResponse dResponse = client.prepareDelete(index, type, id).execute().actionGet();
+			boolean temp = dResponse.forcedRefresh();
+			boolean temp01 = dResponse.isFragment();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Page<ElasticSearchIndexData> query(String index, String type, String keyWord, int start, int pageSize)
+			throws Exception {
+		List<ElasticSearchIndexData> results = null;
+		try {
+			QueryBuilder all = QueryBuilders.matchAllQuery();// 全匹配
+			QueryBuilder matchQueryName = QueryBuilders.matchQuery("name", keyWord); // 模糊匹配
+																						// 单个匹配
+			QueryBuilder wildCardQuery = QueryBuilders.wildcardQuery("name", "*" + keyWord + "*");// 模糊匹配
+			QueryBuilder rangeQuery = QueryBuilders.rangeQuery("age").gt(0); // 大于1
+			QueryBuilder multiQuery = QueryBuilders.multiMatchQuery(keyWord, "name", "age");// 多字段单值匹配
+			QueryBuilder term = QueryBuilders.termQuery("name", keyWord);
+
+			// 复合查询类型 and or
+			BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
+					.must(QueryBuilders.matchQuery("name", keyWord))
+					.should(QueryBuilders.matchQuery("age", 100));
+
+			HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false);
+			highlightBuilder.preTags("<span style=\"color:red\">");
+			highlightBuilder.postTags("</span>");
+
+			SearchResponse sr = client.prepareSearch(index).setTypes(type)
+					// 设置查询类型 1.SearchType.DFS_QUERY_THEN_FETCH = 精确查询
+					// 2.SearchType.SCAN = 扫描查询,无序
+					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+					.setQuery(boolQuery)
+					// .setPostFilter(QueryBuilders.rangeQuery("age").from(20).to(30))
+					.addSort("age", SortOrder.DESC) // 降序
+					.setFrom(start)
+					.setSize(pageSize)// 不设置的话，默认取10条数据
+					.setExplain(true)// 设置是否按查询匹配度排序
+					.highlighter(highlightBuilder)
+					.get();
+			SearchHits hits = sr.getHits();
+			logger.info("查到记录数：" + hits.getTotalHits());
+			long totalCount = hits.getTotalHits();
+			if (totalCount > 0) {
+				results = new ArrayList<ElasticSearchIndexData>();
+				SearchHit[] searchHists = hits.getHits();
+				if (searchHists.length > 0) {
+					for (SearchHit hit : searchHists) {
+						Map<String, Object> map = hit.getSourceAsMap();
+						if (null != map) {
+							ElasticSearchIndexData data = new ElasticSearchIndexData();
+							data.setId(null == map.get("id") ? "" : map.get("id").toString());
+							data.setAge(null == map.get("age") ? 0 : Integer.parseInt(map.get("age").toString()));
+							data.setSex(null == map.get("sex") ? "" : map.get("sex").toString());
+							data.setBirthday(null == map.get("birthday") ? null : (Calendar) map.get("birthday"));
+							data.setPhone(null == map.get("phone") ? "" : map.get("phone").toString());
+							data.setEmail(null == map.get("email") ? "" : map.get("email").toString());
+							// 高亮显示
+							Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+							// name高亮
+							HighlightField nameField = highlightFields.get("name");
+							if (null != nameField) {
+								StringBuilder sb = new StringBuilder();
+								Text[] fragments = nameField.fragments();
+								for (Text text : fragments) {
+									sb.append(text);
+								}
+								data.setName(sb.toString());
+							}
+							results.add(data);
+						}
+
+					}
+				}
+				return PageUtil.getPage(results.iterator(), start, pageSize, totalCount);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			client.close();
 			logger.info("query index fail......");
 		}
-
+		return Page.EMPTY_PAGE;
 	}
 
 	@Override
 	public void closeConnect() {
-		if (null != client) {
-			logger.info("执行关闭连接操作...");
+		if (null != client && !client.connectedNodes().isEmpty()) {
 			client.close();
+			logger.info("执行关闭连接操作...");
 		}
 	}
 
