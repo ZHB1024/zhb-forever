@@ -1,18 +1,7 @@
 package com.forever.zhb.controller.annotation;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.forever.zhb.service.IForeverManager;
+import com.forever.zhb.utils.AESUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -24,15 +13,23 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.forever.zhb.service.IForeverManager;
-import com.forever.zhb.utils.AESUtil;
-
-import net.sf.json.JSONObject;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/httpClientController")
@@ -55,7 +52,7 @@ public class HttpClientController {
 	public void contentTest(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String groupId = request.getParameter("groupId");
 		String decGroupId = AESUtil.decrypt(groupId, AESUtil.findKeyById(""));
-		JSONObject jo = new JSONObject();
+        JSONObject jo = new JSONObject();
 		
 		List<String> students = new ArrayList<String>();
 		students.add("张会彬");
@@ -174,7 +171,7 @@ public class HttpClientController {
                     JSONObject js = (JSONObject)jsonObject.get("students");
                     System.out.println(js.get("12345"));*/
                     String encryResult = AESUtil.decrypt(content, AESUtil.findKeyById(""));
-                    JSONObject jsonRes = JSONObject.fromObject(encryResult);
+                    JSONObject jsonRes = new JSONObject(encryResult);
                     if (null != jsonRes) {
                     	Object object = jsonRes.get("students");
                         if (null != object) {

@@ -1,12 +1,7 @@
 package com.forever.zhb.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -19,7 +14,11 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.json.JSONObject;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FaceUtil {
 
@@ -35,7 +34,7 @@ public class FaceUtil {
 	 * 
 	 * @param imageFile
 	 *            被检测的图片
-	 * @param tempPath
+	 * @param realPath
 	 *            临时目录用于存放级联筛选器，路末尾一定要有分隔符
 	 * @return
 	 */

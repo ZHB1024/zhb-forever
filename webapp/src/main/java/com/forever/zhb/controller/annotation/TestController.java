@@ -1,5 +1,17 @@
 package com.forever.zhb.controller.annotation;
 
+import com.forever.zhb.basic.BasicController;
+import com.forever.zhb.utils.AESUtil;
+import com.forever.zhb.utils.MessageUtil;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,21 +31,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.forever.zhb.basic.BasicController;
-import com.forever.zhb.utils.AESUtil;
-import com.forever.zhb.utils.MessageUtil;
-
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/testController")

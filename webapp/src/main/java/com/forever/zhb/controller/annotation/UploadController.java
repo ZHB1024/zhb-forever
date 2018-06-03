@@ -1,17 +1,11 @@
 package com.forever.zhb.controller.annotation;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Calendar;
-
-import javax.annotation.Resource;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.forever.zhb.Constants;
+import com.forever.zhb.dic.DeleteFlagEnum;
+import com.forever.zhb.dic.FileTypeEnum;
+import com.forever.zhb.pojo.FileInfoData;
+import com.forever.zhb.service.IForeverManager;
+import com.forever.zhb.utils.PropertyUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -19,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.forever.zhb.Constants;
-import com.forever.zhb.dic.DeleteFlagEnum;
-import com.forever.zhb.dic.FileTypeEnum;
-import com.forever.zhb.pojo.FileInfoData;
-import com.forever.zhb.service.IForeverManager;
-import com.forever.zhb.utils.PropertyUtil;
+import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Calendar;
 
 @Controller
 @RequestMapping("/htgl/uploadController")
