@@ -1,7 +1,9 @@
 package com.forever.zhb.search.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -22,16 +24,38 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 public class LuceneUtil {
 	
-	private static Log log = LogFactory.getLog(LuceneUtil.class);
+	private static Logger log = LoggerFactory.getLogger(LuceneUtil.class);
 	
-	public static String INDEX_DIR = "C:\\lucene\\luceneIndex";
-	
+	public static String INDEX_DIR ;
 	public static IKAnalyzer ikAnalyzer;
-	public static StandardAnalyzer standardAnalyzer;
+    public static StandardAnalyzer standardAnalyzer;
+	
+	static {
+	    String property = System.getenv("propertyPath");
+	    if (StringUtils.isNotBlank(property)) {
+	        FileInputStream fis = null;
+	        try {
+	            fis = new FileInputStream(property);
+	            Properties properties = new Properties();
+	            properties.load(fis);
+	            INDEX_DIR = properties.getProperty("sys.lucene.index.path");
+	        }catch(Exception e) {
+	            INDEX_DIR = "F:/code/index/lucene";
+	            e.printStackTrace();
+	            log.info("LuceneUtil load property fail ......");
+	        }
+        }else {
+            INDEX_DIR = "F:/code/index/lucene";
+            log.info("环境变量未配置propertyPath");
+        }
+	    
+	}
 	
 	public static Directory createDirectory(String path){
 		if (StringUtils.isBlank(path)) {

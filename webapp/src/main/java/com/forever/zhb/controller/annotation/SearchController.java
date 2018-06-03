@@ -229,13 +229,10 @@ public class SearchController {
 		
     	elasticSearchClient.getConnect();
     	
-    	ElasticSearchIndexData data =elasticSearchClient.getIndexById("02a1022520fc4a308617619b1708a5e0", Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
-    	
-    	data.setAge(64);
-    	
+    	//ElasticSearchIndexData data =elasticSearchClient.getIndexById("02a1022520fc4a308617619b1708a5e0", Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
+    	//data.setAge(64);
     	//elasticSearchClient.updateIndexById(data, Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
-    	
-        data =elasticSearchClient.getIndexById("02a1022520fc4a308617619b1708a5e0", Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
+       // data =elasticSearchClient.getIndexById("02a1022520fc4a308617619b1708a5e0", Constants.DEFAULT_ELASTIC_SEARCH_INDEX,Constants.DEFAULT_ELASTIC_SEARCH_TYPE);
     	
     	//InitDataElasticSearch.initData();
     	

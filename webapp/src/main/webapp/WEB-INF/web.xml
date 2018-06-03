@@ -18,10 +18,13 @@
       </param-value>
 	</context-param>
 
-	<!-- 定时任务多少分钟运行一次 -->
 	<context-param>
-		<param-name>runTimeInterval</param-name>
-		<param-value>10</param-value>
+		<param-name>runTimerInterval</param-name>
+		<param-value>600</param-value>
+	</context-param>
+	<context-param>
+		<param-name>runScheduledExecutorInterval</param-name>
+		<param-value>600</param-value>
 	</context-param>
 
 	<listener>

@@ -1,5 +1,6 @@
 package com.forever.zhb.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DateUtil {
@@ -9,6 +10,7 @@ public class DateUtil {
     public static final String YESTERDAY = "昨天";
     public static final String THISWEEK = "本周";
     public static final String LONGAGO = "更早";
+    public static final String TODAY_FORMAT = new SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis());
     
     public static String tranDate(Calendar calendar) {
         String date = TimeUtil.getTime(calendar, "yyyyMMddHHmmss");
@@ -72,6 +74,11 @@ public class DateUtil {
         String second = time.substring(17,19);
         calendar.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(hour), Integer.parseInt(minute), Integer.parseInt(second));
         return calendar;
+    }
+    
+    public static String formatTime(String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        return sdf.format(System.currentTimeMillis());
     }
     
     

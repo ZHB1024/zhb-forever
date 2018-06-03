@@ -1,17 +1,45 @@
 package com.forever.zhb.utils;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JsoupUtil {
 
 	private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
+	
+	public static String IMAGE_BASE_SAVE_PATH ;
+	
+	static {
+        String property = System.getenv("propertyPath");
+        if (StringUtils.isNotBlank(property)) {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(property);
+                Properties properties = new Properties();
+                properties.load(fis);
+                IMAGE_BASE_SAVE_PATH = properties.getProperty("sys.url.download.save.base.path");
+            }catch(Exception e) {
+                IMAGE_BASE_SAVE_PATH = "E:\\jsoup-image";
+                e.printStackTrace();
+                logger.info("JsoupUtil load property fail ......");
+            }
+        }else {
+            IMAGE_BASE_SAVE_PATH = "E:\\jsoup-image";
+            logger.info("环境变量未配置propertyPath");
+        }
+        
+    }
+	
+	public static String getBaseSavePath() {
+	    return IMAGE_BASE_SAVE_PATH;
+	}
 
 	public static Document getDocumentByUrl(String url) {
 		if (StringUtil.isBlank(url)) {
@@ -26,53 +54,81 @@ public class JsoupUtil {
 		}
 		return document;
 	}
-
-	private static void print(String msg, Object... args) {
-		System.out.println(String.format(msg, args));
+	
+	public static String getUrl() {
+	    String propertyPath = System.getenv("propertyPath");
+        if (null == propertyPath) {
+            logger.info("环境变量未配置propertyPath");
+        }else{
+            FileInputStream in = null;
+            try {
+                in = new FileInputStream(propertyPath);
+                Properties properties = new Properties();
+                properties.load(in);
+                return properties.getProperty("sys.download.picture.url");
+            } catch (IOException e) {
+                e.printStackTrace();
+                logger.info("JsoupUtil load property fail.....");
+            }
+        }
+	    return null;
 	}
-
-	private static String trim(String s, int width) {
-		if (s.length() > width)
-			return s.substring(0, width - 1) + ".";
-		else
-			return s;
+	
+	public static String getTotalPage() {
+	    String propertyPath = System.getenv("propertyPath");
+	    if (null == propertyPath) {
+	        logger.info("环境变量未配置propertyPath");
+	    }else{
+	        FileInputStream in = null;
+	        try {
+	            in = new FileInputStream(propertyPath);
+	            Properties properties = new Properties();
+	            properties.load(in);
+	            return properties.getProperty("sys.download.picture.total.page");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            logger.info("JsoupUtil load property fail.....");
+	        }
+	    }
+	    return null;
 	}
-
-	public static void main(String[] args) {
-		String url = "http://news.ycombinator.com";
-		Document doc = JsoupUtil.getDocumentByUrl(url);
-		if (null != doc) {
-			Elements media = doc.select("[src]");
-			Elements imports = doc.select("link[href]");
-			Elements links = doc.select("a[href]");
-
-			if (null != media) {
-				print("\nMedia: (%d)", media.size());
-				for (Element src : media) {
-					if (src.tagName().equals("img"))
-						print(" * %s: <%s> %sx%s (%s)", src.tagName(), src.attr("abs:src"), src.attr("width"),
-								src.attr("height"), trim(src.attr("alt"), 20));
-					else
-						print(" * %s: <%s>", src.tagName(), src.attr("abs:src"));
-				}
-			}
-
-			if (null != imports) {
-				print("\nImports: (%d)", imports.size());
-				for (Element link : imports) {
-					print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
-				}
-			}
-
-			if (null != imports) {
-				print("\nLinks: (%d)", links.size());
-				for (Element link : links) {
-					print(" * a: <%s>  (%s)", link.attr("abs:href"), trim(link.text(), 35));
-				}
-			}
-
-		}
-
+	public static String getTotalThread() {
+	    String propertyPath = System.getenv("propertyPath");
+	    if (null == propertyPath) {
+	        logger.info("环境变量未配置propertyPath");
+	    }else{
+	        FileInputStream in = null;
+	        try {
+	            in = new FileInputStream(propertyPath);
+	            Properties properties = new Properties();
+	            properties.load(in);
+	            return properties.getProperty("sys.download.picture.total.thread");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            logger.info("JsoupUtil load property fail.....");
+	        }
+	    }
+	    return null;
 	}
+	
+	public static String getPersonalizedSavePath() {
+        String propertyPath = System.getenv("propertyPath");
+        if (null == propertyPath) {
+            logger.info("环境变量未配置propertyPath");
+        }else{
+            FileInputStream in = null;
+            try {
+                in = new FileInputStream(propertyPath);
+                Properties properties = new Properties();
+                properties.load(in);
+                return properties.getProperty("sys.url.download.save.personalized.path");
+            } catch (IOException e) {
+                e.printStackTrace();
+                logger.info("JsoupUtil load property fail.....");
+            }
+        }
+        return null;
+    }
+
 
 }

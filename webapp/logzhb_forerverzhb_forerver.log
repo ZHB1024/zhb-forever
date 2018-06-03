@@ -1,7 +1,0 @@
-2018-05-03 15:22:33,577 INFO  [org.reflections.Reflections] Reflections took 559 ms to scan 7 urls, producing 419 keys and 2077 values 
-2018-05-03 15:23:41,533 INFO  [org.reflections.Reflections] Reflections took 280 ms to scan 7 urls, producing 419 keys and 2077 values 
-2018-05-03 15:23:58,890 INFO  [org.reflections.Reflections] Reflections took 293 ms to scan 7 urls, producing 419 keys and 2077 values 
-2018-05-03 15:24:33,896 INFO  [org.reflections.Reflections] Reflections took 290 ms to scan 7 urls, producing 419 keys and 2077 values 
-2018-05-03 15:25:13,254 INFO  [org.reflections.Reflections] Reflections took 281 ms to scan 7 urls, producing 419 keys and 2077 values 
-2018-05-03 15:38:19,002 INFO  [org.nd4j.linalg.factory.Nd4jBackend] Loaded [CpuBackend] backend
-2018-05-03 15:38:19,039 WARN  [org.reflections.Reflections] given scan urls are empty. set urls in the configuration

@@ -1,22 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="zhb-forever" prefix="zhb-forever"%>
 <%
-  String ctxPath = request.getContextPath();
+	String ctxPath = request.getContextPath();
 %>
 
-<!-- <div>
-<video width="320" height="240" controls="controls">
-						<source
-							src="https://v.qq.com/iframe/player.html?vid=u0627uagpoy&tiny=0&auto=0"
-							>
-					</video>
-</div> -->
-
-<div>
-<video width="320" height="240" controls="controls">
-						<source
-							src="C:/Users/ZHB/Videos/mov_bbb.ogg"
-							type="video/ogg">
-					</video>
+<div class="text-section">
+	<h1>Jsoup spider</h1>
 </div>
+<div class="states" id="states">
+	<div class="succes">
+		<form id="theform" action="<%=ctxPath%>/htgl/jsoupSpiderController/spider" method="post">
+			<input type="hidden" name="start" value="${start}"> <input
+				type="text" name="url" placeholder="请输入关键字" value="${url}" />
+			&nbsp; <input type="submit" value="查 询" />
+
+			<c:if test="${ page.size > 0}">
+				<table border="1">
+					<tr align="center">
+						<td>序号</td>
+						<td>id</td>
+						<td>name</td>
+						<td>sex</td>
+						<td>age</td>
+						<td>birthday</td>
+						<td>phone</td>
+						<td>email</td>
+						<!--  <td>匹配度</td> -->
+					</tr>
+					<c:forEach var="item" items="${page.list}" varStatus="stas">
+						<tr align="center">
+							<td>${stas.index+1}</td>
+							<td>${item.id}</td>
+							<td>${item.name}</td>
+							<td>${item.sex}</td>
+							<td>${item.age}</td>
+							<td>${item.birthday}</td>
+							<td>${item.phone}</td>
+							<td>${item.email}</td>
+							<%--  <td>${item.score}</td> --%>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$("input[name='del']").click(function(){
+	var url = '<%=ctxPath%>
+	/luceneController/deleteMessageIndex';
+		$("#theform").attr("action", url);
+		$("#theform").submit();
+	});
+</script>
+

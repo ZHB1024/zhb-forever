@@ -8,8 +8,8 @@ import com.forever.zhb.timer.thread.TimerTestThread;
 public class TimerTestThreadListener implements ServletContextListener {
 	
 	public void contextInitialized(ServletContextEvent arg0) {
-		int runTimeInterval=Integer.parseInt(arg0.getServletContext().getInitParameter("runTimeInterval"));
-        TimerTestThread timerThread =new TimerTestThread(runTimeInterval);
+		int runTimerInterval=Integer.parseInt(arg0.getServletContext().getInitParameter("runTimerInterval"));
+        TimerTestThread timerThread =new TimerTestThread(runTimerInterval);
         timerThread.start();
 	}
 	
