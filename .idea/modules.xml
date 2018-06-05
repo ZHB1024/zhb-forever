@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/forever/zhb-forever.iml" filepath="$PROJECT_DIR$/forever/zhb-forever.iml" />
+      <module fileurl="file://$PROJECT_DIR$/designPattern/zhb-forever-designPattern.iml" filepath="$PROJECT_DIR$/designPattern/zhb-forever-designPattern.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka/zhb-forever-kafka.iml" filepath="$PROJECT_DIR$/kafka/zhb-forever-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/proto/zhb-forever-proto.iml" filepath="$PROJECT_DIR$/proto/zhb-forever-proto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search/zhb-forever-search.iml" filepath="$PROJECT_DIR$/search/zhb-forever-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webapp/zhb-forever-war.iml" filepath="$PROJECT_DIR$/webapp/zhb-forever-war.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/zhb_forever_github.iml" filepath="$PROJECT_DIR$/.idea/zhb_forever_github.iml" />
+    </modules>
+  </component>
+</project>

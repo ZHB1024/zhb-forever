@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="zhb-forever" />
+        <module name="zhb-forever-designPattern" />
+        <module name="zhb-forever-kafka" />
+        <module name="zhb-forever-proto" />
+        <module name="zhb-forever-search" />
+        <module name="zhb-forever-war" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="zhb-forever" target="1.8" />
+      <module name="zhb-forever-designPattern" target="1.8" />
+      <module name="zhb-forever-kafka" target="1.8" />
+      <module name="zhb-forever-proto" target="1.8" />
+      <module name="zhb-forever-search" target="1.8" />
+      <module name="zhb-forever-war" target="1.8" />
+      <module name="zhb_forever_github" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
