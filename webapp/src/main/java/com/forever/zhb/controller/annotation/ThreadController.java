@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -306,7 +307,7 @@ public class ThreadController extends BasicController {
     	
     }
     
-    //------------------------------------CyclicBarrier -----------循环栅栏--------------------
+    //------------------------------------CyclicBarrier -----------循环栅栏--------可以重复使用------------
     public static void cyclicBarrier(){
     	CyclicBarrier cyclicBarrier = new CyclicBarrier(3);
     	for(int i=0; i<3; i++){
@@ -408,13 +409,95 @@ public class ThreadController extends BasicController {
     	thread01.start();
     	
     }
+
+    //------------------------------------------------几个线程同时从某个接口中获取资源，谁先得到就返回谁--------------------------------------
+	public static void cyclicBarry(){
+    	CyclicBarrier cyclicBarrier = new CyclicBarrier(3);
+        AtomicReference<String> value = new AtomicReference<String>();
+        String threadName = null;
+        List<Future<String>> results = new ArrayList<>();
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    cyclicBarrier.await();
+                    if (StringUtil.isNotBlank(value.get())){
+                        return;
+                    }
+                    String tempValue = getSource();
+                    if (!value.compareAndSet(null,tempValue)){
+                        return ;
+                    }
+                    //threadName = Thread.currentThread().getName();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
+        Callable<String> call = new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    cyclicBarrier.await();
+                    if (StringUtil.isNotBlank(value.get())){
+                        return null;
+                    }
+                    String tempValue = getSource();
+                    if (!value.compareAndSet(null,tempValue)){
+                        return null;
+                    }
+                    return Thread.currentThread().getName();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+                return Thread.currentThread().getName();
+            }
+        };
+
+        ExecutorService es = Executors.newFixedThreadPool(3);
+        for (int i =0 ;i < 3;i++){
+            Future<String> future = es.submit(call);
+            results.add(future);
+        }
+        es.shutdown();
+
+        try {
+            Thread.currentThread().sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(value.get());
+
+        for (Future<String> future:results) {
+            try {
+                System.out.println(future.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+	private static String getSource(){
+        return "hello world";
+    }
     
     public static void main(String[] args) throws InterruptedException, ExecutionException {
     	
     	//extendsThread();
     	//implementsRunnable();
     	//threadPoolExecutor();
-    	threadPoolExecutorByMyself();
+    	//threadPoolExecutorByMyself();
     	//futureTask();
     	//synchronizedTest();
     	//executorService();
@@ -424,6 +507,7 @@ public class ThreadController extends BasicController {
     	//semaphore();
     	//blockingQueue();
     	//lockTest();
+        cyclicBarry();
         
     }
 

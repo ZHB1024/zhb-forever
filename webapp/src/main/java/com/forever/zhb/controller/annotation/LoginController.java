@@ -44,6 +44,7 @@ public class LoginController {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String redirectUrl = request.getParameter("redirectUrl");
+        log.info("------------------------------------------------------");
         if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
             request.setAttribute(Constants.REQUEST_ERROR, "用户名或密码错误不能为空");
             request.setAttribute("name", name);

@@ -101,77 +101,6 @@ public class AlgorithmController {
 		}
 	}
 
-	/**
-	 * 二分查找、折半查找
-	 * @param array 目标有序序列，从小到大排列
-	 * @param target  待查找的目标对象
-	 * @param fromIndex  数组的开始查找下标位置
-	 * @param toIndex    数组的结束查找下标位置
-	 * @return 数组的位置
-	 */
-	private static int binarySearch(int[] array, int target, int fromIndex, int toIndex) {
-		if (fromIndex > toIndex) {
-			return -(fromIndex+1);
-		}
-		
-		//int mid = fromIndex + (target-array[fromIndex])/(array[toIndex]-array[fromIndex])*(toIndex-fromIndex);
-		
-		while(toIndex >= fromIndex){
-			int mid = (fromIndex + toIndex) / 2;
-			if (array[mid] == target) {
-				return mid;
-			}else if (target < array[mid]) {
-				toIndex = mid - 1;
-			} else {
-				fromIndex = mid + 1;
-			}
-		}
-		return -(fromIndex+1);
-	}
-	
-	private static String binarySearchByRecursion(int[] array, int target, int low, int high) {
-		if (low >= high) {
-			return "没有";
-		}
-		int mid = (low + high) / 2;
-		if (array[mid] == target) {
-			return "值为：" + target + " 位置在：" + mid;
-		} else if (target < array[mid]) {
-			return binarySearchByRecursion(array, target, low, mid - 1);
-		} else {
-			return binarySearchByRecursion(array, target, mid + 1, high);
-		}
-	}
-	
-	/**
-	 * 二分查找、折半查找
-	 * @param array 目标有序序列，从小到大排列
-	 * @param target  待查找的目标对象
-	 * @param fromIndex  数组的开始查找下标位置
-	 * @param arrayLength    array.length
-	 * @return 数组的位置
-	 */
-	private static int binarySearchByComparable(Object[] array, int fromIndex, int arrayLength, Object key) {
-		int low = fromIndex;
-		int high = arrayLength - 1;
-
-		while (low <= high) {
-			int mid = (low + high) >>> 1;
-			@SuppressWarnings("rawtypes")
-			Comparable midVal = (Comparable) array[mid];
-			@SuppressWarnings("unchecked")
-			int cmp = midVal.compareTo(key);
-
-			if (cmp < 0)
-				low = mid + 1;
-			else if (cmp > 0)
-				high = mid - 1;
-			else
-				return mid; // key found
-		}
-		return -(low + 1); // key not found.
-	}
-	
 	// 10,10+2,10+2+2,......
 	private static int sum2(int num) {
 		if (num < 1) {
@@ -232,6 +161,79 @@ public class AlgorithmController {
 		}
 	}
 
+     //--------------------------------------------------------查找---------------------------------------------------------------------
+
+	/**
+	 * 二分查找、折半查找
+	 * @param array 目标有序序列，从小到大排列
+	 * @param target  待查找的目标对象
+	 * @param fromIndex  数组的开始查找下标位置
+	 * @param toIndex    数组的结束查找下标位置
+	 * @return 数组的位置
+	 */
+	private static int binarySearch(int[] array, int target, int fromIndex, int toIndex) {
+		if (fromIndex > toIndex) {
+			return -(fromIndex+1);
+		}
+
+		//int mid = fromIndex + (target-array[fromIndex])/(array[toIndex]-array[fromIndex])*(toIndex-fromIndex);
+
+		while(toIndex >= fromIndex){
+			int mid = (fromIndex + toIndex) / 2;
+			if (array[mid] == target) {
+				return mid;
+			}else if (target < array[mid]) {
+				toIndex = mid - 1;
+			} else {
+				fromIndex = mid + 1;
+			}
+		}
+		return -(fromIndex+1);
+	}
+
+	private static String binarySearchByRecursion(int[] array, int target, int low, int high) {
+		if (low >= high) {
+			return "没有";
+		}
+		int mid = (low + high) / 2;
+		if (array[mid] == target) {
+			return "值为：" + target + " 位置在：" + mid;
+		} else if (target < array[mid]) {
+			return binarySearchByRecursion(array, target, low, mid - 1);
+		} else {
+			return binarySearchByRecursion(array, target, mid + 1, high);
+		}
+	}
+
+	/**
+	 * 二分查找、折半查找
+	 * @param array 目标有序序列，从小到大排列
+	 * @param key  待查找的目标对象
+	 * @param fromIndex  数组的开始查找下标位置
+	 * @param arrayLength    array.length
+	 * @return 数组的位置
+	 */
+	private static int binarySearchByComparable(Object[] array, int fromIndex, int arrayLength, Object key) {
+		int low = fromIndex;
+		int high = arrayLength - 1;
+
+		while (low <= high) {
+			int mid = (low + high) >>> 1;
+			@SuppressWarnings("rawtypes")
+			Comparable midVal = (Comparable) array[mid];
+			@SuppressWarnings("unchecked")
+			int cmp = midVal.compareTo(key);
+
+			if (cmp < 0)
+				low = mid + 1;
+			else if (cmp > 0)
+				high = mid - 1;
+			else
+				return mid; // key found
+		}
+		return -(low + 1); // key not found.
+	}
+
 	public static void find(String s) {
 		// aabbbcdd2f2c
 		// aaabbbcc
@@ -273,8 +275,11 @@ public class AlgorithmController {
 
 	}
 
-	// ---------------------------------- 排序
-	// ------------------------------------------------------
+
+	//并行查找，启动几个线程查找无序序列中某个值
+
+
+	// ------------------------------------------------------------- 排序----------------------------------------------------------------
 
 	// 冒泡排序O(n^2)
 	public static void bubbleSort(int[] values) {

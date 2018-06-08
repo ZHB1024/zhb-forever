@@ -124,7 +124,7 @@ public class TestController extends BasicController {
 		//System.out.println( java.lang.Integer.valueOf(128) == new java.lang.Integer(128));
 		
 		//线程池
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MILLISECONDS,
+		/*ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<Runnable>(5));
 
         for(int i=0;i<15;i++){
@@ -133,8 +133,22 @@ public class TestController extends BasicController {
             System.out.println("线程池中线程数目："+executor.getPoolSize()+"，队列中等待执行的任务数目："+
             executor.getQueue().size()+"，已执行玩别的任务数目："+executor.getCompletedTaskCount());
         }
-        executor.shutdown();
-		
+        executor.shutdown();*/
+
+		List<String> allValues = new ArrayList<String>();
+		allValues.add("1");
+		allValues.add("2");
+		allValues.add("3");
+		allValues.add("4");
+
+		List<String> temp = new ArrayList<String>();
+		temp.add("1");
+		temp.add("2");
+		allValues.removeAll(temp);
+		for (String value:allValues) {
+			System.out.println(value);
+		}
+
 	}
 	
 	public static void updateBoolean(Boolean isBoo,String isString){
