@@ -95,6 +95,15 @@ public class TestController extends BasicController {
 		writeJSON(ajaxMessage, response);*/
 	}
 
+	@RequestMapping("/toLayer")
+	public String toLayer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		logger.info("----------------------");
+		logger.info("----------------------");
+		logger.info("----------------------");
+		logger.info("----------------------");
+		return "layer.welcome.index";
+	}
+
 	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException,
 			IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException,
 			IllegalArgumentException, InvocationTargetException {

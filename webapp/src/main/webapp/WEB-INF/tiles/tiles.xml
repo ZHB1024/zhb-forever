@@ -32,6 +32,16 @@
         <put-attribute name="main" value="CHANGE-ME"/>
         <put-attribute name="footer" value="/test/common/footer.jsp" />
     </definition>
+
+    <!--layer-->
+    <definition name="layer.main.layout" template="/htgl/layout/main_layout_layer.jsp">
+        <put-attribute name="header" value="/layer/common/header.jsp" />
+        <put-attribute name="left" value="/layer/common/left.jsp" />
+        <put-attribute name="body-header" value="/layer/common/body-header.jsp" />
+        <put-attribute name="main" value="CHANGE-ME"/>
+        <put-attribute name="footer" value="/layer/common/footer.jsp" />
+    </definition>
+
     <!-- layout end-->
     
     <!-- error -->
@@ -53,9 +63,10 @@
         <put-attribute name="main" value="/htgl/index.jsp"/>
     </definition>
     <!-- init -->
-    <definition name="init.function.index" extends="htgl.main.layout">
+    <!--<definition name="init.function.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/init/function/home.jsp"/>
-    </definition>
+    </definition>-->
+
     <definition name="init.role.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/init/role/home.jsp"/>
     </definition>
@@ -216,6 +227,20 @@
     <definition name="htgl.jfree.index" extends="htgl.main.layout">
         <put-attribute name="main" value="/htgl/jfree/index.jsp"/>
     </definition>
-    
+
+
+    <!-- layer -->
+    <definition name="layer.welcome.index" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/index_layer.jsp"/>
+    </definition>
+
+    <definition name="layer.test.index" extends="layer.main.layout">
+        <put-attribute name="main" value="/layer/laymain.jsp"/>
+    </definition>
+
+    <definition name="init.function.index" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/menu/index.jsp"/>
+    </definition>
+
     
 </tiles-definitions>
