@@ -122,7 +122,15 @@
 	<bean id="loginLogDao" class="com.forever.zhb.dao.impl.LoginLogDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
-	
+
+	<bean id="userDao" class="com.forever.zhb.dao.impl.UserDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="accountDao" class="com.forever.zhb.dao.impl.AccountDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
 	<bean id="foreverManagerBase" class="com.forever.zhb.service.impl.ForeverManagerImpl">
 		<property name="foreverDao" ref="foreverDao"></property>
 	</bean>
@@ -130,7 +138,15 @@
 	<bean id="loginLogManagerBase" class="com.forever.zhb.service.impl.LoginLogManagerImpl">
 		<property name="loginLogDao" ref="loginLogDao"></property>
 	</bean>
-	
+
+	<bean id="userManagerBase" class="com.forever.zhb.service.impl.UserManagerImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<bean id="accountManagerBase" class="com.forever.zhb.service.impl.AccountManagerImpl">
+		<property name="accountDao" ref="accountDao"></property>
+	</bean>
+
 	<bean id="foreverManager" parent="transactionBase">
 		<property name="target" ref="foreverManagerBase"></property>
 	</bean>
@@ -138,5 +154,13 @@
 	<bean id="loginLogManager" parent="transactionBase">
 		<property name="target" ref="loginLogManagerBase"></property>
 	</bean>
-    
+
+	<bean id="userManager" parent="transactionBase">
+        <property name="target" ref="userManagerBase"></property>
+	</bean>
+
+	<bean id="accountManager"  parent="transactionBase">
+        <property name="target" ref="accountManagerBase"></property>
+	</bean>
+
 </beans>

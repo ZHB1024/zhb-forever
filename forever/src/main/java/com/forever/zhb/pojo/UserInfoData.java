@@ -16,9 +16,9 @@ import org.hibernate.annotations.GenericGenerator;
 import com.forever.zhb.pojo.base.PersistentObject;
 
 @Entity
-@Table(name="USER_INFO")
+@Table(name = "USER_INFO")
 public class UserInfoData extends PersistentObject {
-    
+
     private String name;
     private RoleInfoData roleInfoData;
     private String realName;
@@ -35,8 +35,8 @@ public class UserInfoData extends PersistentObject {
         this.name = name;
     }
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "ROLE_ID", nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "ROLE_ID", nullable = true)
     public RoleInfoData getRoleInfoData() {
         return roleInfoData;
     }
@@ -85,14 +85,14 @@ public class UserInfoData extends PersistentObject {
     @GeneratedValue(generator = "app_seq")
     @GenericGenerator(name = "app_seq", strategy = "com.forever.zhb.pojo.strategy.StringRandomGenerator")
     @Column(name = "ID")
-    public String getId(){
+    public String getId() {
         return this.id;
     }
 
-    public  void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
-    
+
     @Column(name = "CREATE_TIME")
     public Calendar getCreateTime() {
         return this.createTime;
@@ -101,7 +101,7 @@ public class UserInfoData extends PersistentObject {
     public void setCreateTime(Calendar createTime) {
         this.createTime = createTime;
     }
-    
+
     @Column(name = "UPDATE_TIME")
     public Calendar getUpdateTime() {
         return this.updateTime;

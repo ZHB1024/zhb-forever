@@ -1,5 +1,10 @@
 package com.forever.zhb.controller.annotation;
 
+import com.forever.zhb.dic.DeleteFlagEnum;
+import com.forever.zhb.page.Page;
+import com.forever.zhb.service.AccountManager;
+import com.forever.zhb.service.UserManager;
+import com.forever.zhb.util.CheckUtil;
 import java.util.Calendar;
 
 import javax.annotation.Resource;
@@ -23,7 +28,13 @@ public class AccountController {
     
     @Resource(name="foreverManager")
     private IForeverManager foreverManager;
-    
+
+    @Resource(name="userManager")
+    private UserManager userManager;
+
+    @Resource(name="accountManager")
+    private AccountManager accountManager;
+
     /*to修改账号*/
     @RequestMapping("/toAccount")
     public String toAccount(HttpServletRequest request,HttpServletResponse response){
@@ -31,7 +42,63 @@ public class AccountController {
         request.setAttribute("user", user);
         return "htgl.update.account";
     }
-    
+
+    /*查询用户信息*/
+    @RequestMapping("/queryAccount")
+    public String queryAccount(HttpServletRequest request,HttpServletResponse response){
+        String userId = WebAppUtil.getUserId(request);
+        if (StringUtils.isBlank(userId)) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
+            return "login.home";
+        }
+        String start = request.getParameter("start");
+        if (StringUtils.isBlank(start)) {
+            start = "0";
+        }
+        Page<UserInfoData> users = userManager.getUserInfos(Integer.parseInt(start),1);
+        request.setAttribute("page",users);
+        return "htgl.query.users";
+    }
+
+    /*to新增账号*/
+    @RequestMapping("/toAddUser")
+    public String toAddUser(HttpServletRequest request,HttpServletResponse response){
+        UserInfoData user = WebAppUtil.getUserInfoData(request);
+        if (null == user) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
+            return "login.home";
+        }
+        return "htgl.toAdd.user";
+    }
+
+    /*新增账号信息*/
+    @RequestMapping("/addUser")
+    public String addUser(HttpServletRequest request,HttpServletResponse response, UserInfoData userInfo){
+        String userId = WebAppUtil.getUserId(request);
+        if (StringUtils.isBlank(userId)) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
+            return "login.home";
+        }
+
+        if (null == userInfo) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请补全账号信息");
+            return "htgl.update.account";
+        }
+
+        //验证userinfo
+        if (CheckUtil.checkUserInfo(userInfo,request)){
+            return "login.home";
+        }
+
+        userInfo.setCreateTime(Calendar.getInstance());
+        userInfo.setDeleteFlag(DeleteFlagEnum.UDEL.getIndex());
+        userManager.saveOrUpdate(userInfo);
+        //初始化密码
+        accountManager.init(userInfo);
+
+        return "htgl.main.index";
+    }
+
     /*修改账号信息*/
     @RequestMapping("/upAccount")
     public String upAccount(HttpServletRequest request,HttpServletResponse response, UserInfoData userInfo){
@@ -48,7 +115,7 @@ public class AccountController {
             request.setAttribute(Constants.REQUEST_ERROR, "账号异常，请重新登录");
             return "login.home";
         }
-        UserInfoData user = foreverManager.getUserInfoById(userInfo.getId());
+        UserInfoData user = userManager.getUserInfoById(userInfo.getId());
         if (null == user) {
             request.setAttribute(Constants.REQUEST_ERROR, "账号异常，请重新登录");
             return "login.home";
@@ -58,7 +125,7 @@ public class AccountController {
         user.setPhone(userInfo.getPhone());
         user.setEmail(userInfo.getEmail());
         user.setUpdateTime(Calendar.getInstance());
-        foreverManager.addUserInfo(user);
+        userManager.saveOrUpdate(user);
         return "htgl.main.index";
     }
     

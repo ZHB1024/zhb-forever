@@ -2,31 +2,57 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-  String conPath = request.getContextPath();
-System.out.println(conPath);
+  String ctxPath = request.getContextPath();
 %>
 <html>
-<head>
-<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript">
-	function addUser(){
-		var form = document.forms[0];
-		form.action="<%=conPath%>/htgl/user?action=addUser";
-		form.method="post";
-		form.submit();
-	}
-</script>
-</head>
 <body>
-   <p align="center">
-      <h1>添加用户</h1>
-     <form name="userForm" action="<%=conPath%>/htgl/user?action=addUser" method="post">
-		姓名：<input type="text" name="userName">
-		年龄：<input type="text" name="age">
-		<input type="submit" value="添加">
-	 </form>
-   </p>
+<div class="layui-tab page-content-wrap">
+    <ul class="layui-tab-title">
+        <li class="layui-this">新增用户</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form"  style="width: 90%;padding-top: 20px;" action="<%=ctxPath%>/htgl/account/addUser" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input " >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="realName" required  lay-verify="required" placeholder="请输入真实姓名" autocomplete="off" class="layui-input" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别：</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="男" title="男" checked=""/>
+                        <input type="radio" name="sex" value="女" title="女" />
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机号：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" required  lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱：</label>
+                    <div class="layui-input-block">
+                        <input type="email" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="submit" value="确 定" class="layui-btn layui-btn-normal" lay-submit lay-filter="adminInfo"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

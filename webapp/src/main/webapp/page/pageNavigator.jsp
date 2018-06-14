@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" language="java"%>
-<%@ page import="com.forever.zhb.search.page.Page" %>
+<%@ page import="com.forever.zhb.page.Page" %>
 <%@ page import="com.forever.zhb.utils.UrlUtil" %>
  <%@taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%
@@ -60,7 +60,6 @@ for(var i = 1; i <= <c:out value="${page.totalPage}"/>; i++){
 
 <script type="text/javascript">
 function gotoPage(selectObj){
-	debugger;
 	var page = selectObj.value;
     var start = (page - 1) * <c:out value="${page.pageCount}"/>;
     window.location.href = "<%=strUrl%>&start=" + start;

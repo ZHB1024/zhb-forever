@@ -20,6 +20,7 @@ public class PasswordUtil {
      */
     public static final String ALGORITHM = "PBEWithMD5AndDES";//加密算法
     public static final String Salt = "63293188";//密钥
+    public static final String DEFAULT_PASSWORD = "123456";
 
     /**
      * 定义迭代次数为1000次

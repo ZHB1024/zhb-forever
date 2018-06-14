@@ -25,7 +25,7 @@ public abstract class PersistentObject implements Serializable, Cloneable{
 	protected String id;
 	protected Calendar createTime;
 	protected Calendar updateTime;
-	protected int deleteFlag;
+	protected Integer deleteFlag;
 
     public void setData(PersistentObject vo) {
         copyProperties(vo);

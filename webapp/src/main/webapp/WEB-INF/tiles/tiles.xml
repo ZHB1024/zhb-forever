@@ -101,10 +101,19 @@
     <definition name="htgl.user.addUser" extends="htgl.mainLayout">
         <put-attribute name="main" value="/htgl/user/addUser.jsp"/>
     </definition>
+
     <definition name="htgl.user.users" extends="htgl.mainLayout">
         <put-attribute name="main" value="/htgl/user/users.jsp"/>
     </definition>
-  
+
+    <definition name="htgl.query.users" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/user/users.jsp"/>
+    </definition>
+
+    <definition name="htgl.toAdd.user" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/user/addUser.jsp"/>
+    </definition>
+
 <!-- attachment -->
 
     <!-- photo -->
