@@ -5,9 +5,9 @@
   String ctxPath = request.getContextPath();
 %>
 
-<script src="/js/echarts.js"></script>
-<script type="text/javascript" src="/js/jquery-1.7.1.js" ></script>
-<script type="text/javascript" src="/js/myECharts.js" ></script>
+<script type="text/javascript" src="/js/jquery-1.8.0.js" ></script>
+<script type="text/javascript" src="/js/echart/echarts.js"></script>
+<script type="text/javascript" src="/js/echart/myECharts.js" ></script>
 
 <h1 align="center">
     ${groupData.title}
@@ -26,7 +26,7 @@
                 </c:forEach>
               </select>
             </td>
-            
+
             <td id="customStatis" >
               <select name="statisticsOption">
                 <option value="" >请选择定制化统计项</option>
@@ -83,7 +83,7 @@
 <!-- 交叉统计结果 -->
 <c:if test="${crossResultVO != null}">
   <table align="center" border="0" width="500">
-      
+
         <tr>
           <c:forEach var="tit" items="${crossResultVO.titleVos}">
            <td>
@@ -91,8 +91,8 @@
             </td>
           </c:forEach>
         </tr>
-      
-      
+
+
       <c:forEach var="row" items="${crossResultVO.resultVos}">
         <tr>
           <td>
@@ -139,8 +139,8 @@ $(function(){
             $('#singleStatis2').css('display','');
         }
     }
-    
-    
+
+
     $('#statisType').change(function() {
         var staType = $('#statisType').val();
         if(staType == ''){
@@ -168,20 +168,20 @@ $(function(){
 
 //定制化、单个题目统计
 if(${singleOrcustomJson} != null){
-    var barChart = echarts.init(document.getElementById('bar')); 
+    var barChart = echarts.init(document.getElementById('bar'));
     var pieChart = echarts.init(document.getElementById('pie'));
-    
+
     var nameArray = new Array();
     var valueArray = new Array();
     var pieValueArray = new Array();
-    
+
     var result = ${singleOrcustomJson};
     var resultVos = result.keyValues;
     for(var i=1; i <= result.count;i++){
         var temp = resultVos[i];
         nameArray[i-1]=temp.name;
         valueArray[i-1]=temp.value;
-        
+
         tempObject = new Object();
         tempObject.name=temp.name;
         tempObject.value=temp.value;
@@ -197,7 +197,7 @@ if(${singleOrcustomJson} != null){
     option.series[0].name = title;
     option.series[0].type = 'bar';
     option.series[0].data = valueArray;
-    barChart.setOption(option); 
+    barChart.setOption(option);
 //饼状图
     pieOption.title.text = title;
     pieOption.legend.data = nameArray;
@@ -209,8 +209,8 @@ if(${singleOrcustomJson} != null){
 
 //交叉统计
 if(${crossJson} != null){
-    var barChart = echarts.init(document.getElementById('bar')); 
-    
+    var barChart = echarts.init(document.getElementById('bar'));
+
     var result = ${crossJson};
     var rowTitle = result.rowTitle;
     var rowTitleValueTemp = rowTitle.rowTitleValue;
@@ -218,7 +218,7 @@ if(${crossJson} != null){
     for(var i=0;i < rowTitle.rowTitleCount;i++){
         nameArray[i] = rowTitleValueTemp[i];
     }
-    
+
     var rows = result.rows;
     var rowValues = rows.rowValue;
     var seriesArray = new Array();
@@ -229,14 +229,14 @@ if(${crossJson} != null){
         rowObject = new Object();
         rowObject.name = rowvalue.rowTtitle;
         rowObject.type = 'bar';
-        
+
         var dataArray = new Array();
         var dataTemp = rowvalue.rowContent;
         for(var j=0;j < rowvalue.rowContentCount;j++){
             dataArray[j]=dataTemp[j];
         }
         rowObject.data = dataArray;
-        
+
         // markPoint
        /*  markPoint = new Object();
         var markPointDataArray = new Array();
@@ -250,7 +250,7 @@ if(${crossJson} != null){
         markPointDataArray[1] = temp02;
         markPoint.data = markPointDataArray;
         rowObject.markPoint = markPoint; */
-        
+
         // markLine
         markLine = new Object();
         var markLineDataArray = new Array();
@@ -260,7 +260,7 @@ if(${crossJson} != null){
         markLineDataArray[0] = temp03;
         markLine.data = markLineDataArray;
         rowObject.markLine = markLine;
-        
+
         labelObj = new Object();
         labelObj.show = true;
         labelObj.position = 'top';
@@ -269,16 +269,16 @@ if(${crossJson} != null){
         itemStyleObj = new Object();
         itemStyleObj.normal = normalObj;
         rowObject.itemStyle = itemStyleObj;
-        
+
         seriesArray[i] = rowObject;
     }
-//交叉统计，折线、柱状图    
+//交叉统计，折线、柱状图
     crossBarOption.legend.data = rowTitles;
     crossBarOption.xAxis[0].data = nameArray;
     crossBarOption.series = seriesArray;
-    barChart.setOption(crossBarOption); 
-    
-   
+    barChart.setOption(crossBarOption);
+
+
 }
 
 </script>
