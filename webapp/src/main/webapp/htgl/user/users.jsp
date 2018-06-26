@@ -13,7 +13,7 @@
         <form class="layui-form" action="">
             <div class="layui-form-item">
                 <div class="layui-inline tool-btn">
-                    <button class="layui-btn layui-btn-small layui-btn-normal addBtn" data-url="article-add.html"><i class="layui-icon">&#xe654;</i></button>
+                    <a class="layui-btn layui-btn-small layui-btn-normal addBtn" href="<%=ctxPath%>/htgl/account/toAddUser"><i class="layui-icon">&#xe654;</i></a>
                     <button class="layui-btn layui-btn-small layui-btn-danger delBtn"  data-url="article-add.html"><i class="layui-icon">&#xe640;</i></button>
                     <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url="article-add.html"><i class="iconfont">&#xe656;</i></button>
                 </div>
@@ -64,8 +64,8 @@
                             <td class="hidden-xs"><fmt:formatDate value="${user.updateTime.time}" pattern="yy-MM-dd HH:mm:ss"/></td>
                             <td>
                                 <div class="layui-inline">
-                                    <button class="layui-btn layui-btn-small layui-btn-normal go-btn" id="updateBtn" data-url="article-detail.html"><i class="layui-icon">&#xe642;</i></button>
-                                    <button class="layui-btn layui-btn-small layui-btn-danger del-btn" id="deleteBtn" data-url="article-detail.html"><i class="layui-icon">&#xe640;</i></button>
+                                    <a class="layui-btn layui-btn-small layui-btn-normal go-btn" id="updateBtn" url="<%=ctxPath%>/htgl/account/toAccount?id=${user.id}"><i class="layui-icon">&#xe642;</i></a>
+                                    <a class="layui-btn layui-btn-small layui-btn-danger del-btn" id="deleteBtn" url="<%=ctxPath%>/htgl/account/toAddUser?id=${user.id}"><i class="layui-icon">&#xe640;</i></a>
                                 </div>
                             </td>
                         </tr>

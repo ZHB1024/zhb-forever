@@ -12,7 +12,6 @@ public class AccountManagerImpl implements AccountManager {
 
     private AccountDAO accountDao;
 
-
     @Override
     public void init(UserInfoData user){
         LoginInfoData data = new LoginInfoData();

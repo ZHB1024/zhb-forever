@@ -110,6 +110,7 @@
                 <prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
                 <prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>
                 <prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="init*">PROPAGATION_REQUIRED,-Exception</prop>
                 <prop key="get*">PROPAGATION_NEVER</prop>
             </props>
         </property>
@@ -141,6 +142,7 @@
 
 	<bean id="userManagerBase" class="com.forever.zhb.service.impl.UserManagerImpl">
 		<property name="userDao" ref="userDao"></property>
+		<property name="accountDao" ref="accountDao"></property>
 	</bean>
 
 	<bean id="accountManagerBase" class="com.forever.zhb.service.impl.AccountManagerImpl">

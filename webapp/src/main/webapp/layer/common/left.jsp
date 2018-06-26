@@ -28,14 +28,14 @@
                 <a href="javascript:;"><i class="iconfont">&#xe607;</i>系统管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="<%=ctxPath%>/htgl/initController/initFunctionInfo"  id='menu_set' title="菜单管理"><span class="l-line"></span>菜单管理</a></dd>
-                    <dd><a href="<%=ctxPath%>/testController/toLayer"  id='user_set' title="用户管理"><span class="l-line"></span>用户管理</a></dd>
+                    <dd><a href="<%=ctxPath%>/htgl/account/queryUsers"  id='user_set' title="用户管理"><span class="l-line"></span>用户管理</a></dd>
                 </dl>
             </li>
 
             <li class="layui-nav-item">
                 <a href="javascript:;"><i class="iconfont">&#xe608;</i>照片管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="<%=ctxPath%>/htgl/initController/initFunctionInfo"  id='upload_photo' title="上传照片"><span class="l-line"></span>上传照片</a></dd>
+                    <dd><a href="<%=ctxPath%>/testController/toLayer"  id='upload_photo' title="上传照片"><span class="l-line"></span>上传照片</a></dd>
                     <dd><a href="<%=ctxPath%>/testController/toLayer"  id='scan_photo' title="浏览照片"><span class="l-line"></span>浏览照片</a></dd>
                 </dl>
             </li>

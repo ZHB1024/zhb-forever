@@ -106,14 +106,6 @@
         <put-attribute name="main" value="/htgl/user/users.jsp"/>
     </definition>
 
-    <definition name="htgl.query.users" extends="layer.main.layout">
-        <put-attribute name="main" value="/htgl/user/users.jsp"/>
-    </definition>
-
-    <definition name="htgl.toAdd.user" extends="layer.main.layout">
-        <put-attribute name="main" value="/htgl/user/addUser.jsp"/>
-    </definition>
-
 <!-- attachment -->
 
     <!-- photo -->
@@ -249,6 +241,15 @@
 
     <definition name="init.function.index" extends="layer.main.layout">
         <put-attribute name="main" value="/htgl/menu/index.jsp"/>
+    </definition>
+
+    <!--user account-->
+    <definition name="htgl.query.users" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/user/users.jsp"/>
+    </definition>
+
+    <definition name="htgl.toAdd.user" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/user/addUser.jsp"/>
     </definition>
 
     

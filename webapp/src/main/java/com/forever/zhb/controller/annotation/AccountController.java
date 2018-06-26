@@ -5,6 +5,7 @@ import com.forever.zhb.page.Page;
 import com.forever.zhb.service.AccountManager;
 import com.forever.zhb.service.UserManager;
 import com.forever.zhb.util.CheckUtil;
+import java.io.IOException;
 import java.util.Calendar;
 
 import javax.annotation.Resource;
@@ -35,16 +36,9 @@ public class AccountController {
     @Resource(name="accountManager")
     private AccountManager accountManager;
 
-    /*to修改账号*/
-    @RequestMapping("/toAccount")
-    public String toAccount(HttpServletRequest request,HttpServletResponse response){
-        UserInfoData user = WebAppUtil.getUserInfoData(request);
-        request.setAttribute("user", user);
-        return "htgl.update.account";
-    }
 
     /*查询用户信息*/
-    @RequestMapping("/queryAccount")
+    @RequestMapping("/queryUsers")
     public String queryAccount(HttpServletRequest request,HttpServletResponse response){
         String userId = WebAppUtil.getUserId(request);
         if (StringUtils.isBlank(userId)) {
@@ -92,11 +86,23 @@ public class AccountController {
 
         userInfo.setCreateTime(Calendar.getInstance());
         userInfo.setDeleteFlag(DeleteFlagEnum.UDEL.getIndex());
-        userManager.saveOrUpdate(userInfo);
-        //初始化密码
-        accountManager.init(userInfo);
+        userManager.initUserAccountInfo(userInfo);
 
-        return "htgl.main.index";
+        try{
+            response.sendRedirect("/htgl/account/queryUsers");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /*to修改账号*/
+    @RequestMapping("/toAccount")
+    public String toAccount(HttpServletRequest request,HttpServletResponse response){
+        UserInfoData user = WebAppUtil.getUserInfoData(request);
+        request.setAttribute("user", user);
+        return "htgl.update.account";
     }
 
     /*修改账号信息*/
@@ -177,6 +183,13 @@ public class AccountController {
         foreverManager.addLoginInfo(login);
         WebAppUtil.exit(request);
         return "login.home";
+    }
+
+    /*删除账号*/
+    @RequestMapping("/deleteAccount")
+    public String deleteAccount(HttpServletRequest request,HttpServletResponse response, UserInfoData userInfo){
+
+        return null;
     }
     
     /*to退出系统*/

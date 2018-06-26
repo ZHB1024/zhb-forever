@@ -1,10 +1,13 @@
 package com.forever.zhb.service;
 
-import com.forever.zhb.pojo.UserInfoData;
-import java.util.List;
 import com.forever.zhb.page.Page;
+import com.forever.zhb.pojo.UserInfoData;
 
 public interface UserManager {
+
+    /*userinfo*/
+
+    void initUserAccountInfo(UserInfoData userInfoData);
 
     void saveOrUpdate(UserInfoData userInfoData);
 
@@ -13,5 +16,6 @@ public interface UserManager {
     UserInfoData getUserInfoById(String id);
 
     Page<UserInfoData> getUserInfos(int start,int pageSize);
+
 
 }
