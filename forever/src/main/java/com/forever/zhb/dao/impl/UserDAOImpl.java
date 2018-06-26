@@ -3,12 +3,10 @@ package com.forever.zhb.dao.impl;
 import com.forever.zhb.dao.UserDAO;
 import com.forever.zhb.dao.base.BaseHibernateDAO;
 import com.forever.zhb.pojo.UserInfoData;
-import com.forever.zhb.utils.StringUtil;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
 public class UserDAOImpl extends BaseHibernateDAO implements UserDAO {
@@ -71,6 +69,14 @@ public class UserDAOImpl extends BaseHibernateDAO implements UserDAO {
         query.setMaxResults(pageSize);
         List<UserInfoData> result = query.list();
         return result;
+    }
+
+    @Override
+    public void deleteUserById(String id){
+        String hql = "update UserInfoData p set p.deleteFlag = 1 where p.id = :id ";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString("id",id);
+        query.executeUpdate();
     }
 
 

@@ -29,4 +29,12 @@ public class AccountDAOImpl extends BaseHibernateDAO implements AccountDAO {
         List<LoginInfoData> result = query.list();
         return result.size() == 0?null :result.get(0);
     }
+
+    @Override
+    public void deleteAccountByUserId(String userId){
+        String hql = "update LoginInfoData p set p.deleteFlag = 1 where p.userInfoData.id = :userId ";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString("userId", userId);
+        query.executeUpdate();
+    }
 }

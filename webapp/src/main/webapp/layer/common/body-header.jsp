@@ -18,7 +18,7 @@
     <ul class="layui-nav" lay-filter="rightNav">
         <li class="layui-nav-item"><a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
         <li class="layui-nav-item">
-            <a href="<%=ctxPath%>/htgl/account/toAccount" >${user.realName}</a>
+            <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}" >${user.realName}</a>
         </li>
         <li class="layui-nav-item"><a href="<%=ctxPath%>/htgl/account/toExit">退出</a></li>
     </ul>

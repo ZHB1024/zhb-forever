@@ -49,7 +49,7 @@ public class AccountController {
         if (StringUtils.isBlank(start)) {
             start = "0";
         }
-        Page<UserInfoData> users = userManager.getUserInfos(Integer.parseInt(start),1);
+        Page<UserInfoData> users = userManager.getUserInfos(Integer.parseInt(start),Constants.PAGE_SIZE);
         request.setAttribute("page",users);
         return "htgl.query.users";
     }
@@ -99,10 +99,23 @@ public class AccountController {
 
     /*to修改账号*/
     @RequestMapping("/toAccount")
-    public String toAccount(HttpServletRequest request,HttpServletResponse response){
+    public String toAccount(HttpServletRequest request,HttpServletResponse response,String userId){
         UserInfoData user = WebAppUtil.getUserInfoData(request);
-        request.setAttribute("user", user);
-        return "htgl.update.account";
+        if (null == user) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
+            return "login.home";
+        }
+        UserInfoData queryUser = userManager.getUserInfoById(userId);
+        if (null == queryUser || !queryUser.getId().equals(user.getId())){
+            request.setAttribute(Constants.REQUEST_ERROR, "您无权修改此账号");
+            return "login.home";
+        }
+
+        LoginInfoData account = accountManager.getAccountByName(queryUser.getName());
+
+        request.setAttribute("user", queryUser);
+        request.setAttribute("account", account);
+        return "htgl.update.user";
     }
 
     /*修改账号信息*/
@@ -126,13 +139,13 @@ public class AccountController {
             request.setAttribute(Constants.REQUEST_ERROR, "账号异常，请重新登录");
             return "login.home";
         }
-        user.setRealName(userInfo.getRealName());
+        //user.setRealName(userInfo.getRealName());
         user.setSex(userInfo.getSex());
         user.setPhone(userInfo.getPhone());
         user.setEmail(userInfo.getEmail());
         user.setUpdateTime(Calendar.getInstance());
         userManager.saveOrUpdate(user);
-        return "htgl.main.index";
+        return "layer.welcome.index";
     }
     
     /*to修改密码*/
@@ -153,13 +166,13 @@ public class AccountController {
     
     /*修改密码*/
     @RequestMapping("/modifyPassword")
-    public String modifyPassword(HttpServletRequest request,HttpServletResponse response,UserInfoData userInfo){
-        if (null == userInfo || StringUtils.isBlank(userInfo.getId())) {
+    public String modifyPassword(HttpServletRequest request,HttpServletResponse response,String userId){
+        if (StringUtils.isBlank(userId)) {
             request.setAttribute(Constants.REQUEST_ERROR, "账号异常，请重新登录");
             return "login.home";
         }
-        String userId = WebAppUtil.getUserId(request);
-        if (StringUtils.isBlank(userId) || !userId.equals(userInfo.getId())) {
+        UserInfoData userInfo = WebAppUtil.getUserInfoData(request);
+        if (null == userInfo || !userId.equals(userInfo.getId())) {
             request.setAttribute(Constants.REQUEST_ERROR, "账号异常，请重新登录");
             return "login.home";
         }
@@ -187,7 +200,20 @@ public class AccountController {
 
     /*删除账号*/
     @RequestMapping("/deleteAccount")
-    public String deleteAccount(HttpServletRequest request,HttpServletResponse response, UserInfoData userInfo){
+    public String deleteAccount(HttpServletRequest request,HttpServletResponse response, String[] userId){
+        if (null == userId){
+
+        }
+
+        for (String id:userId) {
+            userManager.deleteUserById(id);
+        }
+
+        try{
+            response.sendRedirect("/htgl/account/queryUsers");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
 
         return null;
     }

@@ -230,7 +230,7 @@
     </definition>
 
 
-    <!-- layer -->
+<!-- layer -->
     <definition name="layer.welcome.index" extends="layer.main.layout">
         <put-attribute name="main" value="/htgl/index_layer.jsp"/>
     </definition>
@@ -250,6 +250,10 @@
 
     <definition name="htgl.toAdd.user" extends="layer.main.layout">
         <put-attribute name="main" value="/htgl/user/addUser.jsp"/>
+    </definition>
+
+    <definition name="htgl.update.user" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/user/updateUser.jsp"/>
     </definition>
 
     

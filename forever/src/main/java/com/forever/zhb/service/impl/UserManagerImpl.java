@@ -62,6 +62,13 @@ public class UserManagerImpl implements UserManager {
         return PageUtil.getPage(datas.iterator(), start, pageSize, count);
     }
 
+    @Override
+    public void deleteUserById(String id){
+        accountDao.deleteAccountByUserId(id);
+        userDao.deleteUserById(id);
+    }
+
+
     public void setAccountDao(AccountDAO accountDao) {
         this.accountDao = accountDao;
     }

@@ -15,4 +15,6 @@ public interface UserDAO {
 
     int countUserInfos();
 
+    void deleteUserById(String id);
+
 }

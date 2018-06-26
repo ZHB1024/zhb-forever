@@ -8,4 +8,6 @@ public interface AccountDAO {
 
     LoginInfoData getAccountByName(String name);
 
+    void deleteAccountByUserId(String userId);
+
 }
