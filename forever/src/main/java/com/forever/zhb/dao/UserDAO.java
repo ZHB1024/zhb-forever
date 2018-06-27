@@ -11,9 +11,9 @@ public interface UserDAO {
 
     UserInfoData getUserInfoById(String id);
 
-    List<UserInfoData> getUserInfos(int start,int pageSize);
+    List<UserInfoData> getUserInfos(String realName,String deleteFlag,int start,int pageSize);
 
-    int countUserInfos();
+    int countUserInfos(String realName,String deleteFlag);
 
     void deleteUserById(String id);
 

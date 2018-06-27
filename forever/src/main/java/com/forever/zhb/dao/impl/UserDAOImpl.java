@@ -3,11 +3,14 @@ package com.forever.zhb.dao.impl;
 import com.forever.zhb.dao.UserDAO;
 import com.forever.zhb.dao.base.BaseHibernateDAO;
 import com.forever.zhb.pojo.UserInfoData;
+import com.forever.zhb.utils.StringUtil;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 public class UserDAOImpl extends BaseHibernateDAO implements UserDAO {
 
@@ -49,26 +52,32 @@ public class UserDAOImpl extends BaseHibernateDAO implements UserDAO {
     }
 
     @Override
-    public int countUserInfos(){
+    public int countUserInfos(String realName,String deleteFlag){
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserInfoData.class);
+        if (StringUtil.isNotBlank(realName)){
+            criteria.add(Restrictions.like("realName","%" + realName + "%"));
+        }
+        if (StringUtil.isNotBlank(deleteFlag)){
+            criteria.add(Restrictions.eq("deleteFlag",Integer.valueOf(deleteFlag)));
+        }
+
         criteria.setProjection(Projections.projectionList().add(Projections.rowCount()));
         return  Integer.parseInt(criteria.uniqueResult().toString());
     }
 
     @Override
-    public List<UserInfoData> getUserInfos(int start,int pageSize){
-        /*Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserInfoData.class);
-        criteria.addOrder(Order.asc("createTime"));
+    public List<UserInfoData> getUserInfos(String realName,String deleteFlag,int start,int pageSize){
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserInfoData.class);
+        if (StringUtil.isNotBlank(realName)){
+            criteria.add(Restrictions.like("realName","%" + realName + "%"));
+        }
+        if (StringUtil.isNotBlank(deleteFlag)){
+            criteria.add(Restrictions.eq("deleteFlag",Integer.valueOf(deleteFlag)));
+        }
+        criteria.addOrder(Order.asc("deleteFlag")).addOrder(Order.desc("createTime"));
         criteria.setFirstResult(start);
         criteria.setMaxResults(pageSize);
-        List<UserInfoData> result = criteria.list();*/
-
-        String hql = "select p from UserInfoData p ";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        query.setFirstResult(start);
-        query.setMaxResults(pageSize);
-        List<UserInfoData> result = query.list();
-        return result;
+        return criteria.list();
     }
 
     @Override

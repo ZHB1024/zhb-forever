@@ -112,11 +112,11 @@ public class UserInfoData extends PersistentObject {
     }
 
     @Column(name = "DELETE_FLAG")
-    public int getDeleteFlag() {
+    public Integer getDeleteFlag() {
         return this.deleteFlag;
     }
 
-    public void setDeleteFlag(int deleteFlag) {
+    public void setDeleteFlag(Integer deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
 }

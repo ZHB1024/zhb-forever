@@ -17,7 +17,6 @@
   Page pageRs = (Page)request.getAttribute("page");
 %>
 
-<font>
 <c:if test="${page.curPage == 1}">
 首页&nbsp;&nbsp;上页
 </c:if>
@@ -46,7 +45,9 @@
 &nbsp;&nbsp;下页&nbsp;&nbsp;末页
 </c:if>
 &nbsp;&nbsp;
-<select onchange="gotoPage(this)">
+
+<div class="layui-inline">
+<select id="gotoIndex" onchange="gotoPage(this);" lay-filter="gotoIndex">
 <script type="text/javascript">
 for(var i = 1; i <= <c:out value="${page.totalPage}"/>; i++){
     if (i == <c:out value="${page.curPage}"/>) {
@@ -57,12 +58,21 @@ for(var i = 1; i <= <c:out value="${page.totalPage}"/>; i++){
 }
 </script>
 </select>
+</div>
 
 <script type="text/javascript">
+    layui.use(['form','element'], function(){
+        var form = layui.form();
+        form.on('select(gotoIndex)', function(data){
+            var index = data.value;
+            var start = (index - 1) * ${page.pageCount};
+            window.location.href = "<%=strUrl%>&start=" + start;
+        });
+    });
+
 function gotoPage(selectObj){
 	var page = selectObj.value;
     var start = (page - 1) * <c:out value="${page.pageCount}"/>;
     window.location.href = "<%=strUrl%>&start=" + start;
 }
 </script>
-</font>

@@ -1,5 +1,9 @@
 package com.forever.zhb.dic;
 
+import com.forever.zhb.vo.NameValueVO;
+import java.util.ArrayList;
+import java.util.List;
+
 public enum DeleteFlagEnum {
 	
 	UDEL("正常",0),DEL("已删除",1);
@@ -20,6 +24,17 @@ public enum DeleteFlagEnum {
 		}
 		return "未定义";
 	}
+
+	public static List<NameValueVO> getAll(){
+	    List<NameValueVO> vos = new ArrayList<NameValueVO>();
+        for (DeleteFlagEnum deleteFlagEnum: DeleteFlagEnum.values()) {
+            NameValueVO vo = new NameValueVO();
+            vo.setName(deleteFlagEnum.getName());
+            vo.setValue(deleteFlagEnum.getIndex()+"");
+            vos.add(vo);
+        }
+	    return vos;
+    }
 	
 	
 

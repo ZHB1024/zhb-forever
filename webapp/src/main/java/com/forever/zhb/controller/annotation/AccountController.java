@@ -12,8 +12,10 @@ import com.forever.zhb.service.UserManager;
 import com.forever.zhb.util.CheckUtil;
 import com.forever.zhb.util.WebAppUtil;
 import com.forever.zhb.utils.PasswordUtil;
+import com.forever.zhb.vo.NameValueVO;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +39,7 @@ public class AccountController extends BasicController {
     private AccountManager accountManager;
 
 
-    /*查询用户信息*/
+    /*根据用户名获取用户信息*/
     @RequestMapping(value = "/getAccount",method = RequestMethod.POST)
     public void getAccount(HttpServletRequest request,HttpServletResponse response,String name){
         String userId = WebAppUtil.getUserId(request);
@@ -64,7 +66,7 @@ public class AccountController extends BasicController {
 
     /*查询用户信息*/
     @RequestMapping("/queryUsers")
-    public String queryAccount(HttpServletRequest request,HttpServletResponse response){
+    public String queryAccount(HttpServletRequest request,HttpServletResponse response,String realName,String deleteFlag){
         String userId = WebAppUtil.getUserId(request);
         if (StringUtils.isBlank(userId)) {
             request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
@@ -74,8 +76,12 @@ public class AccountController extends BasicController {
         if (StringUtils.isBlank(start)) {
             start = "0";
         }
-        Page<UserInfoData> users = userManager.getUserInfos(Integer.parseInt(start),Constants.PAGE_SIZE);
+        Page<UserInfoData> users = userManager.getUserInfos(realName,deleteFlag,Integer.parseInt(start),1);
+        List<NameValueVO> deleteFlags = DeleteFlagEnum.getAll();
         request.setAttribute("page",users);
+        request.setAttribute("deleteFlags",deleteFlags);
+        request.setAttribute("realName",realName);
+        request.setAttribute("deleteFlag",deleteFlag);
         return "htgl.query.users";
     }
 

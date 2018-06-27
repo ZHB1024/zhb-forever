@@ -15,7 +15,7 @@ public interface UserManager {
 
     UserInfoData getUserInfoById(String id);
 
-    Page<UserInfoData> getUserInfos(int start,int pageSize);
+    Page<UserInfoData> getUserInfos(String realName,String deleteFlag,int start,int pageSize);
 
     void deleteUserById(String id);
 

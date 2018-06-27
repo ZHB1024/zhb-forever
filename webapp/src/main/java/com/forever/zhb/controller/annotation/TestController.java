@@ -2,16 +2,9 @@ package com.forever.zhb.controller.annotation;
 
 import com.forever.zhb.basic.BasicController;
 import com.forever.zhb.utils.AESUtil;
+import com.forever.zhb.utils.Geoip2Util;
+import com.forever.zhb.utils.IPUtil;
 import com.forever.zhb.utils.MessageUtil;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,11 +19,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/testController")
@@ -82,7 +80,23 @@ public class TestController extends BasicController {
 		ajaxMessage.setO(names);
 		writeJSON(ajaxMessage, response);
 	}
-	
+
+	@RequestMapping("/city")
+	public void city(HttpServletRequest request, HttpServletResponse responses) {
+        //171.108.233.157      111.202.226.100
+        //String ip = "111.202.226.100";//172.16.10.215
+        String ip = IPUtil.getIpAdrress(request);
+
+        String city = Geoip2Util.getCity(ip);
+        String province = Geoip2Util.getProvince(ip);
+        String country = Geoip2Util.getCountry(ip);
+
+        logger.info(city);
+        logger.info(province);
+        logger.info(country);
+
+	}
+
 	@ResponseBody
 	@RequestMapping("/ajaxResponseBody")
 	public Map<String, Object> ajaxResponseBody(HttpServletRequest request, HttpServletResponse response) throws Exception {

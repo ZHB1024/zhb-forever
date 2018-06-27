@@ -50,15 +50,15 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public Page<UserInfoData> getUserInfos(int start,int pageSize){
-        int count = userDao.countUserInfos();
+    public Page<UserInfoData> getUserInfos(String realName,String deleteFlag,int start,int pageSize){
+        int count = userDao.countUserInfos(realName,deleteFlag);
         if (0 == count) {
             return Page.EMPTY_PAGE;
         }
         if (start >= count) {
             start = 0;
         }
-        List<UserInfoData> datas = userDao.getUserInfos(start, pageSize);
+        List<UserInfoData> datas = userDao.getUserInfos(realName,deleteFlag,start, pageSize);
         return PageUtil.getPage(datas.iterator(), start, pageSize, count);
     }
 
