@@ -1,7 +1,7 @@
 package com.forever.zhb.basic;
 
 import com.forever.zhb.util.AjaxMessage;
-import org.json.JSONObject;
+import net.sf.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,7 +16,7 @@ public class BasicController {
 	
 	protected void writeJSON(AjaxMessage ajaxMessage,HttpServletResponse response) {
         try {
-            response.getWriter().print(JSONObject.valueToString(ajaxMessage));
+            response.getWriter().print(JSONObject.fromObject(ajaxMessage));
             response.getWriter().flush();
         } catch (Exception e) {
             e.printStackTrace();

@@ -13,6 +13,9 @@
     <script src="<%=ctxPath%>/layer/static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
     <script src="<%=ctxPath%>/layer/static/admin/js/main.js" type="text/javascript" charset="utf-8"></script>
 
+    <%--弹出层--%>
+    <%--<script type="text/javascript" src="<%=ctxPath%>/js/layer/layer.js"></script>--%>
+
     <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/layer/static/admin/layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/layer/static/admin/css/admin.css"/>
     <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/layer/static/admin/css/my.css"/>

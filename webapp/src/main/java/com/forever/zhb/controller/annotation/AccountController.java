@@ -1,31 +1,31 @@
 package com.forever.zhb.controller.annotation;
 
+import com.forever.zhb.Constants;
+import com.forever.zhb.basic.BasicController;
 import com.forever.zhb.dic.DeleteFlagEnum;
 import com.forever.zhb.page.Page;
+import com.forever.zhb.pojo.LoginInfoData;
+import com.forever.zhb.pojo.UserInfoData;
 import com.forever.zhb.service.AccountManager;
+import com.forever.zhb.service.IForeverManager;
 import com.forever.zhb.service.UserManager;
 import com.forever.zhb.util.CheckUtil;
+import com.forever.zhb.util.WebAppUtil;
+import com.forever.zhb.utils.PasswordUtil;
 import java.io.IOException;
 import java.util.Calendar;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.forever.zhb.Constants;
-import com.forever.zhb.pojo.LoginInfoData;
-import com.forever.zhb.pojo.UserInfoData;
-import com.forever.zhb.service.IForeverManager;
-import com.forever.zhb.util.WebAppUtil;
-import com.forever.zhb.utils.PasswordUtil;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/htgl/account")
-public class AccountController {
+public class AccountController extends BasicController {
     
     @Resource(name="foreverManager")
     private IForeverManager foreverManager;
@@ -36,6 +36,31 @@ public class AccountController {
     @Resource(name="accountManager")
     private AccountManager accountManager;
 
+
+    /*查询用户信息*/
+    @RequestMapping(value = "/getAccount",method = RequestMethod.POST)
+    public void getAccount(HttpServletRequest request,HttpServletResponse response,String name){
+        String userId = WebAppUtil.getUserId(request);
+        if (StringUtils.isBlank(userId)) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
+            return;
+        }
+        if (StringUtils.isBlank(name)) {
+            request.setAttribute(Constants.REQUEST_ERROR, "请重新登录");
+            return ;
+        }
+
+        UserInfoData user = userManager.getUserInfoByName(name);
+        JSONObject jsonObject = userInfo2Json(user);
+        setResponse(response);
+        try {
+            response.getWriter().print(JSONObject.fromObject(jsonObject));
+            response.getWriter().flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+    }
 
     /*查询用户信息*/
     @RequestMapping("/queryUsers")
@@ -223,6 +248,19 @@ public class AccountController {
     public String exit(HttpServletRequest request,HttpServletResponse response,String id){
         WebAppUtil.exit(request);
         return "login.home";
+    }
+
+    private JSONObject userInfo2Json(UserInfoData data){
+        JSONObject jsonObject = null;
+        if (null != data){
+            jsonObject = new JSONObject();
+            jsonObject.put("name",data.getName());
+            jsonObject.put("realName",data.getRealName());
+            jsonObject.put("sex",data.getSex());
+            jsonObject.put("phone",data.getPhone());
+            jsonObject.put("email",data.getEmail());
+        }
+        return jsonObject;
     }
     
 }

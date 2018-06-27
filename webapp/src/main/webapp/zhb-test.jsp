@@ -6,8 +6,8 @@
     String ctxPath = request.getContextPath();
 %>
 
-<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/zhb_layer.css" />
-<script type="text/javascript" src="<%=ctxPath%>/js/jquery-1.8.0.js"></script>
+<%--<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/zhb_layer.css" />--%>
+<script type="text/javascript" src="<%=ctxPath%>/js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="<%=ctxPath%>/js/layer/layer.js"></script>
 
 
