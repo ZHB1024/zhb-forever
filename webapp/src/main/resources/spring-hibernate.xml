@@ -132,6 +132,10 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 
+	<bean id="attachmentDao" class="com.forever.zhb.dao.impl.AttachmentDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
 	<bean id="foreverManagerBase" class="com.forever.zhb.service.impl.ForeverManagerImpl">
 		<property name="foreverDao" ref="foreverDao"></property>
 	</bean>
@@ -149,6 +153,9 @@
 		<property name="accountDao" ref="accountDao"></property>
 	</bean>
 
+	<bean id="attachmentManagerBase" class="com.forever.zhb.service.impl.AttachmentManagerImpl">
+	</bean>
+
 	<bean id="foreverManager" parent="transactionBase">
 		<property name="target" ref="foreverManagerBase"></property>
 	</bean>
@@ -163,6 +170,10 @@
 
 	<bean id="accountManager"  parent="transactionBase">
         <property name="target" ref="accountManagerBase"></property>
+	</bean>
+
+	<bean id="attachmentManager"  parent="transactionBase">
+        <property name="target" ref="attachmentManagerBase"></property>
 	</bean>
 
 </beans>

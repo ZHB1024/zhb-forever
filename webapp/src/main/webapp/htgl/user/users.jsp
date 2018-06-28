@@ -70,21 +70,23 @@
                     </c:forEach>
                     </tbody>
                 </table>
-                <div class="page-wrap">
-                    共：${ page.totalCount } &nbsp; 条  &nbsp;&nbsp;
-                    <jsp:include page="/page/pageNavigator.jsp" />
-                </div>
+
             </div>
         </form>
     </div>
+    <div class="page_navigator">
+        共：${ page.totalCount } &nbsp; 条  &nbsp;&nbsp;
+        <jsp:include page="/page/pageNavigator.jsp" />
+    </div>
 </div>
+
 </body>
 
 </html>
 
 <script type="text/javascript">
     layui.use(['form','element'], function(){
-        var form = layui.form();
+        var form = layui.form;
         //监听select
         form.on('select(deleteFlag)', function(data){
             var id = data.elem.id;

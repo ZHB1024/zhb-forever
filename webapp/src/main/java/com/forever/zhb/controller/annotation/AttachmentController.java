@@ -9,6 +9,7 @@ import com.forever.zhb.dic.DeleteFlagEnum;
 import com.forever.zhb.dic.FileTypeEnum;
 import com.forever.zhb.page.Page;
 import com.forever.zhb.pojo.FileInfoData;
+import com.forever.zhb.service.AttachmentManager;
 import com.forever.zhb.service.IForeverManager;
 import com.forever.zhb.utils.DownloadUtil;
 import com.forever.zhb.utils.ImageUtils;
@@ -23,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -62,7 +65,10 @@ public class AttachmentController extends BasicController {
 
 	@Resource(name = "foreverManager")
 	private IForeverManager foreverManager;
-	
+
+	@Resource(name = "attachmentManager")
+	private AttachmentManager attachmentManager;
+
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		/*String sourceFile = "C:\\Users\\ZHB\\Videos\\w3school.gif";
@@ -101,32 +107,17 @@ public class AttachmentController extends BasicController {
 		return "htgl.upload.index";
 	}
 
-	@RequestMapping("/toUpload")
+/*-----------------------------------------照片-----------------------------------------------------------*/
+
+	@RequestMapping("/toUploadPicture")
 	public String toUpload(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("active5", true);
-		return "htgl.upload.index";
+		return "htgl.picture.toUpload";
 	}
 
-	/* toDownload */
-	@RequestMapping("/toDownload")
-	public String toDownload(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("active6", true);
-		String start = request.getParameter("start");
-		if (StringUtils.isBlank(start)) {
-			start = "0";
-		}
-		// 查询
-		List<ForeverCriteria> conditions = new ArrayList<ForeverCriteria>();
-		conditions.add(ForeverCriteria.eq("type", FileTypeEnum.IMAGE.getIndex()));
-		ForeverCriteriaUtil<FileInfoData> util = ForeverCriteriaUtil.getInstance(FileInfoData.class);
-		util.setPageProperties(null, Integer.parseInt(start), Constants.PAGE_SIZE, conditions, null);
-		Page filePage = util.getPage(foreverManager.getFileInfoPage(conditions));
-		request.setAttribute("page", filePage);
-		return "htgl.download.index";
-	}
-
-	@RequestMapping("/upload")
-	public void upload(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/uploadPicture")
+	public void uploadPicture(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject jsonObject = new JSONObject();
+        PrintWriter pw = null;
 		String ctxPath = request.getContextPath();
 		String filePath = PropertyUtil.getUploadPath() + File.separator + Constants.TARGET_NAME + File.separator
 				+ Constants.IMAGE_PATH;
@@ -139,17 +130,11 @@ public class AttachmentController extends BasicController {
 		// 转型为MultipartHttpRequest：
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		// 获得文件：
-		MultipartFile license = multipartRequest.getFile("firstFile");
+		MultipartFile license = multipartRequest.getFile("file");
 		Long fileSize = license.getSize();
 		String fileType = license.getContentType();
 		String fileName = "";
 		if (license.getSize() > Constants.IMAGE_MAX_SIZE) {
-			/*
-			 * try { request.getRequestDispatcher(ctxPath +
-			 * "/htgl/errorController/toError").forward(request, response); }
-			 * catch (ServletException | IOException e2) { e2.printStackTrace();
-			 * } return;
-			 */
 		}
 		try {
 			// 获得文件名：
@@ -176,23 +161,21 @@ public class AttachmentController extends BasicController {
 			fileInfoData.setFileType(fileType);
 			fileInfoData.setFileName(fileName);
 			fileInfoData.setType(FileTypeEnum.IMAGE.getIndex());
-			foreverManager.addFileInfoData(fileInfoData);
-			// 查询
-			/*
-			 * List<ForeverCriteria> conditions = new
-			 * ArrayList<ForeverCriteria>();
-			 * conditions.add(ForeverCriteria.eq("fileName", ""));
-			 * List<FileInfoData> fileInfoDatas =
-			 * foreverManager.getFileInfoDataByIdOrName(conditions);
-			 */
+            attachmentManager.saveOrUpdate(fileInfoData);
 		} catch (Exception e) {
+		    logger.error("上传图片失败....");
 			e.printStackTrace();
-			request.setAttribute(Constants.REQUEST_ERROR, "上传出错");
-			try {
-				request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
-			} catch (ServletException | IOException e2) {
-				e2.printStackTrace();
-			}
+            jsonObject.put("code", 0);
+            jsonObject.put("msg", "");
+            jsonObject.put("data", fileName);
+            try {
+                pw = response.getWriter();
+                pw.write(jsonObject.toString());
+                pw.flush();
+                pw.close();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
 			return;
 		} finally {
 			try {
@@ -206,13 +189,34 @@ public class AttachmentController extends BasicController {
 				e.printStackTrace();
 			}
 		}
-		try {
-			response.sendRedirect(ctxPath + "/htgl/fileDownloadController/toDownload");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        jsonObject.put("code", 0);
+        jsonObject.put("msg", "");
+        jsonObject.put("data", fileName);
+        try {
+            pw = response.getWriter();
+            pw.write(jsonObject.toString());
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 		return;
 	}
+
+    /* query picture */
+    @RequestMapping("/pictureIndex")
+    public String pictureIndex(HttpServletRequest request, HttpServletResponse response,String fileName) {
+        String start = request.getParameter("start");
+        if (StringUtils.isBlank(start)) {
+            start = "0";
+        }
+        Page filePage = attachmentManager.queryFiles(0,fileName,Integer.valueOf(start),Constants.PAGE_SIZE);
+        request.setAttribute("page", filePage);
+        return "htgl.picture.index";
+    }
+
+/*------------------------------------------------------------------------------------------------------*/
 
 	/* download */
 	@RequestMapping("/download")
@@ -228,14 +232,7 @@ public class AttachmentController extends BasicController {
 			return;
 		}
 		// 查询
-		List<ForeverCriteria> conditions = new ArrayList<ForeverCriteria>();
-		conditions.add(ForeverCriteria.eq("id", id));
-		List<FileInfoData> fileInfoDatas = foreverManager.getFileInfo(conditions);
-
-		if (null == fileInfoDatas || fileInfoDatas.size() == 0) {
-			return;
-		}
-		FileInfoData fileInfo = fileInfoDatas.get(0);
+		FileInfoData fileInfo = attachmentManager.getFileById(id);
 
 		String filePath = fileInfo.getFilePath() + File.separator;
 		File file = new File(filePath);
@@ -250,11 +247,6 @@ public class AttachmentController extends BasicController {
 		try {
 			fis = new FileInputStream(image);
 			sos = response.getOutputStream();
-			/*
-			 * int lenght; byte[] buf = new byte[1024]; while((lenght =
-			 * fis.read(buf, 0, 1024)) != -1){ sos.write(buf,0,lenght); }
-			 * sos.flush();
-			 */
 			ImageUtils.pressText(fis, sos, 0.3f, 3, 3, new String[] { "zhb_forever" });
 		} catch (Exception e) {
 			e.printStackTrace();

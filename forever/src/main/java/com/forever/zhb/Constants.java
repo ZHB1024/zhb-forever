@@ -37,7 +37,7 @@ public class Constants {
     public static Long VIDEO_MAX_SIZE = 50*1024*1024L;
     
     
-    public static int PAGE_SIZE = 12;
+    public static int PAGE_SIZE = 9;
     
     public static String SESSION_LOGINFODATA = "session_UserInfoData";
     

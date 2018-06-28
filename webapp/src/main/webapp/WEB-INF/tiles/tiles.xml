@@ -256,5 +256,16 @@
         <put-attribute name="main" value="/htgl/user/updateUser.jsp"/>
     </definition>
 
+    <!--picture-->
+    <definition name="htgl.picture.toUpload" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/attachment/picture/toUpload.jsp"/>
+    </definition>
+    <definition name="htgl.picture.index" extends="layer.main.layout">
+        <put-attribute name="main" value="/htgl/attachment/picture/index.jsp"/>
+    </definition>
+
+
+
+
     
 </tiles-definitions>

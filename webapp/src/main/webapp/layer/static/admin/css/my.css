@@ -23,6 +23,51 @@ html {height:100%;}
     background:url(/images/bg-wrapper.png) repeat-y;
 }
 
+.page_navigator {
+    color:#3f5a04;
+    text-align:center;
+    background:#dfedc0;
+    font-size:18px;
+}
+
+/*picture*/
+
+#picture_list {
+    list-style:none;
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+#picture_list div {
+    vertical-align:top;
+    margin:0 0 1px;
+    padding:10px 50px 10px 50px;
+    width:100%;
+    font-size:20px;
+}
+
+#picture_list .picture_succes {
+    color:#3f5a04;
+    text-align:center;
+    overflow:auto;
+    background:#dfedc0;
+}
+
+#picture_list .picture_succes .puimg{
+    width:410px;
+    margin-right:20px;
+    margin-bottom:20px;
+    padding:10px;
+    border:1px solid #ddd;
+    float:left;
+    display:inline;
+    overflow: hidden;
+}
+.puimg img{
+    width:200px; height:160px;
+}
+
+
 /* ------------------------footer-------------------------- */
 #footer {
     position:relative;

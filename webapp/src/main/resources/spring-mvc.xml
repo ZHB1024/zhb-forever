@@ -54,9 +54,6 @@
 	<mvc:resources location="/css/" mapping="/css/**" />
 	<mvc:resources location="/test/css/" mapping="/test/css/**" />
 	<mvc:resources location="/layer/" mapping="/layer/**" />
-	<!--<mvc:resources location="/layer/css/" mapping="/layer/css/**" />
-	<mvc:resources location="/layer/font/" mapping="/layer/font/**" />
-	<mvc:resources location="/layer/static/admin/" mapping="/layer/static/admin/**" />-->
 
 	<bean id="paramMethodResolver"
 		class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">

@@ -8,8 +8,10 @@
 <script type="text/javascript">
     $(function(){
         var locationhref = window.location.href;
-        $("ul.layui-nav a").each(function(){
-            if(this.href == locationhref){
+        var temp = locationhref.substring(0,locationhref.lastIndexOf("/"));
+        var target = temp.substring(temp.lastIndexOf("/"));
+        $("#menu a").each(function(){
+            if(this.href.indexOf(target) != -1){
                 this.parentNode.className = 'layui-this';
                 this.parentNode.parentNode.parentNode.className = 'layui-nav-item layui-nav-itemed';
             }
@@ -22,7 +24,7 @@
     <div class="main-layout-side">
         <%--<div class="m-logo">
         </div>--%>
-        <ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
+        <ul id="menu" class="layui-nav layui-nav-tree" lay-filter="leftNav">
 
             <li class="layui-nav-item">
                 <a href="javascript:;"><i class="iconfont">&#xe607;</i>系统管理</a>
@@ -33,15 +35,15 @@
             </li>
 
             <li class="layui-nav-item">
-                <a href="javascript:;"><i class="iconfont">&#xe608;</i>照片管理</a>
+                <a href="javascript:;"><i class="iconfont">&#xe604;</i>照片管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="<%=ctxPath%>/testController/toLayer"  id='upload_photo' title="上传照片"><span class="l-line"></span>上传照片</a></dd>
-                    <dd><a href="<%=ctxPath%>/testController/toLayer"  id='scan_photo' title="浏览照片"><span class="l-line"></span>浏览照片</a></dd>
+                    <dd><a href="<%=ctxPath%>/htgl/attachmentController/toUploadPicture"  id='upload_photo' title="上传照片"><span class="l-line"></span>上传照片</a></dd>
+                    <dd><a href="<%=ctxPath%>/htgl/attachmentController/pictureIndex"  id='scan_photo' title="浏览照片"><span class="l-line"></span>浏览照片</a></dd>
                 </dl>
             </li>
 
             <li class="layui-nav-item">
-                <a href="javascript:;"><i class="iconfont">&#xe604;</i>搜索管理</a>
+                <a href="javascript:;"><i class="iconfont">&#xe608;</i>搜索管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="<%=ctxPath%>/htgl/initController/initFunctionInfo"  id='solr_search' title="solr"><span class="l-line"></span>solr</a></dd>
                     <dd><a href="<%=ctxPath%>/testController/toLayer"  id='solr_search_search' title="lucene"><span class="l-line"></span>solr_searchsolr_search</a></dd>
