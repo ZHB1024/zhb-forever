@@ -8,10 +8,13 @@
 <body>
 <div class="layui-tab page-content-wrap">
     <ul class="layui-tab-title">
-        <li class="layui-this">修改资料</li>
+        <li class="layui-this">修改基本信息</li>
+        <li>修改照片</li>
         <li>修改密码</li>
     </ul>
     <div class="layui-tab-content">
+
+        <%--基本信息--%>
         <div class="layui-tab-item layui-show">
             <form class="layui-form"  style="width: 90%;padding-top: 20px;" action="<%=ctxPath%>/htgl/account/upAccount" method="post">
                 <input type="hidden" name="id" value="${account.userInfoData.id}" />
@@ -60,6 +63,40 @@
                 </div>
             </form>
         </div>
+
+        <%--修改照片--%>
+        <div class="layui-tab-item">
+            <form class="layui-form"  style="width: 90%;padding-top: 20px;" action="<%=ctxPath%>/htgl/account/modifyPassword" method="post">
+                <input type="hidden" name="userId" value="${account.userInfoData.id}" />
+
+                <div class="layui-form-item">
+                    <div class="layui-upload">
+                        <%--<div class="layui-upload-list">
+                            <img class="layui-upload-img" id="demo1">
+                            <p id="demoText"></p>
+                        </div>--%>
+                        <button type="button" class="layui-btn btn_upload_img" id="test1">上传图片</button>
+                        <button type="button" class="layui-btn" id="uploadButton">上传图片</button>
+                        <img class="layui-upload-img img-upload-view" id="demo1" src="D:\forever\upload\zhb_forever\image\w3school.gif">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+                <%--<div class="layui-form-item">
+                    <label class="layui-form-label">用户名：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="${account.userInfoData.name}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="submit" value="修 改" class="layui-btn layui-btn-normal" lay-submit lay-filter="adminPassword" />
+                    </div>
+                </div>--%>
+            </form>
+        </div>
+
+        <%--修改密码--%>
         <div class="layui-tab-item">
             <form class="layui-form"  style="width: 90%;padding-top: 20px;" action="<%=ctxPath%>/htgl/account/modifyPassword" method="post">
                 <input type="hidden" name="userId" value="${account.userInfoData.id}" />
@@ -82,7 +119,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">重复密码：</label>
+                    <label class="layui-form-label">再次输入新密码：</label>
                     <div class="layui-input-block">
                         <input type="password" name="confirmPassword" required lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
                     </div>
@@ -98,3 +135,40 @@
 </div>
 </body>
 </html>
+
+<script type="text/javascript">
+    layui.use('upload', function(){
+        var $ = layui.jquery;
+        var upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1',
+            url: '/upload/',
+            auto: false,
+            bindAction: '#uploadButton',
+            before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    debugger;
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            },
+            done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            },
+            error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>

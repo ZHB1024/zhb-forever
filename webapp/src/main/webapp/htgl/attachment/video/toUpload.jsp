@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
-  String ctxPath = request.getContextPath();
+    String ctxPath = request.getContextPath();
 %>
 <html>
 <head>
@@ -13,16 +13,16 @@
 <div class="wrap-container clearfix">
     <div class="column-content-detail">
         <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-normal" id="selectButton">请选择待上传的照片</button>
+            <button type="button" class="layui-btn layui-btn-normal" id="selectButton">请选择待上传的视频</button>
             <div class="layui-upload-list">
                 <table class="layui-table">
                     <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr></thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr></thead>
                     <tbody id="fileList"></tbody>
                 </table>
             </div>
@@ -43,10 +43,10 @@
         var demoListView = $('#fileList');
         var uploadListIns = upload.render({
             elem: '#selectButton',
-            url: '<%=ctxPath%>/htgl/attachmentController/uploadPicture',
-            accept: 'file',
-            exts: 'gif|png|jpg',
-            size: 300 ,//限制文件大小，单位 KB
+            url: '<%=ctxPath%>/htgl/attachmentController/uploadVideo',
+            accept: 'video',
+            //exts: 'gif|png|jpg',
+            size: 30000 ,//限制文件大小，单位 KB
             multiple: true,
             auto: false,
             bindAction: '#uploadButton',

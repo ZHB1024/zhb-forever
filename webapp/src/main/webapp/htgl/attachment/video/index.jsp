@@ -9,28 +9,27 @@
 <body>
 <div class="wrap-container clearfix">
     <div class="column-content-detail">
-        <form id="theform" class="layui-form" action="<%=ctxPath%>/htgl/attachmentController/pictureIndex" method="post">
+        <form id="theform" class="layui-form" action="<%=ctxPath%>/htgl/attachmentController/videoIndex" method="post">
             <div class="layui-form-item">
                 <div class="layui-inline tool-btn">
-                    <a class="layui-btn layui-btn-small layui-btn-normal addBtn" href="<%=ctxPath%>/htgl/attachmentController/toUploadPicture"><i class="layui-icon">&#xe654;</i></a>
+                    <a class="layui-btn layui-btn-small layui-btn-normal addBtn" href="<%=ctxPath%>/htgl/attachmentController/toUploadVideo"><i class="layui-icon">&#xe654;</i></a>
                     <button class="layui-btn layui-btn-small layui-btn-danger delBtn" onclick="submitAction('deleteAccount');"><i class="layui-icon">&#xe640;</i></button>
                 </div>
                 <div class="layui-inline">
-                    <input type="text" name="fileName" value="${fileName}" placeholder="请输入照片名字" autocomplete="off" class="layui-input">
+                    <input type="text" name="fileName" value="${fileName}" placeholder="请输入视频名字" autocomplete="off" class="layui-input">
                 </div>
                 <input type="submit" class="layui-btn layui-btn-normal" lay-submit="search" value="搜索">
             </div>
 
         </form>
 
-        <div class="attachment_list" >
+        <div class="attachment_list">
             <div class="attachment_success">
                 <c:forEach var="vo" items="${page.list}" varStatus="idx">
                     <div class="puimg">
-                        <%--<a href="<%=ctxPath%>/htgl/fileDownloadController/download?id=${vo.id}" target="_blank">
-                            <img alt="<%=ctxPath%>/htgl/fileDownloadController/download?id=${vo.id}" src="<%=ctxPath%>/htgl/fileDownloadController/download?id=${vo.id}" >
-                        </a>--%>
-                            <img src="<%=ctxPath%>/htgl/attachmentController/download?id=${vo.id}" alt="${vo.fileName}" onclick="showPictureInfo('${vo.fileName}','${vo.fileSize}','${vo.id}');">
+                        <video controls src="<%=ctxPath%>/htgl/attachmentController/download?id=${vo.id}" preload="auto">
+                            您的浏览器不支持 video 标签，请升级浏览器。
+                        </video>
                     </div>
                 </c:forEach>
             </div>

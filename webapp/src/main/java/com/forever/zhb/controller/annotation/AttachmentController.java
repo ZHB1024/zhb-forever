@@ -3,8 +3,6 @@ package com.forever.zhb.controller.annotation;
 import com.forever.zhb.Constants;
 import com.forever.zhb.basic.BasicController;
 import com.forever.zhb.criteria.ForeverCriteria;
-import com.forever.zhb.criteria.ForeverCriteriaUtil;
-import com.forever.zhb.criteria.ForeverPage;
 import com.forever.zhb.dic.DeleteFlagEnum;
 import com.forever.zhb.dic.FileTypeEnum;
 import com.forever.zhb.page.Page;
@@ -107,10 +105,69 @@ public class AttachmentController extends BasicController {
 		return "htgl.upload.index";
 	}
 
+    /* download */
+    @RequestMapping("/download")
+    public void download(HttpServletRequest request, HttpServletResponse response, String id) {
+        String ctxPath = request.getContextPath();
+        if (StringUtils.isBlank(id)) {
+            try {
+                request.setAttribute(Constants.REQUEST_ERROR, "id 不能为空");
+                request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        // 查询
+        FileInfoData fileInfo = attachmentManager.getFileById(id);
+
+        String filePath = fileInfo.getFilePath() + File.separator;
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        filePath += fileInfo.getFileName();
+        response.setContentType(fileInfo.getFileType());
+        FileInputStream fis = null;
+        ServletOutputStream sos = null;
+        File image = new File(filePath);
+        try {
+            fis = new FileInputStream(image);
+            sos = response.getOutputStream();
+            if (fileInfo.getType() == 0 ){
+                ImageUtils.pressText(fis, sos, 0.3f, 3, 3, new String[] { "zhb_forever" });
+            }else{
+                int lenght;
+                byte[] buf = new byte[1024];
+                while((lenght = fis.read(buf, 0, 1024)) != -1){
+                    sos.write(buf,0,lenght);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (null != sos) {
+                try {
+                    sos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (null != fis) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 /*-----------------------------------------照片-----------------------------------------------------------*/
 
 	@RequestMapping("/toUploadPicture")
-	public String toUpload(HttpServletRequest request, HttpServletResponse response) {
+	public String toUploadPicture(HttpServletRequest request, HttpServletResponse response) {
 		return "htgl.picture.toUpload";
 	}
 
@@ -165,7 +222,7 @@ public class AttachmentController extends BasicController {
 		} catch (Exception e) {
 		    logger.error("上传图片失败....");
 			e.printStackTrace();
-            jsonObject.put("code", 0);
+            jsonObject.put("code", 1);
             jsonObject.put("msg", "");
             jsonObject.put("data", fileName);
             try {
@@ -211,97 +268,37 @@ public class AttachmentController extends BasicController {
         if (StringUtils.isBlank(start)) {
             start = "0";
         }
-        Page filePage = attachmentManager.queryFiles(0,fileName,Integer.valueOf(start),Constants.PAGE_SIZE);
+        Page filePage = attachmentManager.queryFiles(FileTypeEnum.IMAGE.getIndex(),fileName,Integer.valueOf(start),Constants.PAGE_SIZE);
         request.setAttribute("page", filePage);
+        request.setAttribute("fileName", fileName);
         return "htgl.picture.index";
     }
 
-/*------------------------------------------------------------------------------------------------------*/
 
-	/* download */
-	@RequestMapping("/download")
-	public void download(HttpServletRequest request, HttpServletResponse response, String id) {
-		String ctxPath = request.getContextPath();
-		if (StringUtils.isBlank(id)) {
-			try {
-				request.setAttribute(Constants.REQUEST_ERROR, "id 不能为空");
-				request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-		// 查询
-		FileInfoData fileInfo = attachmentManager.getFileById(id);
+/*-----------------------------------------------video----------------------------------------------------*/
 
-		String filePath = fileInfo.getFilePath() + File.separator;
-		File file = new File(filePath);
-		if (!file.exists()) {
-			file.mkdir();
-		}
-		filePath += fileInfo.getFileName();
-		response.setContentType(fileInfo.getFileType());
-		FileInputStream fis = null;
-		ServletOutputStream sos = null;
-		File image = new File(filePath);
-		try {
-			fis = new FileInputStream(image);
-			sos = response.getOutputStream();
-			ImageUtils.pressText(fis, sos, 0.3f, 3, 3, new String[] { "zhb_forever" });
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (null != sos) {
-				try {
-					sos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (null != fis) {
-				try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	/*-----------------------------------------------video----------------------------------------------------*/
+    /* query picture */
+    @RequestMapping("/videoIndex")
+    public String videoIndex(HttpServletRequest request, HttpServletResponse response,String fileName) {
+        String start = request.getParameter("start");
+        if (StringUtils.isBlank(start)) {
+            start = "0";
+        }
+        Page filePage = attachmentManager.queryFiles(FileTypeEnum.VIDEO.getIndex(),fileName,Integer.valueOf(start),Constants.PAGE_SIZE);
+        request.setAttribute("page", filePage);
+        request.setAttribute("fileName", fileName);
+        return "htgl.video.index";
+    }
 
 	@RequestMapping("/toUploadVideo")
 	public String toUploadVideo(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("active5", true);
-		return "htgl.uploadVideo.index";
-	}
-
-	/* toDownload */
-	@RequestMapping("/toDownloadVideo")
-	public String toDownloadVideo(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("active6", true);
-		String start = request.getParameter("start");
-		if (StringUtils.isBlank(start)) {
-			start = "0";
-		}
-		// 查询
-		List<ForeverCriteria> conditions = new ArrayList<ForeverCriteria>();
-		conditions.add(ForeverCriteria.eq("type", FileTypeEnum.VIDEO.getIndex()));
-		// conditions.add(ForeverCriteria.eq("fileType", "audio/ogg"));
-		// conditions.add(ForeverCriteria.eq("fileType", "audio/ogg"));
-		ForeverCriteriaUtil<FileInfoData> util = ForeverCriteriaUtil.getInstance(FileInfoData.class);
-		util.setPageProperties(null, Integer.parseInt(start), Constants.PAGE_SIZE, conditions, null);
-		ForeverPage<FileInfoData> files = foreverManager.getFileInfoPage(conditions);
-		if (null != files) {
-
-		}
-		Page filePage = util.getPage(foreverManager.getFileInfoPage(conditions));
-		request.setAttribute("page", filePage);
-		return "htgl.downloadVideo.index";
+		return "htgl.video.toUpload";
 	}
 
 	@RequestMapping("/uploadVideo")
 	public void uploadVideo(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject jsonObject = new JSONObject();
+        PrintWriter pw = null;
 		String ctxPath = request.getContextPath();
 		String filePath = PropertyUtil.getUploadPath() + File.separator + Constants.TARGET_NAME + File.separator
 				+ Constants.VIDEO_PATH;
@@ -314,17 +311,11 @@ public class AttachmentController extends BasicController {
 		// 转型为MultipartHttpRequest：
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		// 获得文件：
-		MultipartFile license = multipartRequest.getFile("firstFile");
+		MultipartFile license = multipartRequest.getFile("file");
 		Long fileSize = license.getSize();
 		String fileType = license.getContentType();
 		String fileName = "";
 		if (license.getSize() > Constants.VIDEO_MAX_SIZE) {
-			/*
-			 * try { request.getRequestDispatcher(ctxPath +
-			 * "/htgl/errorController/toError").forward(request, response); }
-			 * catch (ServletException | IOException e2) { e2.printStackTrace();
-			 * } return;
-			 */
 		}
 		try {
 			// 获得文件名：
@@ -351,23 +342,21 @@ public class AttachmentController extends BasicController {
 			fileInfoData.setFileType(fileType);
 			fileInfoData.setFileName(fileName);
 			fileInfoData.setType(FileTypeEnum.VIDEO.getIndex());
-			foreverManager.addFileInfoData(fileInfoData);
-			// 查询
-			/*
-			 * List<ForeverCriteria> conditions = new
-			 * ArrayList<ForeverCriteria>();
-			 * conditions.add(ForeverCriteria.eq("fileName", ""));
-			 * List<FileInfoData> fileInfoDatas =
-			 * foreverManager.getFileInfoDataByIdOrName(conditions);
-			 */
+			attachmentManager.saveOrUpdate(fileInfoData);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute(Constants.REQUEST_ERROR, "上传出错");
-			try {
-				request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
-			} catch (ServletException | IOException e2) {
-				e2.printStackTrace();
-			}
+            jsonObject.put("code", 1);
+            jsonObject.put("msg", "");
+            jsonObject.put("data", fileName);
+            try {
+                pw = response.getWriter();
+                pw.write(jsonObject.toString());
+                pw.flush();
+                pw.close();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
 			return;
 		} finally {
 			try {
@@ -381,11 +370,17 @@ public class AttachmentController extends BasicController {
 				e.printStackTrace();
 			}
 		}
-		try {
-			response.sendRedirect(ctxPath + "/htgl/attachmentController/toDownloadVideo");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        jsonObject.put("code", 0);
+        jsonObject.put("msg", "");
+        jsonObject.put("data", fileName);
+        try {
+            pw = response.getWriter();
+            pw.write(jsonObject.toString());
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		return;
 	}
 	

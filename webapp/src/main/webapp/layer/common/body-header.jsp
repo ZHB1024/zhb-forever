@@ -15,11 +15,15 @@
             <span class="iconfont">&#xe60e;</span>
         </a>
     </div>
-    <ul class="layui-nav" lay-filter="rightNav">
-        <li class="layui-nav-item"><a href="<%=ctxPath%>/htgl/account/toExit"  data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
+    <ul class="layui-nav">
         <li class="layui-nav-item">
-            <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}" >${user.realName}</a>
+            <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}">
+                <img class="image" src="<%=ctxPath%>/images/my/me.jpg" alt="image description" width="50" height="50" />
+            </a>
         </li>
-        <li class="layui-nav-item"><a href="<%=ctxPath%>/htgl/account/toExit">退出</a></li>
+        <li class="layui-nav-item">
+            <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}" style="background: #444c63">${user.realName}</a>
+        </li>
+        <li class="layui-nav-item"><a href="<%=ctxPath%>/htgl/account/toExit" style="background: #444c63">退出</a></li>
     </ul>
 </div>

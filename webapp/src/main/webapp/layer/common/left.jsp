@@ -43,6 +43,14 @@
             </li>
 
             <li class="layui-nav-item">
+                <a href="javascript:;"><i class="iconfont">&#xe604;</i>视频管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="<%=ctxPath%>/htgl/attachmentController/toUploadVideo"  id='upload_video' title="上传视频"><span class="l-line"></span>上传视频</a></dd>
+                    <dd><a href="<%=ctxPath%>/htgl/attachmentController/videoIndex"  id='scan_video' title="浏览视频"><span class="l-line"></span>浏览视频</a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item">
                 <a href="javascript:;"><i class="iconfont">&#xe608;</i>搜索管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="<%=ctxPath%>/htgl/initController/initFunctionInfo"  id='solr_search' title="solr"><span class="l-line"></span>solr</a></dd>

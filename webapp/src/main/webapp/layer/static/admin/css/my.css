@@ -32,13 +32,13 @@ html {height:100%;}
 
 /*picture*/
 
-#picture_list {
+.attachment_list {
     list-style:none;
     margin:0;
     padding:0;
     text-align:center;
 }
-#picture_list div {
+.attachment_list div {
     vertical-align:top;
     margin:0 0 1px;
     padding:10px 50px 10px 50px;
@@ -46,14 +46,14 @@ html {height:100%;}
     font-size:20px;
 }
 
-#picture_list .picture_succes {
+.attachment_list .attachment_success {
     color:#3f5a04;
     text-align:center;
     overflow:auto;
     background:#dfedc0;
 }
 
-#picture_list .picture_succes .puimg{
+.attachment_list .attachment_success .puimg{
     width:410px;
     margin-right:20px;
     margin-bottom:20px;
@@ -64,9 +64,12 @@ html {height:100%;}
     overflow: hidden;
 }
 .puimg img{
-    width:200px; height:160px;
+    width:200px; height:200px;
 }
 
+.puimg video{
+    width:200px; height:200px;
+}
 
 /* ------------------------footer-------------------------- */
 #footer {
