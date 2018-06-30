@@ -26,7 +26,6 @@ public class UserInfoData extends PersistentObject {
     private String sex;
     private String phone;
     private String email;
-    private Blob photo;
 
     @Column(name = "NAME")
     public String getName() {
@@ -81,15 +80,6 @@ public class UserInfoData extends PersistentObject {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Column(name = "PHOTO")
-    public Blob getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Blob photo) {
-        this.photo = photo;
     }
 
     @Id

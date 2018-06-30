@@ -9,15 +9,15 @@
 <div class="layui-tab page-content-wrap">
     <ul class="layui-tab-title">
         <li class="layui-this">修改基本信息</li>
-        <li>修改照片</li>
         <li>修改密码</li>
     </ul>
     <div class="layui-tab-content">
 
         <%--基本信息--%>
         <div class="layui-tab-item layui-show">
-            <form class="layui-form"  style="width: 90%;padding-top: 20px;" action="<%=ctxPath%>/htgl/account/upAccount" method="post">
+            <form class="layui-form" style="float:left;margin:15px;padding:10px;width:65%;" action="<%=ctxPath%>/htgl/account/upAccount" method="post">
                 <input type="hidden" name="id" value="${account.userInfoData.id}" />
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户名：</label>
                     <div class="layui-input-block">
@@ -50,50 +50,17 @@
                         <input type="email" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input" value="${account.userInfoData.email}">
                     </div>
                 </div>
-                <%--<div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">备注：</label>
-                    <div class="layui-input-block">
-                        <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
-                    </div>
-                </div>--%>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <input type="submit" value="修 改" class="layui-btn layui-btn-normal" lay-submit lay-filter="adminInfo"/>
                     </div>
                 </div>
             </form>
-        </div>
-
-        <%--修改照片--%>
-        <div class="layui-tab-item">
-            <form class="layui-form"  style="width: 90%;padding-top: 20px;" action="<%=ctxPath%>/htgl/account/modifyPassword" method="post">
-                <input type="hidden" name="userId" value="${account.userInfoData.id}" />
-
-                <div class="layui-form-item">
-                    <div class="layui-upload">
-                        <%--<div class="layui-upload-list">
-                            <img class="layui-upload-img" id="demo1">
-                            <p id="demoText"></p>
-                        </div>--%>
-                        <button type="button" class="layui-btn btn_upload_img" id="test1">上传图片</button>
-                        <button type="button" class="layui-btn" id="uploadButton">上传图片</button>
-                        <img class="layui-upload-img img-upload-view" id="demo1" src="D:\forever\upload\zhb_forever\image\w3school.gif">
-                        <p id="demoText"></p>
-                    </div>
-                </div>
-                <%--<div class="layui-form-item">
-                    <label class="layui-form-label">用户名：</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="${account.userInfoData.name}">
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <input type="submit" value="修 改" class="layui-btn layui-btn-normal" lay-submit lay-filter="adminPassword" />
-                    </div>
-                </div>--%>
-            </form>
+            <div class="head_image">
+                <img id="me_image" src="<%=ctxPath%>/images/my/me.jpg" alt="image description"/>
+                <%--<input style="clear:both;width:100px;height: 30px" type="button" value="上传新照片"/>--%>
+                <button type="button"  class="layui-btn" id="uploadNewPhoto"><i class="layui-icon"></i>上传新照片</button>
+            </div>
         </div>
 
         <%--修改密码--%>

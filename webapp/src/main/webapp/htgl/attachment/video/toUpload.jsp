@@ -45,8 +45,8 @@
             elem: '#selectButton',
             url: '<%=ctxPath%>/htgl/attachmentController/uploadVideo',
             accept: 'video',
-            //exts: 'gif|png|jpg',
-            size: 30000 ,//限制文件大小，单位 KB
+            exts: 'mp4|ogg|rmvb|mkv',
+            size: 102400 ,//限制文件大小，单位 KB
             multiple: true,
             auto: false,
             bindAction: '#uploadButton',
