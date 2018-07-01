@@ -59,7 +59,7 @@
             <div class="head_image">
                 <img id="me_image" src="<%=ctxPath%>/images/my/me.jpg" alt="image description"/>
                 <%--<input style="clear:both;width:100px;height: 30px" type="button" value="上传新照片"/>--%>
-                <button type="button"  class="layui-btn" id="uploadNewPhoto"><i class="layui-icon"></i>上传新照片</button>
+                <button id="uploadNewPhoto" type="button"   ><i class="layui-icon"></i>上传新照片</button>
             </div>
         </div>
 
