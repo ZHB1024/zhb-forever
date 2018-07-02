@@ -1,5 +1,6 @@
 package com.forever.zhb.utils;
 
+import com.forever.zhb.vo.WatermarkVO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,15 +19,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.forever.zhb.vo.WatermarkVO;
 
 public class ImageUtils {
 
@@ -318,4 +315,5 @@ public class ImageUtils {
 		}
 
 	}
+
 }

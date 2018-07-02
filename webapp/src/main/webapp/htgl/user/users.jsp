@@ -18,7 +18,7 @@
                     <button class="layui-btn layui-btn-small layui-btn-danger delBtn" onclick="submitAction('deleteAccount');"><i class="layui-icon">&#xe640;</i></button>
                 </div>
                 <div class="layui-inline">
-                    <input type="text" name="realName" value="${realName}" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                    <input type="text" id="realName" name="realName" value="${realName}" placeholder="请输入姓名" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-inline">
                     <select id="deleteFlag" name="deleteFlag" lay-filter="deleteFlag">
@@ -120,6 +120,7 @@
         });
     }
 
+    /*0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）*/
     /*弹出层*/
     function popup(data){
         var str = '<table align="center" style="border-collapse:separate; border-spacing:10px;">';
@@ -130,7 +131,6 @@
         str += generatorValue("手机号",data.phone);
         str += generatorValue("电子邮箱",data.email);
 
-        str += '</table>';
         layer.open({
             title: '详细信息',
             type: 1,

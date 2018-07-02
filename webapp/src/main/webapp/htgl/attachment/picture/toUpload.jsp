@@ -52,8 +52,10 @@
             bindAction: '#uploadButton',
             choose: function(obj){
                 var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                debugger;
                 //读取本地文件
                 obj.preview(function(index, file, result){
+                    debugger;
                     var tr = $(['<tr id="upload-'+ index +'">'
                         ,'<td>'+ file.name +'</td>'
                         ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'

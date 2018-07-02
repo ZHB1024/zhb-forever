@@ -53,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import sun.misc.BASE64Decoder;
 
 
 @Controller
@@ -104,6 +105,154 @@ public class AttachmentController extends BasicController {
 		
 		return "htgl.upload.index";
 	}
+
+    @RequestMapping("/layerContent")
+    public void layerContent(HttpServletRequest request, HttpServletResponse response,String image) {
+        JSONObject jsonObject = new JSONObject();
+        PrintWriter pw = null;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class=\"box\">");
+        sb.append(      image);
+        sb.append("</div>");
+        sb.append("<div align=\"center\" style=\"margin-top:20px;\" > ");
+        sb.append(     "<button id=\"cut_upload\" type=\"button\" class=\"layui-btn\" >");
+        sb.append(     "上传</button>");
+        sb.append(     "<button id=\"cut_cancle\" type=\"button\" class=\"layui-btn\" >");
+        sb.append(     "取消</button>");
+        sb.append("</div>");
+        sb.append("<script type=\"text/javascript\">");
+        sb.append("     $('#new_me_image').cropper({");
+        sb.append("             aspectRatio: 1 / 1,");
+        sb.append("             viewMode:1,");
+        sb.append("             crop: function (e) {");
+        sb.append("                 ");
+        sb.append("             }");
+        sb.append("     });");
+        sb.append("     $(\"#cut_upload\").on(\"click\", function () {");
+        sb.append("          var image_target = $('#new_me_image').cropper('getData', true); ");
+        sb.append("          var image_content = $('#new_me_image').attr('src');");
+        sb.append("          var data = {");
+        sb.append("                         'image_content':image_content,");
+        sb.append("                         'x':image_target.x,");
+        sb.append("                         'y':image_target.y,");
+        sb.append("                         'width':image_target.width,");
+        sb.append("                         'height':image_target.height");
+        sb.append("          };");
+
+        sb.append("          $.ajax({");
+        sb.append("             url: '/htgl/attachmentController/uploadHeadPhoto',");
+        sb.append("             type: 'POST',");
+        sb.append("             data:data,");
+        sb.append("             success: function (result) { ");
+        sb.append("                 debugger; ");
+        sb.append("                 var resultCode = result.code; ");
+        sb.append("                 layer.closeAll(); ");
+        sb.append("                 window.location.reload() ; ");
+        sb.append("             }, ");
+        sb.append("             error: function (result) {");
+        sb.append("                 layer.closeAll(); ");
+        sb.append("             }");
+        sb.append("          });");
+
+        sb.append("     });");
+        sb.append("     $(\"#cut_cancle\").on(\"click\", function () {");
+        sb.append("          layer.closeAll(); ");
+        sb.append("     });");
+        sb.append("</script>");
+
+        jsonObject.put("msg", sb.toString());
+        try {
+            pw = response.getWriter();
+            pw.write(jsonObject.toString());
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return;
+    }
+
+    @RequestMapping("/uploadHeadPhoto")
+    public void uploadHeadPhoto(HttpServletRequest request, HttpServletResponse response) {
+	    String x = request.getParameter("x");
+	    String y = request.getParameter("y");
+	    String width = request.getParameter("width");
+	    String height = request.getParameter("height");
+	    String image_content = request.getParameter("image_content");
+
+        BASE64Decoder decoder = new BASE64Decoder();
+        String image_value = image_content.substring(22);
+        byte[] decodedBytes = null;
+        try {
+            decodedBytes = decoder.decodeBuffer(image_value);// 将字符串格式的imagedata转为二进制流（biye[])的decodedBytes
+            for(int i=0;i<decodedBytes.length;++i){
+                if(decodedBytes[i]<0) {
+                    //调整异常数据
+                    decodedBytes[i]+=256;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //decodedBytes = ImageUtil.equimultipleConvertToByte(Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(width),Integer.parseInt(height),decodedBytes );
+
+        JSONObject jsonObject = new JSONObject();
+        PrintWriter pw = null;
+        String ctxPath = request.getContextPath();
+        String filePath = PropertyUtil.getUploadPath() + File.separator + Constants.TARGET_NAME + File.separator
+            + Constants.IMAGE_PATH;
+        File fileUpload = new File(filePath);
+        if (!fileUpload.exists()) {
+            fileUpload.mkdirs();
+        }
+        OutputStream licOutput = null;
+        String fileName = "12345.jpg";
+
+        try {
+            String uploadPathFile = filePath + File.separator + fileName;
+            File licName = new File(uploadPathFile);
+            licOutput = new FileOutputStream(licName);
+            licOutput.write(decodedBytes);
+            licOutput.flush();
+
+            /*FileInfoData fileInfoData = new FileInfoData();
+            fileInfoData.setCreateTime(Calendar.getInstance());
+            fileInfoData.setDeleteFlag(DeleteFlagEnum.UDEL.getIndex());
+            fileInfoData.setFilePath(filePath);
+            fileInfoData.setFileSize(5261L);
+            fileInfoData.setFileType("imag/jpg");
+            fileInfoData.setFileName(fileName);
+            fileInfoData.setType(FileTypeEnum.IMAGE.getIndex());
+            attachmentManager.saveOrUpdate(fileInfoData);*/
+        } catch (Exception e) {
+            logger.error("上传图片失败....");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != licOutput) {
+                    licOutput.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        jsonObject.put("code", 0);
+        jsonObject.put("msg", "");
+        jsonObject.put("data", fileName);
+        try {
+            pw = response.getWriter();
+            pw.write(jsonObject.toString());
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return;
+    }
 
     /* download */
     @RequestMapping("/download")

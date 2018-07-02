@@ -1,16 +1,24 @@
 package com.forever.zhb.utils;
 
+import  java.io.InputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
 
 public class FileUtil {
+
+    public static int blockSize = 8192;
+    public static int bufferSize = blockSize * 10;
 	
 	/**
 	    * 读取txt文件的内容
@@ -99,4 +107,64 @@ public class FileUtil {
 	       return true;
 	   }
 
+    public static void copyTo(File src, File dest) {
+        try {
+            FileInputStream fis = new FileInputStream(src);
+            copyTo(fis, dest);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(String.format("文件不存在,file:%s", new Object[] { src.getAbsolutePath() }), e);
+        }
+    }
+
+    public static void copyTo(InputStream is, File dest) {
+        BufferedInputStream bis = new BufferedInputStream(is, bufferSize);
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        try {
+            fos = new FileOutputStream(dest);
+            bos = new BufferedOutputStream(fos, bufferSize);
+            int readBytes = 0;
+            byte[] block = new byte[blockSize];
+            while ((readBytes = bis.read(block)) != -1) {
+                bos.write(block, 0, readBytes);
+            }
+            bos.flush();
+            fos.flush();
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        } finally {
+            if (null != bos){
+                try{
+                    bos.close();
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+
+            }
+            if (null != fos){
+                try{
+                    fos.close();
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+
+            }
+            if (null != bis){
+                try{
+                    bis.close();
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+
+            }
+            if (null != is){
+                try{
+                    is.close();
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+
+            }
+        }
+    }
 }

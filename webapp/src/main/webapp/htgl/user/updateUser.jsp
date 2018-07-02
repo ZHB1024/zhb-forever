@@ -5,6 +5,8 @@
     String ctxPath = request.getContextPath();
 %>
 <html>
+<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/cropper/cropper.css" />
+<script type="text/javascript" src="<%=ctxPath%>/js/cropper/cropper.js"></script>
 <body>
 <div class="layui-tab page-content-wrap">
     <ul class="layui-tab-title">
@@ -57,9 +59,11 @@
                 </div>
             </form>
             <div class="head_image">
-                <img id="me_image" src="<%=ctxPath%>/images/my/me.jpg" alt="image description"/>
-                <%--<input style="clear:both;width:100px;height: 30px" type="button" value="上传新照片"/>--%>
-                <button id="uploadNewPhoto" type="button"   ><i class="layui-icon"></i>上传新照片</button>
+                <img id="me_image" src="<%=ctxPath%>/images/my/loading.gif" alt="image description"/>
+                <button id="selectNewPhoto" type="button"  class="layui-btn"><i class="layui-icon"></i>上传新照片</button>
+                <%--<button id="uploadNewPhoto" type="button"  style="display: inline-block;height: 38px;background-color: #009688;color: #fff;text-align: center;white-space: nowrap;border-radius: 2px;">
+                    <i class="layui-icon"></i>上传新照片
+                </button>--%>
             </div>
         </div>
 
@@ -108,34 +112,52 @@
         var $ = layui.jquery;
         var upload = layui.upload;
 
-        //普通图片上传
+        //修改头像
         var uploadInst = upload.render({
-            elem: '#test1',
-            url: '/upload/',
+            elem: '#selectNewPhoto',
             auto: false,
-            bindAction: '#uploadButton',
-            before: function(obj){
-                //预读本地文件示例，不支持ie8
+            choose: function(obj){
+                //读取本地文件
                 obj.preview(function(index, file, result){
-                    debugger;
-                    $('#demo1').attr('src', result); //图片链接（base64）
+                    //$('#me_image').attr('src', result); //图片链接（base64）
+                    generatorContent(result);
                 });
-            },
-            done: function(res){
-                //如果上传失败
-                if(res.code > 0){
-                    return layer.msg('上传失败');
-                }
-                //上传成功
             },
             error: function(){
-                //演示失败状态，并实现重传
-                var demoText = $('#demoText');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-                demoText.find('.demo-reload').on('click', function(){
-                    uploadInst.upload();
-                });
             }
         });
     });
+
+    /*通过后台生成动态content*/
+    function generatorContent(data){
+        var me_image = generatorImage(data);
+        var url = '<%=ctxPath%>/htgl/attachmentController/layerContent';
+        var data = { image : me_image };
+        $.post(url,data,function(result){
+            var rs = $.parseJSON(result);
+            popup(rs.msg);
+        });
+    }
+
+    /*弹出层*/
+    function popup(content) {
+        layer.open({
+            title: '上传新头像',
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['60%', '60%'], //宽高
+            content: content,
+            //btn: ['确定','取消'],
+            success: function(layero, index){
+            },
+            yes: function(index, layero){
+                layer.closeAll();
+            }
+        });
+    }
+    
+    function generatorImage(data) {
+        var str = '<img id="new_me_image" src="' + data + '">';
+        return str;
+    }
 </script>
