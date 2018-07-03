@@ -7,11 +7,16 @@ import com.forever.zhb.dic.DeleteFlagEnum;
 import com.forever.zhb.dic.FileTypeEnum;
 import com.forever.zhb.page.Page;
 import com.forever.zhb.pojo.FileInfoData;
+import com.forever.zhb.pojo.UserInfoData;
 import com.forever.zhb.service.AttachmentManager;
 import com.forever.zhb.service.IForeverManager;
+import com.forever.zhb.service.UserManager;
+import com.forever.zhb.util.WebAppUtil;
 import com.forever.zhb.utils.DownloadUtil;
+import com.forever.zhb.utils.ImageUtil;
 import com.forever.zhb.utils.ImageUtils;
 import com.forever.zhb.utils.PropertyUtil;
+import com.forever.zhb.utils.StringUtil;
 import com.forever.zhb.utils.attachment.ExcelUtil;
 import com.forever.zhb.utils.attachment.video.FFmpegEXEUtil;
 import java.io.BufferedInputStream;
@@ -68,6 +73,9 @@ public class AttachmentController extends BasicController {
 	@Resource(name = "attachmentManager")
 	private AttachmentManager attachmentManager;
 
+	@Resource(name = "userManager")
+	private UserManager userManager;
+
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		/*String sourceFile = "C:\\Users\\ZHB\\Videos\\w3school.gif";
@@ -107,13 +115,14 @@ public class AttachmentController extends BasicController {
 	}
 
     @RequestMapping("/layerContent")
-    public void layerContent(HttpServletRequest request, HttpServletResponse response,String image) {
+    public void layerContent(HttpServletRequest request, HttpServletResponse response,String image,String id) {
         JSONObject jsonObject = new JSONObject();
         PrintWriter pw = null;
 
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"box\">");
         sb.append(      image);
+        sb.append(     "<input id=\"userId\" type=\"hidden\" value='" + id + "' >");
         sb.append("</div>");
         sb.append("<div align=\"center\" style=\"margin-top:20px;\" > ");
         sb.append(     "<button id=\"cut_upload\" type=\"button\" class=\"layui-btn\" >");
@@ -132,7 +141,9 @@ public class AttachmentController extends BasicController {
         sb.append("     $(\"#cut_upload\").on(\"click\", function () {");
         sb.append("          var image_target = $('#new_me_image').cropper('getData', true); ");
         sb.append("          var image_content = $('#new_me_image').attr('src');");
+        sb.append("          var userId = $('#userId').val();");
         sb.append("          var data = {");
+        sb.append("                         'id':userId,");
         sb.append("                         'image_content':image_content,");
         sb.append("                         'x':image_target.x,");
         sb.append("                         'y':image_target.y,");
@@ -145,7 +156,6 @@ public class AttachmentController extends BasicController {
         sb.append("             type: 'POST',");
         sb.append("             data:data,");
         sb.append("             success: function (result) { ");
-        sb.append("                 debugger; ");
         sb.append("                 var resultCode = result.code; ");
         sb.append("                 layer.closeAll(); ");
         sb.append("                 window.location.reload() ; ");
@@ -158,6 +168,7 @@ public class AttachmentController extends BasicController {
         sb.append("     });");
         sb.append("     $(\"#cut_cancle\").on(\"click\", function () {");
         sb.append("          layer.closeAll(); ");
+        sb.append("          window.location.reload() ; ");
         sb.append("     });");
         sb.append("</script>");
 
@@ -176,6 +187,12 @@ public class AttachmentController extends BasicController {
 
     @RequestMapping("/uploadHeadPhoto")
     public void uploadHeadPhoto(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        UserInfoData userInfo = WebAppUtil.getUserInfoData(request);
+        if (StringUtil.isBlank(id) || null == userInfo || !id.equals(userInfo.getId())){
+
+            return;
+        }
 	    String x = request.getParameter("x");
 	    String y = request.getParameter("y");
 	    String width = request.getParameter("width");
@@ -183,10 +200,11 @@ public class AttachmentController extends BasicController {
 	    String image_content = request.getParameter("image_content");
 
         BASE64Decoder decoder = new BASE64Decoder();
-        String image_value = image_content.substring(22);
+        String image_value = image_content.replaceAll("data:image/jpeg;base64,","");
         byte[] decodedBytes = null;
         try {
-            decodedBytes = decoder.decodeBuffer(image_value);// 将字符串格式的imagedata转为二进制流（biye[])的decodedBytes
+            // 将字符串格式的imagedata转为二进制流（biye[])的decodedBytes
+            decodedBytes = decoder.decodeBuffer(image_value);
             for(int i=0;i<decodedBytes.length;++i){
                 if(decodedBytes[i]<0) {
                     //调整异常数据
@@ -197,7 +215,14 @@ public class AttachmentController extends BasicController {
             e.printStackTrace();
         }
 
-        //decodedBytes = ImageUtil.equimultipleConvertToByte(Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(width),Integer.parseInt(height),decodedBytes );
+        decodedBytes = ImageUtil
+            .equimultipleConvertToByte(Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(width),Integer.parseInt(height),decodedBytes );
+
+        /*int faceCount = FaceUtil.getPersonNum(decodedBytes);
+        if (faceCount <= 0){
+            return;
+        }*/
+
 
         JSONObject jsonObject = new JSONObject();
         PrintWriter pw = null;
@@ -209,7 +234,7 @@ public class AttachmentController extends BasicController {
             fileUpload.mkdirs();
         }
         OutputStream licOutput = null;
-        String fileName = "12345.jpg";
+        String fileName = userInfo.getName() + ".jpg";
 
         try {
             String uploadPathFile = filePath + File.separator + fileName;
@@ -218,17 +243,23 @@ public class AttachmentController extends BasicController {
             licOutput.write(decodedBytes);
             licOutput.flush();
 
-            /*FileInfoData fileInfoData = new FileInfoData();
+            FileInfoData fileInfoData = new FileInfoData();
             fileInfoData.setCreateTime(Calendar.getInstance());
             fileInfoData.setDeleteFlag(DeleteFlagEnum.UDEL.getIndex());
             fileInfoData.setFilePath(filePath);
-            fileInfoData.setFileSize(5261L);
-            fileInfoData.setFileType("imag/jpg");
+            fileInfoData.setFileSize(Long.parseLong(String.valueOf(decodedBytes.length)));
+            fileInfoData.setFileType("image/jpeg");
             fileInfoData.setFileName(fileName);
-            fileInfoData.setType(FileTypeEnum.IMAGE.getIndex());
-            attachmentManager.saveOrUpdate(fileInfoData);*/
+            fileInfoData.setType(FileTypeEnum.HEAD.getIndex());
+            attachmentManager.saveOrUpdate(fileInfoData);
+
+            UserInfoData data = userManager.getUserInfoById(id);
+            data.setHeadPhoto(fileInfoData.getId());
+            userManager.saveOrUpdate(data);
+            WebAppUtil.setUserInfoData(request,data);
+
         } catch (Exception e) {
-            logger.error("上传图片失败....");
+            logger.error("上传头像失败....");
             e.printStackTrace();
         } finally {
             try {
@@ -257,16 +288,42 @@ public class AttachmentController extends BasicController {
     /* download */
     @RequestMapping("/download")
     public void download(HttpServletRequest request, HttpServletResponse response, String id) {
-        String ctxPath = request.getContextPath();
+        FileInputStream fis = null;
+        ServletOutputStream sos = null;
         if (StringUtils.isBlank(id)) {
+            String rootPath = WebAppUtil.getRootPath(request);
+            String imagePath = rootPath + "images" + File.separator + "loading.gif";
+            response.setContentType("image/jpeg");
+            File defaultImage = new File(imagePath);
             try {
-                request.setAttribute(Constants.REQUEST_ERROR, "id 不能为空");
-                request.getRequestDispatcher(ctxPath + "/htgl/errorController/toError").forward(request, response);
-            } catch (ServletException | IOException e) {
+                fis = new FileInputStream(defaultImage);
+                sos = response.getOutputStream();
+                int lenght;
+                byte[] buf = new byte[1024];
+                while((lenght = fis.read(buf, 0, 1024)) != -1){
+                    sos.write(buf,0,lenght);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                if (null != sos) {
+                    try {
+                        sos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (null != fis) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             return;
         }
+
         // 查询
         FileInfoData fileInfo = attachmentManager.getFileById(id);
 
@@ -277,8 +334,6 @@ public class AttachmentController extends BasicController {
         }
         filePath += fileInfo.getFileName();
         response.setContentType(fileInfo.getFileType());
-        FileInputStream fis = null;
-        ServletOutputStream sos = null;
         File image = new File(filePath);
         try {
             fis = new FileInputStream(image);

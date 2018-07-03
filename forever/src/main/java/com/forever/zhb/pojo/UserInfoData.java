@@ -1,8 +1,7 @@
 package com.forever.zhb.pojo;
 
-import java.sql.Blob;
+import com.forever.zhb.pojo.base.PersistentObject;
 import java.util.Calendar;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
-
-import com.forever.zhb.pojo.base.PersistentObject;
 
 @Entity
 @Table(name = "USER_INFO")
@@ -26,6 +22,7 @@ public class UserInfoData extends PersistentObject {
     private String sex;
     private String phone;
     private String email;
+    private String headPhoto;
 
     @Column(name = "NAME")
     public String getName() {
@@ -81,6 +78,16 @@ public class UserInfoData extends PersistentObject {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Column(name = "HEAD_PHOTO")
+    public String getHeadPhoto() {
+        return headPhoto;
+    }
+
+    public void setHeadPhoto(String headPhoto) {
+        this.headPhoto = headPhoto;
+    }
+
 
     @Id
     @GeneratedValue(generator = "app_seq")

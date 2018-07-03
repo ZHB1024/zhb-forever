@@ -1,9 +1,15 @@
 package com.forever.zhb.utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -13,12 +19,6 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class FaceUtil {
 
@@ -97,6 +97,7 @@ public class FaceUtil {
 			return -1;
 		}
 		Mat image = Imgcodecs.imread(imageFile.getPath());
+        //Mat mat = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 		MatOfRect faceDetections = new MatOfRect();
 		faceDetector.detectMultiScale(image, faceDetections);
 		int faceCnt2 = 0;
@@ -255,5 +256,54 @@ public class FaceUtil {
 //        System.out.println(json.toString());
         return faceCnt2;
 	}
+
+    public static int getPersonNum(byte[] imageBytes) {
+        String classifierFilePath = "lbpcascade_frontalface.xml";
+
+        File tempFile = null;
+        if (faceDetector == null || faceDetector.empty()) {
+            InputStream is = FaceUtil.class.getResourceAsStream("/openCV/" + classifierFilePath);
+            try {
+                tempFile = File.createTempFile("haarcascade_frontalface_alt", ".xml");
+                FileUtils.copyInputStreamToFile(is, tempFile);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (faceDetector == null) {
+            System.out.println("classifierFilePath:" + tempFile.getAbsolutePath());
+            logger.info("classifierFilePath:" + tempFile.getAbsolutePath());
+            faceDetector = new CascadeClassifier(tempFile.getAbsolutePath());
+        }
+        if (faceDetector.empty()) {
+            System.out.println("CascadeClassifier empty");
+            return -1;
+        }
+        Mat image = Imgcodecs.imdecode(new MatOfByte(imageBytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+        MatOfRect faceDetections = new MatOfRect();
+        faceDetector.detectMultiScale(image, faceDetections);
+        int faceCnt2 = 0;
+        Rect[] rects = faceDetections.toArray();
+        String info = null;
+        for (Rect rect : rects) {
+            /*
+             * 增加了照片中面部在整个照片中所占百分比的限制
+             */
+            if (((double) (rect.width * rect.height) * 100) / (image.cols() * image.rows()) > 10) {
+                faceCnt2++;
+            }
+        }
+        return faceCnt2;
+    }
 
 }

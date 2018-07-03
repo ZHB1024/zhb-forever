@@ -17,13 +17,17 @@
     </div>
     <ul class="layui-nav">
         <li class="layui-nav-item">
-            <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}">
-                <img class="image" src="<%=ctxPath%>/images/my/me.jpg" alt="image description" width="50" height="50" />
+            <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}" style="background: #444c63">
+                <img class="image" src="<%=ctxPath%>/htgl/attachmentController/download?id=${user.headPhoto}" alt="image description" width="50" height="50" />
+                <span >
+                    Welcome
+                    <strong class="name">${user.realName}</strong>
+                </span>
             </a>
         </li>
-        <li class="layui-nav-item">
+        <%--<li class="layui-nav-item">
             <a href="<%=ctxPath%>/htgl/account/toAccount?userId=${user.id}" style="background: #444c63">${user.realName}</a>
-        </li>
+        </li>--%>
         <li class="layui-nav-item"><a href="<%=ctxPath%>/htgl/account/toExit" style="background: #444c63">退出</a></li>
     </ul>
 </div>

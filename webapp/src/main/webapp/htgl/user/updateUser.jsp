@@ -18,7 +18,7 @@
         <%--基本信息--%>
         <div class="layui-tab-item layui-show">
             <form class="layui-form" style="float:left;margin:15px;padding:10px;width:65%;" action="<%=ctxPath%>/htgl/account/upAccount" method="post">
-                <input type="hidden" name="id" value="${account.userInfoData.id}" />
+                <input type="hidden" id="id" name="id" value="${account.userInfoData.id}" />
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户名：</label>
@@ -59,7 +59,7 @@
                 </div>
             </form>
             <div class="head_image">
-                <img id="me_image" src="<%=ctxPath%>/images/my/loading.gif" alt="image description"/>
+                <img id="me_image" src="<%=ctxPath%>/htgl/attachmentController/download?id=${account.userInfoData.headPhoto}" alt="image description"/>
                 <button id="selectNewPhoto" type="button"  class="layui-btn"><i class="layui-icon"></i>上传新照片</button>
                 <%--<button id="uploadNewPhoto" type="button"  style="display: inline-block;height: 38px;background-color: #009688;color: #fff;text-align: center;white-space: nowrap;border-radius: 2px;">
                     <i class="layui-icon"></i>上传新照片
@@ -119,7 +119,6 @@
             choose: function(obj){
                 //读取本地文件
                 obj.preview(function(index, file, result){
-                    //$('#me_image').attr('src', result); //图片链接（base64）
                     generatorContent(result);
                 });
             },
@@ -131,8 +130,9 @@
     /*通过后台生成动态content*/
     function generatorContent(data){
         var me_image = generatorImage(data);
+        var id = $("#id").val();
         var url = '<%=ctxPath%>/htgl/attachmentController/layerContent';
-        var data = { image : me_image };
+        var data = { image : me_image ,id:id};
         $.post(url,data,function(result){
             var rs = $.parseJSON(result);
             popup(rs.msg);

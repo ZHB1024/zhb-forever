@@ -2,7 +2,7 @@ package com.forever.zhb.dic;
 
 public enum FileTypeEnum {
     
-    IMAGE("image",0),EXCEL("excel",1),WORD("word",2),PDF("pdf",3),TXT("txt",4),VIDEO("video",5);
+    IMAGE("image",0),EXCEL("excel",1),WORD("word",2),PDF("pdf",3),TXT("txt",4),VIDEO("video",5),HEAD("head",6);
     
     private String name;
     private int index;

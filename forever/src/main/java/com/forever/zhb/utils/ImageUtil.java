@@ -931,4 +931,17 @@ public class ImageUtil {
         return bufferedImage;
     }
 
+    /*获取图片格式:gif png JPEG*/
+    public static String getImageFormatName(File file)throws IOException{
+        String formatName = null;
+        ImageInputStream iis = ImageIO.createImageInputStream(file);
+        Iterator<ImageReader> imageReader =  ImageIO.getImageReaders(iis);
+        if(imageReader.hasNext()){
+            ImageReader reader = imageReader.next();
+            formatName = reader.getFormatName();
+        }
+
+        return formatName;
+    }
+
 }

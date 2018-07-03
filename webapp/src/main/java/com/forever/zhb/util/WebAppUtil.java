@@ -65,4 +65,8 @@ public class WebAppUtil {
         return (String) session.getAttribute(Constants.IP);
     }
 
+    public static String getRootPath(HttpServletRequest request){
+        return request.getSession().getServletContext().getRealPath("/");
+    }
+
 }
