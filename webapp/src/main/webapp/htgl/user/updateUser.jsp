@@ -116,6 +116,7 @@
         var uploadInst = upload.render({
             elem: '#selectNewPhoto',
             auto: false,
+            size: 500 ,//限制文件大小，单位 KB
             choose: function(obj){
                 //读取本地文件
                 obj.preview(function(index, file, result){
@@ -145,10 +146,11 @@
             title: '上传新头像',
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['60%', '60%'], //宽高
+            area: ['60%', '80%'], //宽高
             content: content,
             //btn: ['确定','取消'],
             success: function(layero, index){
+                layer.iframeAuto(index);
             },
             yes: function(index, layero){
                 layer.closeAll();

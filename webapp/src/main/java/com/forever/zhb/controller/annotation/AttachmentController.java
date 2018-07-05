@@ -1,6 +1,7 @@
 package com.forever.zhb.controller.annotation;
 
 import com.forever.zhb.Constants;
+import com.forever.zhb.Constants_Web;
 import com.forever.zhb.basic.BasicController;
 import com.forever.zhb.criteria.ForeverCriteria;
 import com.forever.zhb.dic.DeleteFlagEnum;
@@ -199,6 +200,19 @@ public class AttachmentController extends BasicController {
 	    String height = request.getParameter("height");
 	    String image_content = request.getParameter("image_content");
 
+
+        /*Base64.Decoder decoder = Base64.getDecoder();
+        String image_value = image_content.replaceAll("data:image/jpeg;base64,","");
+        byte[] decodedBytes = null;
+        // 将字符串格式的imagedata转为二进制流（biye[])的decodedBytes
+        decodedBytes = decoder.decode(image_value);
+        for(int i=0;i<decodedBytes.length;++i){
+            if(decodedBytes[i]<0) {
+                //调整异常数据
+                decodedBytes[i]+=256;
+            }
+        }*/
+
         BASE64Decoder decoder = new BASE64Decoder();
         String image_value = image_content.replaceAll("data:image/jpeg;base64,","");
         byte[] decodedBytes = null;
@@ -326,6 +340,15 @@ public class AttachmentController extends BasicController {
 
         // 查询
         FileInfoData fileInfo = attachmentManager.getFileById(id);
+        if (null == fileInfo){
+            return;
+        }
+        // will return -1 if no header...(没缓存的照片时no header)
+        long clientLastModified = request.getDateHeader("If-Modified-Since");
+        if (clientLastModified != -1) {//有缓存照片
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
 
         String filePath = fileInfo.getFilePath() + File.separator;
         File file = new File(filePath);
@@ -334,6 +357,9 @@ public class AttachmentController extends BasicController {
         }
         filePath += fileInfo.getFileName();
         response.setContentType(fileInfo.getFileType());
+        long currentTimeMillis = System.currentTimeMillis();
+        response.setDateHeader("Last-Modified", currentTimeMillis);
+        response.setDateHeader("Expires", currentTimeMillis + 1000*Constants_Web.TIME_OUTS);//缓存30天
         File image = new File(filePath);
         try {
             fis = new FileInputStream(image);

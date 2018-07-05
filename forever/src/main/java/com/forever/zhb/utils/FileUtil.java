@@ -1,6 +1,5 @@
 package com.forever.zhb.utils;
 
-import  java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -10,15 +9,46 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
+import org.apache.sanselan.util.IOUtils;
 
 public class FileUtil {
 
+    public static final Map<String, String> FILE_TYPE_MAP = new HashMap();
+    public static final Map<String, String> EXCEL_TYPE_MAP = new HashMap();
+    private static final byte[] DBF_HEADER = { 3, 48 };
+
     public static int blockSize = 8192;
     public static int bufferSize = blockSize * 10;
+
+    static {
+        getAllFileType();
+    }
+
+    private static void getAllFileType() {
+        FILE_TYPE_MAP.put("ffd8ff", "jpg");
+        FILE_TYPE_MAP.put("89504e470d0a1a0a0000", "png");
+        FILE_TYPE_MAP.put("47494638396126026f01", "gif");
+        FILE_TYPE_MAP.put("49492a00227105008037", "tif");
+        FILE_TYPE_MAP.put("424d228c010000000000", "bmp");
+        FILE_TYPE_MAP.put("424d8240090000000000", "bmp");
+        FILE_TYPE_MAP.put("424d8e1b030000000000", "bmp");
+
+        FILE_TYPE_MAP.put("504b0304", "zip");
+
+        EXCEL_TYPE_MAP.put("d0cf11e0a1b11ae10000", "xls");
+        EXCEL_TYPE_MAP.put("504b0304140006000800", "xlsx");
+        EXCEL_TYPE_MAP.put("d0cf11e0a1b11ae10000", "xls");
+        EXCEL_TYPE_MAP.put("504b03040a0000000000", "xlsx");
+    }
 	
 	/**
 	    * 读取txt文件的内容
@@ -167,4 +197,127 @@ public class FileUtil {
             }
         }
     }
+
+
+    /**
+     * 获取文件类型
+     * @param filePath 文件路径
+     * @return 文件类型
+     */
+    public static String getFileType(String filePath) throws IOException {
+        File file = new File(filePath);
+        byte[] bytes = IOUtils.getFileBytes(file);
+        return getFileType(bytes);
+    }
+
+    /**
+     * 获取文件类型
+     * @param bytes 文件字节数组
+     * @return 文件类型
+     */
+    public static String getFileType(byte[] bytes) {
+        String res = null;
+        FileInputStream is = null;
+        try {
+            String fileCode = bytesToHexString(bytes);
+
+            Iterator keyIter = FILE_TYPE_MAP.keySet().iterator();
+            while (keyIter.hasNext()) {
+                String key = (String) keyIter.next();
+                if ((key.toLowerCase().startsWith(fileCode.toLowerCase()))
+                    || (fileCode.toLowerCase().startsWith(key.toLowerCase()))) {
+                    res = (String) FILE_TYPE_MAP.get(key);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null)
+                    is.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+    public static String bytesToHexString(byte[] src) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if ((src == null) || (src.length <= 0)) {
+            return null;
+        }
+        for (int i = 0; i < src.length; ++i) {
+            int v = src[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
+    }
+
+    public static boolean isExcel(String filePath) {
+        boolean flag = true;
+        String res = null;
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream(filePath);
+            byte[] b = new byte[10];
+            is.read(b, 0, b.length);
+            String fileCode = bytesToHexString(b);
+
+            Iterator keyIter = EXCEL_TYPE_MAP.keySet().iterator();
+            while (keyIter.hasNext()) {
+                String key = (String) keyIter.next();
+                if ((key.toLowerCase().startsWith(fileCode.toLowerCase()))
+                    || (fileCode.toLowerCase().startsWith(key.toLowerCase()))) {
+                    res = (String) EXCEL_TYPE_MAP.get(key);
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null)
+                    is.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        if ((!(StringUtils.equals(res, "xls"))) && (!(StringUtils.equals(res, "xlsx")))) {
+            flag = false;
+        }
+        return flag;
+    }
+
+    public static boolean isDBF(InputStream is) {
+        boolean res = false;
+        try {
+            if (is != null) {
+                byte[] b = new byte[1];
+                is.read(b, 0, b.length);
+                res = (b[0] == DBF_HEADER[0]) || (b[0] == DBF_HEADER[1]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null)
+                    is.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+
 }

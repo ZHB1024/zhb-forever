@@ -20,4 +20,6 @@ public class Constants_Web {
     
     public static final String SESSION_USERID = "session_userid";
 
+    public static final int TIME_OUTS = 2592000;// 照片缓存30天
+
 }
