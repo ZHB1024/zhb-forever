@@ -1,5 +1,13 @@
 package com.forever.zhb.utils;
 
+import java.io.File;
+
+import net.sf.jmimemagic.Magic;
+import net.sf.jmimemagic.MagicException;
+import net.sf.jmimemagic.MagicMatch;
+import net.sf.jmimemagic.MagicMatchNotFoundException;
+import net.sf.jmimemagic.MagicParseException;
+
 public class MimeTypeUtil {
 
     /*MIME(Multipurpose Internet Mail Extensions)多用途互联网邮件扩展类型。
@@ -74,6 +82,21 @@ public class MimeTypeUtil {
                 return "application/octet-stream";
         }
     }
+
+    public static String getMimeType(String filePath){
+        Magic parser = new Magic() ;
+        MagicMatch match = null;
+        try {
+            match = parser.getMagicMatch(new File(filePath),false);
+        } catch (MagicParseException | MagicMatchNotFoundException | MagicException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println(match.getMimeType()) ;
+        return match.getMimeType();
+
+    }
+
 
 
 }

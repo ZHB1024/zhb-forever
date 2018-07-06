@@ -41,6 +41,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -59,7 +60,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import sun.misc.BASE64Decoder;
 
 
 @Controller
@@ -110,10 +110,10 @@ public class AttachmentController extends BasicController {
 				}
 			}
 		}*/
-		
-		
+
 		return "htgl.upload.index";
 	}
+
 
     @RequestMapping("/layerContent")
     public void layerContent(HttpServletRequest request, HttpServletResponse response,String image,String id) {
@@ -213,19 +213,21 @@ public class AttachmentController extends BasicController {
             }
         }*/
 
-        BASE64Decoder decoder = new BASE64Decoder();
+        Base64 decoder = new Base64();
+        //BASE64Decoder decoder = new BASE64Decoder();
         String image_value = image_content.replaceAll("data:image/jpeg;base64,","");
         byte[] decodedBytes = null;
         try {
             // 将字符串格式的imagedata转为二进制流（biye[])的decodedBytes
-            decodedBytes = decoder.decodeBuffer(image_value);
+            //decodedBytes = decoder.decodeBuffer(image_value);
+            decodedBytes = decoder.decodeBase64(image_value);
             for(int i=0;i<decodedBytes.length;++i){
                 if(decodedBytes[i]<0) {
                     //调整异常数据
                     decodedBytes[i]+=256;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -22,4 +22,6 @@ public class Constants_Web {
 
     public static final int TIME_OUTS = 2592000;// 照片缓存30天
 
+    public static String UEditor_exc = "";
+
 }
