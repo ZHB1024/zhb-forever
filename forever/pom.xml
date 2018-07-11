@@ -862,6 +862,14 @@
             <version>1.0.old</version>
         </dependency>-->
 
+        <!-- https://mvnrepository.com/artifact/de.huxhorn.lilith/de.huxhorn.lilith.3rdparty.flyingsaucer.core-renderer -->
+        <dependency>
+            <groupId>de.huxhorn.lilith</groupId>
+            <artifactId>de.huxhorn.lilith.3rdparty.flyingsaucer.core-renderer</artifactId>
+            <version>8RC1</version>
+        </dependency>
+
+
 
 
 

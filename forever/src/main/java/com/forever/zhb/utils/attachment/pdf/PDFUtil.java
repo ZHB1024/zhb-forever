@@ -1,5 +1,6 @@
 package com.forever.zhb.utils.attachment.pdf;
 
+import com.forever.zhb.pojo.FileInfoData;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -10,11 +11,23 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Table;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfFileSpecification;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.log4j.Logger;
+import org.xhtmlrenderer.pdf.ITextFontResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
 public class PDFUtil {
+
+    protected static final Logger log = Logger.getLogger(PDFUtil.class);
 
     /*完全程序生成 pdf 文档*/
     public static void createPdf(Document document , ApplicationData appData, ChangeData changeData) throws DocumentException,IOException {
@@ -182,6 +195,70 @@ public class PDFUtil {
         content.setSpacingBefore(spaceBefore); // 与上一段落（标题）的行距
         content.setSpacingAfter(spaceAfter); // 与下一段落（标题）的行距
         document.add(content);
+    }
+
+
+
+
+    /*生成 HTML内容 的pdf*/
+    public static void generatePDF(File pdfFile, StringBuffer html) {
+        try {
+            FileOutputStream fos = new FileOutputStream(pdfFile);
+            ITextRenderer irt = new ITextRenderer();
+            ITextFontResolver r = irt.getFontResolver();
+            String[] fonts = getDefaultFonts();
+            for (String font : fonts) {
+                r.addFont(font, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            }
+            irt.setDocumentFromString(html.toString());
+            irt.layout();
+            irt.createPDF(fos);
+
+        } catch (Exception e) {
+            log.error(e);
+        }
+
+    }
+
+    public static String[] getDefaultFonts() {
+        String base = PDFUtil.getBaseFontsPath();
+        List<String> fonts = new ArrayList<String>();
+        fonts.add(base + "calibri.ttf");// 英文内容
+        fonts.add(base + "calibrii.ttf");// 英文斜体
+        fonts.add(base + "calibrib.ttf");// 英文粗体
+        fonts.add(base + "times.ttf");// 中文报告日期
+        fonts.add(base + "mtcorsva.ttf");// 英文花体of
+        fonts.add(base + "simsun.ttf");// 中文报告
+        fonts.add(base + "simhei.ttf");// 中文标题
+        fonts.add(base + "kaiti.ttf");// 成绩单标签
+        fonts.add(base + "simli.ttf");// 中文通知单结果
+        fonts.add(base + "simfang.ttf");// 协查函
+        String[] rs = new String[fonts.size()];
+        return fonts.toArray(rs);
+    }
+
+    public static String getBaseFontsPath() {
+        return PDFUtil.class.getClassLoader().getResource("fonts/").getPath();
+    }
+
+    /*将临时 pdf及附件 合并到新pdf中*/
+    public static void addAttachment(String filePdf, String tempPdf, List<FileInfoData> atts) {
+        try {
+            File pdfFile = new File(filePdf);
+            PdfReader reader = new PdfReader(tempPdf);
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(pdfFile));
+            if (null != atts && atts.size() > 0) {
+                for (FileInfoData att : atts) {
+                    byte[] bytes = new byte[1024];
+                    PdfFileSpecification pfs = PdfFileSpecification.fileEmbedded(stamper.getWriter(), null, att.getFileName(), bytes, true);
+                    pfs.setUnicodeFileName(att.getFileName(), true);// 中文附件名称乱码
+                    stamper.addFileAttachment(null, pfs);
+                }
+            }
+            stamper.close();
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
 }
