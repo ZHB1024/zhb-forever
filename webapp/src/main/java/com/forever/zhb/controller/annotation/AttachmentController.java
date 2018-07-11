@@ -19,7 +19,15 @@ import com.forever.zhb.utils.ImageUtils;
 import com.forever.zhb.utils.PropertyUtil;
 import com.forever.zhb.utils.StringUtil;
 import com.forever.zhb.utils.attachment.ExcelUtil;
+import com.forever.zhb.utils.attachment.doc.DOCUtil;
+import com.forever.zhb.utils.attachment.pdf.ApplicationData;
+import com.forever.zhb.utils.attachment.pdf.ChangeData;
+import com.forever.zhb.utils.attachment.pdf.PDFUtil;
 import com.forever.zhb.utils.attachment.video.FFmpegEXEUtil;
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.rtf.RtfWriter2;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -829,6 +837,65 @@ public class AttachmentController extends BasicController {
 		}
 
 	}
+
+
+/*--------------------------------------------pdf----------------------------------------------------*/
+
+    @RequestMapping(value = "/exportPDF", method = RequestMethod.POST)
+    public void exportPDF(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("application/force-download");
+        String agentName = request.getHeader("User-Agent").toLowerCase();
+        String fileName = "";
+        if (agentName.indexOf("firefox")!=-1) {
+            fileName = new String("大陆居民在台学习证明申请表".getBytes("UTF-8"),"iso-8859-1");
+        }else {
+            fileName = URLEncoder.encode("大陆居民在台学习证明申请表", "UTF-8");
+        }
+        response.setHeader("Content-Disposition","attachment;filename="+fileName+".pdf");
+
+        Document document = new Document(PageSize.A4,36.0F, 36.0F, 72.0F, 36.0F);
+        PdfWriter.getInstance(document,response.getOutputStream());
+
+        ApplicationData application = new ApplicationData();
+        ChangeData changeData = new ChangeData();
+
+        PDFUtil.createPdf(document,application,changeData);
+    }
+
+
+
+/*--------------------------------------------pdf  end---------------------------------------------------*/
+
+
+
+
+/*--------------------------------------------doc----------------------------------------------------*/
+
+    @RequestMapping(value = "/exportDOC", method = RequestMethod.POST)
+    public void exportDOC(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("application/force-download");
+        String agentName = request.getHeader("User-Agent").toLowerCase();
+        String fileName = "";
+        if (agentName.indexOf("firefox")!=-1) {
+            fileName = new String("大陆居民在台学习证明申请表".getBytes("UTF-8"),"iso-8859-1");
+        }else {
+            fileName = URLEncoder.encode("大陆居民在台学习证明申请表", "UTF-8");
+        }
+        response.setHeader("Content-Disposition","attachment;filename="+fileName+".doc");
+
+        Document document = new Document(PageSize.A4,36.0F, 36.0F, 72.0F, 36.0F);
+        RtfWriter2.getInstance(document,response.getOutputStream());
+
+        ApplicationData application = new ApplicationData();
+        ChangeData changeData = new ChangeData();
+
+        DOCUtil.createDoc(document,application,changeData);
+    }
+
+
+
+/*--------------------------------------------doc  end---------------------------------------------------*/
+
 
 	public static void main(String[] args) throws IOException {
 

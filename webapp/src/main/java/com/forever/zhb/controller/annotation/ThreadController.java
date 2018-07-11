@@ -263,6 +263,7 @@ public class ThreadController extends BasicController {
     	CountDownLatch countDownLatch = new CountDownLatch(1);
     	Lock lock = new ReentrantLock();
     	AtomicInteger num = new AtomicInteger(0);
+    	//三个线程同时调用一个接口，谁先获得值，就返回，其他线程不在执行。
     	for(int i = 0 ; i < 3 ; i++){
     		Thread thread = new Thread(new Runnable() {
 				@Override
