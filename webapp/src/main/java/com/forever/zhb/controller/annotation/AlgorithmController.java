@@ -1,14 +1,11 @@
 package com.forever.zhb.controller.annotation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +76,9 @@ public class AlgorithmController {
 		for (int i : array) {
 			System.out.print(i + " ,");
 		}*/
+
+		int[] nums = {4,2,7,3,1,9,0,23,8,97,56,12};
+        bubble(nums);
 
 	}
 
@@ -277,6 +277,23 @@ public class AlgorithmController {
 
 
 	//并行查找，启动几个线程查找无序序列中某个值
+
+
+    public static void bubble(int[] nums){
+	    for (int i = 1;i<nums.length;i++){
+	        int max = nums[i];
+            int k=i;
+            for (;k>0 && (nums[k-1] > max);k--){
+                nums[k]=nums[k-1];
+            }
+            nums[k] = max;
+        }
+
+        for (int i:nums) {
+            System.out.println(i);
+        }
+    }
+
 
 
 	// ------------------------------------------------------------- 排序----------------------------------------------------------------

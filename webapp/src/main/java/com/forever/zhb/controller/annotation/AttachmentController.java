@@ -19,7 +19,15 @@ import com.forever.zhb.utils.ImageUtils;
 import com.forever.zhb.utils.PropertyUtil;
 import com.forever.zhb.utils.StringUtil;
 import com.forever.zhb.utils.attachment.ExcelUtil;
+import com.forever.zhb.utils.attachment.doc.DOCUtil;
+import com.forever.zhb.utils.attachment.pdf.ApplicationData;
+import com.forever.zhb.utils.attachment.pdf.ChangeData;
+import com.forever.zhb.utils.attachment.pdf.PDFUtil;
 import com.forever.zhb.utils.attachment.video.FFmpegEXEUtil;
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.rtf.RtfWriter2;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -41,6 +49,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -59,7 +68,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import sun.misc.BASE64Decoder;
 
 
 @Controller
@@ -110,10 +118,10 @@ public class AttachmentController extends BasicController {
 				}
 			}
 		}*/
-		
-		
+
 		return "htgl.upload.index";
 	}
+
 
     @RequestMapping("/layerContent")
     public void layerContent(HttpServletRequest request, HttpServletResponse response,String image,String id) {
@@ -213,19 +221,21 @@ public class AttachmentController extends BasicController {
             }
         }*/
 
-        BASE64Decoder decoder = new BASE64Decoder();
+        Base64 decoder = new Base64();
+        //BASE64Decoder decoder = new BASE64Decoder();
         String image_value = image_content.replaceAll("data:image/jpeg;base64,","");
         byte[] decodedBytes = null;
         try {
             // 将字符串格式的imagedata转为二进制流（biye[])的decodedBytes
-            decodedBytes = decoder.decodeBuffer(image_value);
+            //decodedBytes = decoder.decodeBuffer(image_value);
+            decodedBytes = decoder.decodeBase64(image_value);
             for(int i=0;i<decodedBytes.length;++i){
                 if(decodedBytes[i]<0) {
                     //调整异常数据
                     decodedBytes[i]+=256;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -827,6 +837,65 @@ public class AttachmentController extends BasicController {
 		}
 
 	}
+
+
+/*--------------------------------------------pdf----------------------------------------------------*/
+
+    @RequestMapping(value = "/exportPDF", method = RequestMethod.POST)
+    public void exportPDF(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("application/force-download");
+        String agentName = request.getHeader("User-Agent").toLowerCase();
+        String fileName = "";
+        if (agentName.indexOf("firefox")!=-1) {
+            fileName = new String("大陆居民在台学习证明申请表".getBytes("UTF-8"),"iso-8859-1");
+        }else {
+            fileName = URLEncoder.encode("大陆居民在台学习证明申请表", "UTF-8");
+        }
+        response.setHeader("Content-Disposition","attachment;filename="+fileName+".pdf");
+
+        Document document = new Document(PageSize.A4,36.0F, 36.0F, 72.0F, 36.0F);
+        PdfWriter.getInstance(document,response.getOutputStream());
+
+        ApplicationData application = new ApplicationData();
+        ChangeData changeData = new ChangeData();
+
+        PDFUtil.createPdf(document,application,changeData);
+    }
+
+
+
+/*--------------------------------------------pdf  end---------------------------------------------------*/
+
+
+
+
+/*--------------------------------------------doc----------------------------------------------------*/
+
+    @RequestMapping(value = "/exportDOC", method = RequestMethod.POST)
+    public void exportDOC(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("application/force-download");
+        String agentName = request.getHeader("User-Agent").toLowerCase();
+        String fileName = "";
+        if (agentName.indexOf("firefox")!=-1) {
+            fileName = new String("大陆居民在台学习证明申请表".getBytes("UTF-8"),"iso-8859-1");
+        }else {
+            fileName = URLEncoder.encode("大陆居民在台学习证明申请表", "UTF-8");
+        }
+        response.setHeader("Content-Disposition","attachment;filename="+fileName+".doc");
+
+        Document document = new Document(PageSize.A4,36.0F, 36.0F, 72.0F, 36.0F);
+        RtfWriter2.getInstance(document,response.getOutputStream());
+
+        ApplicationData application = new ApplicationData();
+        ChangeData changeData = new ChangeData();
+
+        DOCUtil.createDoc(document,application,changeData);
+    }
+
+
+
+/*--------------------------------------------doc  end---------------------------------------------------*/
+
 
 	public static void main(String[] args) throws IOException {
 

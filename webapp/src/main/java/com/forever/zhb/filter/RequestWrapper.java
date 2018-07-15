@@ -2,13 +2,10 @@ package com.forever.zhb.filter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
 import org.apache.commons.lang3.StringUtils;
 import org.owasp.validator.html.AntiSamy;
 import org.owasp.validator.html.CleanResults;
@@ -81,7 +78,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	private void inintAntisamy() {
-		ClassPathResource classpathResource = new ClassPathResource("META-INF/antisamy.xml");
+		ClassPathResource classpathResource = new ClassPathResource("META-INF/antisamy.xml");//jar包 下的文件
+        //应用中的文件
+        /*classpathResource = new ClassPathResource("classpath*:conf/userInputSecurityConfig.properties");*/
 		InputStream is = null;
 		try {
 			is = classpathResource.getInputStream();
