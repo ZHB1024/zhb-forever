@@ -22,7 +22,7 @@
     <!-- A time/date based rolling appender -->
     <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
 
-            <param name="File" value="E:/code/logs/zhb_forerver.log" />
+            <param name="File" value="D:/java/logs/zhb_forerver/zhb_forerver.log" />
         <param name="Append" value="true" />
         <param name="Threshold" value="INFO"></param>
         <!-- Rollover at midnight each day -->
