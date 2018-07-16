@@ -1,7 +1,6 @@
 package com.forever.zhb.utils.password;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.util.Base64;
 
 public class Base64Util {
 	
@@ -21,8 +20,9 @@ public class Base64Util {
 	 * @return 
 	 * @throws Exception 
 	 */  
-	public static String encrypt(byte[] key) throws Exception {  
-	    return (new BASE64Encoder()).encodeBuffer(key);  
+	public static String encrypt(byte[] key) throws Exception {
+        Base64.Encoder encoder = Base64.getEncoder();
+	    return encoder.encodeToString(key);
 	}  
 	
 	
@@ -33,8 +33,9 @@ public class Base64Util {
 	 * @return 
 	 * @throws Exception 
 	 */  
-	public static byte[] decrypt(String key) throws Exception {  
-	    return (new BASE64Decoder()).decodeBuffer(key);  
+	public static byte[] decrypt(String key) throws Exception {
+        Base64.Decoder decoder = Base64.getDecoder();
+	    return decoder.decode(key);
 	}  
 	
 	public static void main(String[] args) throws Exception{
