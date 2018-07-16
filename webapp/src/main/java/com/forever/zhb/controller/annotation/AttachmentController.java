@@ -128,6 +128,7 @@ public class AttachmentController extends BasicController {
         JSONObject jsonObject = new JSONObject();
         PrintWriter pw = null;
 
+        /*可以将以下内容 整理到jsp中*/
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"box\">");
         sb.append(      image);
